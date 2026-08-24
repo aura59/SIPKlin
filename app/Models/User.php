@@ -22,6 +22,19 @@ class User extends Authenticatable
      *
      * @return array<string, string>
      */
+    
+    protected $fillable = [
+    'name',
+    'email',
+    'password',
+    'role',
+];
+
+public function dokter()
+{
+    return $this->hasOne(Dokter::class, 'user_id');
+}
+
     protected function casts(): array
     {
         return [
