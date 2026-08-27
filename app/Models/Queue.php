@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Antrean extends Model
+class Queue extends Model
 {
     protected $table = 'antrean';
 
@@ -14,8 +14,8 @@ class Antrean extends Model
         'status'
     ];
 
-    public function pendaftaran()
+    public function registration()
     {
-        return $this->belongsTo(Pendaftaran::class, 'pendaftaran_id');
+        return $this->belongsTo(Registration::class, 'pendaftaran_id');
     }
 }

@@ -4,11 +4,11 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Dokter;
-use App\Models\Poli;
+use App\Models\Doctor;
+use App\Models\Departement;
 use App\Models\User;
 
-class DokterSeeder extends Seeder
+class DoctorSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,11 +17,11 @@ class DokterSeeder extends Seeder
     {
         $userDokter = User::where('email', 'bojai@gmail.com')->first();
 
-        $poli = Poli::where('nama_poli', 'Poli Umum')->first();
+        $departement = Departement::where('nama_departement', 'Poli Umum')->first();
 
-        Dokter::create([
+        Doctor::create([
             'user_id' => $userDokter->id,
-            'poli_id' => $poli->id,
+            'departement_id' => $departement->id,
             'nama' => 'Dr. Hou Minghao',
             'spesialis' => 'Umum',
             'no_telepon' => '081234567890',

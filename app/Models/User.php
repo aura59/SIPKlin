@@ -32,7 +32,7 @@ class User extends Authenticatable
 
 public function dokter()
 {
-    return $this->hasOne(Dokter::class, 'user_id');
+    return $this->hasOne(Doctor::class, 'user_id');
 }
 
     protected function casts(): array

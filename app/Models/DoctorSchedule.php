@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class JadwalDokter extends Model
+class DoctorSchedule extends Model
 {
     protected $table = 'jadwal_dokter';
 
@@ -16,13 +16,13 @@ class JadwalDokter extends Model
         'kuota'
     ];
 
-    public function dokter()
+    public function doctor()
     {
-        return $this->belongsTo(Dokter::class);
+        return $this->belongsTo(Doctor::class);
     }
 
-    public function pendaftaran()
+    public function registration()
     {
-        return $this->hasMany(Pendaftaran::class, 'jadwal_dokter_id');
+        return $this->hasMany(Registration::class, 'doctor_schedule_id');
     }
 }

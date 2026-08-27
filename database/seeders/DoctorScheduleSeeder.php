@@ -2,21 +2,21 @@
 
 namespace Database\Seeders;
 
+use App\Models\DoctorSchedule;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\JadwalDokter;
-use App\Models\Dokter;
+use App\Models\Doctor;
 
-class JadwalDokterSeeder extends Seeder
+class DoctorScheduleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $dokter = Dokter::first(); // Ambil dokter pertama dari database
+        $dokter = Doctor::first(); // Ambil dokter pertama dari database
 
-        JadwalDokter::create([
+        DoctorSchedule::create([
             'dokter_id' => $dokter->id,
             'hari' => 'Senin',
             'jam_mulai' => '08:00',

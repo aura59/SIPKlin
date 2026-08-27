@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class RekamMedis extends Model
+class MedicalRecord extends Model
 {
     protected $table = 'rekam_medis';
 
@@ -17,8 +17,8 @@ class RekamMedis extends Model
         'catatan'
     ];
     
-    public function pendaftaran()
+    public function registration()
     {
-        return $this->belongsTo(Pendaftaran::class, 'pendaftaran_id');
+        return $this->belongsTo(Registration::class, 'pendaftaran_id');
     }
 }

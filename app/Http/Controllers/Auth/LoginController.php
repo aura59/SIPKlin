@@ -15,11 +15,12 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
-       $credentials = $request->validate([
+        $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
             'role' => ['required', 'in:admin,dokter'],
         ]);
+
         $remember = $request->boolean('remember');
 
         if (Auth::attempt([
@@ -51,7 +52,6 @@ class LoginController extends Controller
         Auth::logout();
 
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
         return redirect()->route('login');

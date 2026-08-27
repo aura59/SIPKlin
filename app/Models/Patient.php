@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Pasien extends Model
+class Patient extends Model
 {
     protected $table = 'pasien';
 
@@ -17,8 +17,8 @@ class Pasien extends Model
         'no_telepon'
     ];
 
-    public function pendaftaran()
+    public function registration()
     {
-        return $this->hasMany(Pendaftaran::class, 'pasien_id');
+        return $this->hasMany(Registration::class, 'pasien_id');
     }
 }

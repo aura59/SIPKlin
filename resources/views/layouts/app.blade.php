@@ -20,6 +20,49 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
 
+
+   <style>
+
+        :root {
+            --sipklin-blue: #2459A6;
+            --sipklin-blue-light: #EAF1FB;
+        }
+
+        /* Sidebar */
+        .sipklin-sidebar {
+            background-color: var(--sipklin-blue) !important;
+            background-image: none !important;
+        }
+
+        /* Warna teks */
+        .text-sipklin {
+            color: var(--sipklin-blue) !important;
+        }
+
+        /* Border card */
+        .border-left-sipklin {
+            border-left: 4px solid var(--sipklin-blue) !important;
+        }
+
+        /* Badge */
+        .badge-sipklin {
+            background-color: var(--sipklin-blue);
+            color: white;
+        }
+
+        /* Hover dashboard */
+        .dashboard-card {
+            transition: all 0.3s ease;
+        }
+
+        .dashboard-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.15) !important;
+            cursor: pointer;
+        }
+
+    </style>
+
     @stack('styles')
 
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>

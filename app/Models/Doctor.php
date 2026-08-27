@@ -4,13 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Dokter extends Model
+class Doctor extends Model
 {
     protected $table = 'dokter';
 
     protected $fillable = [
         'user_id',
-        'poli_id',
+        'departement_id',
         'nama',
         'spesialis',
         'no_telepon',
@@ -21,13 +21,13 @@ class Dokter extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function poli()
+    public function departement()
     {
-        return $this->belongsTo(Poli::class);
+        return $this->belongsTo(Departement::class);
     }
 
     public function jadwal()
     {
-        return $this->hasMany(JadwalDokter::class);
+        return $this->hasMany(DoctorSchedule::class);
     }
 }
