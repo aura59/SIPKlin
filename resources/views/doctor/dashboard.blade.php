@@ -13,7 +13,6 @@
 
 <div class="row">
 
-    <!-- Pasien -->
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card shadow h-100 py-2 border-left-sipklin dashboard-card">
 
@@ -33,8 +32,6 @@
         </div>
     </div>
 
-
-    <!-- Dokter -->
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card shadow h-100 py-2 border-left-warning dashboard-card">
 
@@ -54,8 +51,6 @@
         </div>
     </div>
 
-
-    <!-- Pendaftaran Hari Ini -->
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card shadow h-100 py-2 border-left-success dashboard-card">
 
@@ -75,8 +70,6 @@
         </div>
     </div>
 
-
-    <!-- Antrean Menunggu -->
     <div class="col-xl-3 col-md-6 mb-4">
         <div class="card shadow h-100 py-2 border-left-info dashboard-card">
 
@@ -101,14 +94,11 @@
 
 <div class="row">
 
-    <!-- Pendaftaran Hari Ini -->
     <div class="col-lg-8">
         <div class="card shadow mb-4">
 
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-sipklin">
-                    Pendaftaran Hari Ini
-                </h6>
+                <h6 class="m-0 font-weight-bold text-sipklin">Pendaftaran Hari Ini</h6>
             </div>
 
             <div class="card-body">
@@ -126,13 +116,9 @@
                         </thead>
 
                         <tbody>
-
                             <tr>
-                                <td colspan="5" class="text-center text-muted">
-                                    Belum ada data pendaftaran
-                                </td>
+                                <td colspan="5" class="text-center text-muted">Belum ada data pendaftaran</td>
                             </tr>
-
                         </tbody>
 
                     </table>
@@ -142,21 +128,16 @@
         </div>
     </div>
 
-
-    <!-- Antrean Menunggu -->
     <div class="col-lg-4">
         <div class="card shadow mb-4">
 
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-sipklin">
-                    Antrean Menunggu
-                </h6>
+                <h6 class="m-0 font-weight-bold text-sipklin">Antrean Menunggu</h6>
             </div>
 
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table dashboard-table">
-
                         <thead>
                             <tr>
                                 <th>Poli</th>
@@ -166,9 +147,7 @@
 
                         <tbody>
                             <tr>
-                                <td colspan="2" class="text-center text-muted">
-                                    Belum ada antrean
-                                </td>
+                                <td colspan="2" class="text-center text-muted">Belum ada antrean</td>
                             </tr>
                         </tbody>
                     </table>

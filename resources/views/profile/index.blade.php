@@ -27,7 +27,6 @@
 
             <div class="row">
 
-                <!-- foto profil -->
                 <div class="col-md-4 mb-4">
                     <div class="text-center">
 
@@ -39,10 +38,8 @@
                             @endif
                         </div>
 
-                        <!-- input foto -->
                         <input type="file" name="avatar" id="avatar" accept="image/*" class="d-none" onchange="previewFoto(event)">
 
-                        <!-- Tombol Ubah Foto -->
                         <button type="button" class="btn btn-sipklin mt-3 px-4" onclick="document.getElementById('avatar').click()">
                             <i class="fas fa-camera mr-1"></i>
                             Ubah Foto
@@ -58,7 +55,6 @@
                 </div>
 
 
-                <!-- form profil -->
                 <div class="col-md-8">
                     <div class="form-group">
 

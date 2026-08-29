@@ -27,22 +27,28 @@
             <!-- Dropdown -->
             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
 
-                <!-- Profil -->
-                <a class="dropdown-item" href="{{ route('admin.profile') }}">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Profil
-                </a>
+                @if(Auth::user()->role === 'admin')
+                    <a class="dropdown-item" href="{{ route('admin.profile') }}">
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Profil
+                    </a>
+                @elseif(Auth::user()->role === 'dokter')
+                    <a class="dropdown-item" href="{{ route('doctor.profile') }}">
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Profil
+                    </a>
+                @endif
 
                 <div class="dropdown-divider"></div>
-
-                <!-- Logout -->
-                <a class="dropdown-item" href="#" onclick=" event.preventDefault(); document.getElementById('form-logout').submit();">
+                <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('form-logout').submit();">
                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                     Logout
                 </a>
 
                 <form action="{{ route('logout') }}" id="form-logout" method="POST" class="d-none">
+
                     @csrf
+
                 </form>
 
             </div>

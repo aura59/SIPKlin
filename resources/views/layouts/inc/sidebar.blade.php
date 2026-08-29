@@ -11,21 +11,17 @@
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
 
-    <!-- Dashboard -->
-    <li class="nav-item active">
+    <li class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('admin.dashboard') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
         </a>
     </li>
-
     
     <hr class="sidebar-divider">
 
-    <!-- Data klinik -->
     <div class="sidebar-heading">Data Klinik</div>
 
-    <!-- Data pasien -->
     <li class="nav-item">
         <a class="nav-link" href="#">
             <i class="fas fa-fw fa-users"></i>
@@ -33,7 +29,6 @@
         </a>
     </li>
 
-    <!-- Data dokter -->
     <li class="nav-item">
         <a class="nav-link" href="#">
             <i class="fas fa-fw fa-user-md"></i>
@@ -41,7 +36,6 @@
         </a>
     </li>
 
-    <!-- Data poli -->
     <li class="nav-item">
         <a class="nav-link" href="#">
             <i class="fas fa-fw fa-hospital"></i>
@@ -49,7 +43,6 @@
         </a>
     </li>
 
-    <!-- Jadwal dokter -->
     <li class="nav-item">
         <a class="nav-link" href="#">
             <i class="fas fa-fw fa-calendar-alt"></i>
@@ -60,10 +53,8 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Pelayanan -->
     <div class="sidebar-heading">Pelayanan</div>
 
-    <!-- Pendaftaran -->
     <li class="nav-item">
         <a class="nav-link" href="#">
             <i class="fas fa-fw fa-clipboard-list"></i>
@@ -71,7 +62,6 @@
         </a>
     </li>
 
-    <!-- Antrean -->
     <li class="nav-item">
         <a class="nav-link" href="#">
             <i class="fas fa-fw fa-list-ol"></i>
@@ -79,7 +69,6 @@
         </a>
     </li>
 
-    <!-- Rekam medis -->
     <li class="nav-item">
         <a class="nav-link" href="#">
             <i class="fas fa-fw fa-notes-medical"></i>
@@ -87,7 +76,6 @@
         </a>
     </li>
 
-    <!-- Riwayat kunjungan -->
     <li class="nav-item">
         <a class="nav-link" href="#">
             <i class="fas fa-fw fa-history"></i>
@@ -98,10 +86,8 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    <!-- Profil -->
-    <li class="nav-item">
-
-        <a class="nav-link " href="{{ route('admin.profile') }}">
+   <li class="nav-item {{ request()->routeIs('admin.profile') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('admin.profile') }}">
             <i class="fas fa-fw fa-user-circle"></i>
             <span>Profil</span>
         </a>

@@ -9,28 +9,23 @@
 <div class="card sipklin-login-card">
 
     <div class="card-body p-5">
-
-        <!-- Logo -->
+       
         <div class="text-center mb-4">
-
             <div class="d-flex justify-content-center align-items-center">
                 <i class="fas fa-heartbeat logo-icon mr-2"></i>
                 <span class="logo-name">SIPKlin</span>
             </div>
 
             <h1 class="h6 text-gray-900 mb-4">Sistem Informasi Pendaftaran Klinik</h1>
-
         </div>
 
          <hr>
 
         <div class="login-title mb-4">Login ke Akun Anda</div>
 
-        <!-- form login -->
         <form method="POST" action="{{ route('login.process') }}">
             @csrf
 
-            <!-- email -->
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" name="email" id="email" value="{{ old('email') }}" class="form-control form-control-user @error('email') is-invalid @enderror" placeholder="Masukkan email" required autofocus>
@@ -43,10 +38,8 @@
 
             </div>
 
-            <!-- PASSWORD -->
             <div class="form-group">
                 <label for="password">Password</label>
-
                 <input type="password" name="password" id="password" class="form-control form-control-user @error('password') is-invalid @enderror" placeholder="Masukkan password" required>
 
                 @error('password')
@@ -54,14 +47,11 @@
                         {{ $message }}
                     </div>
                 @enderror
-
             </div>
 
-            <!-- ROLE -->
+        
             <div class="form-group">
-
                 <label for="role">Pilih Peran</label>
-
                 <select name="role" id="role" class="form-control @error('role') is-invalid @enderror" required>
                     <option value=""></option>
 
@@ -81,51 +71,32 @@
                         {{ $message }}
                     </div>
                 @enderror
-
             </div>
 
-            <!-- LOGIN -->
+  
             <button type="submit" class="btn btn-sipklin btn-user btn-block">Login</button>
-
         </form>
 
         <hr>
 
-        <!-- QUICK ROLE -->
-        <p class="text-center text-muted small mb-2">
-            Masuk Sebagai
-        </p>
+       
+        <p class="text-center text-muted small mb-2">Masuk Sebagai</p>
 
         <div class="row">
-
-            <!-- ADMIN -->
             <div class="col-6">
-
-                <button
-                    type="button"
-                    class="btn btn-outline-primary btn-block"
-                    onclick="pilihRole('admin')"
-                >
+                <button type="button" class="btn btn-outline-primary btn-block" onclick="pilihRole('admin')">
                     <i class="fas fa-user-shield mr-1"></i>
                     Admin
                 </button>
-
             </div>
 
-            <!-- DOKTER -->
+           
             <div class="col-6">
-
-                <button
-                    type="button"
-                    class="btn btn-outline-primary btn-block"
-                    onclick="pilihRole('dokter')"
-                >
+                <button type="button" class="btn btn-outline-primary btn-block" onclick="pilihRole('dokter')">
                     <i class="fas fa-user-md mr-1"></i>
                     Dokter
                 </button>
-
             </div>
-
         </div>
 
     </div>

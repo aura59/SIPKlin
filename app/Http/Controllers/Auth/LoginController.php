@@ -38,11 +38,7 @@ class LoginController extends Controller
             }
         }
 
-        return back()
-            ->withErrors([
-                'email' => 'Email, password, atau role tidak sesuai.',
-            ])
-            ->onlyInput('email');
+        return back() ->withErrors(['email' => 'Email, password, atau role tidak sesuai.',])->onlyInput('email');
     }
 
     public function logout(Request $request)

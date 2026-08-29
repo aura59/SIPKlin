@@ -106,9 +106,7 @@
         <div class="card shadow mb-4">
 
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-sipklin">
-                    Pendaftaran Hari Ini
-                </h6>
+                <h6 class="m-0 font-weight-bold text-sipklin">Pendaftaran Hari Ini</h6>
             </div>
 
             <div class="card-body">
@@ -126,13 +124,9 @@
                         </thead>
 
                         <tbody>
-
                             <tr>
-                                <td colspan="5" class="text-center text-muted">
-                                    Belum ada data pendaftaran
-                                </td>
+                                <td colspan="5" class="text-center text-muted">Belum ada data pendaftaran</td>
                             </tr>
-
                         </tbody>
 
                     </table>
@@ -148,9 +142,7 @@
         <div class="card shadow mb-4">
 
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-sipklin">
-                    Antrean Menunggu
-                </h6>
+                <h6 class="m-0 font-weight-bold text-sipklin">Antrean Menunggu</h6>
             </div>
 
             <div class="card-body">
@@ -166,9 +158,7 @@
 
                         <tbody>
                             <tr>
-                                <td colspan="2" class="text-center text-muted">
-                                    Belum ada antrean
-                                </td>
+                                <td colspan="2" class="text-center text-muted">Belum ada antrean</td>
                             </tr>
                         </tbody>
                     </table>
