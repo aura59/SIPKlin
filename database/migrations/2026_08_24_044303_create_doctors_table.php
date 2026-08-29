@@ -10,30 +10,30 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::create('dokter', function (Blueprint $table) {
-        $table->id();
+    {
+        Schema::create('doctors', function (Blueprint $table) {
+            $table->id();
 
-        $table->foreignId('user_id')
-            ->constrained('users')
-            ->cascadeOnDelete();
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->cascadeOnDelete();
 
-        $table->foreignId('poli_id')
-            ->constrained('poli')
-            ->cascadeOnDelete();
+            $table->foreignId('department_id')
+                ->constrained('departments')
+                ->cascadeOnDelete();
 
-        $table->string('nama');
-        $table->string('spesialis');
-        $table->string('no_telepon');
-        $table->timestamps();
-    });
-}
+            $table->string('nama');
+            $table->string('spesialis');
+            $table->string('no_telepon');
+            $table->timestamps();
+        });
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('dokter');
+        Schema::dropIfExists('doctors');
     }
 };

@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Registration extends Model
 {
-    protected $table = 'pendaftaran';
+    protected $table = 'registrations';
 
     protected $fillable = [
-        'pasien_id',
+        'patient_id',
         'doctor_schedule_id',
         'tanggal',
         'keluhan',
@@ -19,7 +19,7 @@ class Registration extends Model
 
     public function patient()
     {
-        return $this->belongsTo(Patient::class, 'pasien_id');
+        return $this->belongsTo(Patient::class, 'patient_id');
     }
 
     public function doctorSchedule()
@@ -29,11 +29,11 @@ class Registration extends Model
 
     public function queue()
     {
-        return $this->hasOne(Queue::class, 'pendaftaran_id');
+        return $this->hasOne(Queue::class, 'registration_id');
     }
 
     public function medicalRecord()
     {
-        return $this->hasOne(MedicalRecord ::class, 'pendaftaran_id');
+        return $this->hasOne(MedicalRecord ::class, 'registration_id');
     }   
 }

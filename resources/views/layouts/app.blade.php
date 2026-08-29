@@ -13,6 +13,7 @@
 
     <!-- Custom fonts for this template-->
     <link href="{{ asset('vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
+
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
@@ -20,11 +21,10 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
 
-
-   <style>
+    <style>
 
         :root {
-            --sipklin-blue: #2459A6;
+            --sipklin-blue: #06285c;
             --sipklin-blue-light: #EAF1FB;
         }
 
@@ -75,8 +75,17 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        @include('layouts.inc.sidebar')
+        @if(Auth::user()->role === 'admin')
+
+            @include('layouts.inc.sidebar')
+
+        @elseif(Auth::user()->role === 'dokter')
+
+            @include('layouts.inc.sidebar-doctor')
+
+        @endif
         <!-- End of Sidebar -->
+
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -85,8 +94,9 @@
             <div id="content">
 
                 <!-- Topbar -->
-               @include('layouts.inc.navbar')
+                @include('layouts.inc.navbar')
                 <!-- End of Topbar -->
+
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
@@ -97,8 +107,9 @@
             </div>
             <!-- End of Main Content -->
 
+
             <!-- Footer -->
-           @include('layouts.inc.footer')
+            @include('layouts.inc.footer')
             <!-- End of Footer -->
 
         </div>
@@ -107,12 +118,14 @@
     </div>
     <!-- End of Page Wrapper -->
 
+
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+
+
     <!-- Bootstrap core JavaScript-->
-    
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
     <!-- Core plugin JavaScript-->

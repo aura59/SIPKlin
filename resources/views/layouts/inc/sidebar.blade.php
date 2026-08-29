@@ -2,11 +2,9 @@
 
     <!-- Sidebar Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ route('admin.dashboard') }}">
-
         <div class="sidebar-brand-icon">
             <i class="fas fa-heartbeat"></i>
         </div>
-
         <div class="sidebar-brand-text mx-3">SIPKlin</div>
     </a>
 
@@ -19,16 +17,15 @@
             <i class="fas fa-fw fa-tachometer-alt"></i>
             <span>Dashboard</span>
         </a>
-
     </li>
 
-    <!-- Divider -->
+    
     <hr class="sidebar-divider">
 
-    <!-- Data Master -->
+    <!-- Data klinik -->
     <div class="sidebar-heading">Data Klinik</div>
 
-    <!-- Data Pasien -->
+    <!-- Data pasien -->
     <li class="nav-item">
         <a class="nav-link" href="#">
             <i class="fas fa-fw fa-users"></i>
@@ -36,7 +33,7 @@
         </a>
     </li>
 
-    <!-- Data Dokter -->
+    <!-- Data dokter -->
     <li class="nav-item">
         <a class="nav-link" href="#">
             <i class="fas fa-fw fa-user-md"></i>
@@ -44,7 +41,7 @@
         </a>
     </li>
 
-    <!-- Data Poli -->
+    <!-- Data poli -->
     <li class="nav-item">
         <a class="nav-link" href="#">
             <i class="fas fa-fw fa-hospital"></i>
@@ -52,7 +49,7 @@
         </a>
     </li>
 
-    <!-- Jadwal Dokter -->
+    <!-- Jadwal dokter -->
     <li class="nav-item">
         <a class="nav-link" href="#">
             <i class="fas fa-fw fa-calendar-alt"></i>
@@ -82,7 +79,7 @@
         </a>
     </li>
 
-    <!-- Rekam Medis -->
+    <!-- Rekam medis -->
     <li class="nav-item">
         <a class="nav-link" href="#">
             <i class="fas fa-fw fa-notes-medical"></i>
@@ -90,7 +87,7 @@
         </a>
     </li>
 
-    <!-- Riwayat Kunjungan -->
+    <!-- Riwayat kunjungan -->
     <li class="nav-item">
         <a class="nav-link" href="#">
             <i class="fas fa-fw fa-history"></i>
@@ -104,7 +101,7 @@
     <!-- Profil -->
     <li class="nav-item">
 
-        <a class="nav-link" href="#">
+        <a class="nav-link " href="{{ route('admin.profile') }}">
             <i class="fas fa-fw fa-user-circle"></i>
             <span>Profil</span>
         </a>

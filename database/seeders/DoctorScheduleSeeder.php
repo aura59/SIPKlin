@@ -14,10 +14,10 @@ class DoctorScheduleSeeder extends Seeder
      */
     public function run(): void
     {
-        $dokter = Doctor::first(); // Ambil dokter pertama dari database
+        $doctor = Doctor::first(); 
 
         DoctorSchedule::create([
-            'dokter_id' => $dokter->id,
+            'doctor_id' => $doctor->id,
             'hari' => 'Senin',
             'jam_mulai' => '08:00',
             'jam_selesai' => '16:00',

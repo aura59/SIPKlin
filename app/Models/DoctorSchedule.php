@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class DoctorSchedule extends Model
 {
-    protected $table = 'jadwal_dokter';
+    protected $table = 'doctor_schedules';
 
     protected $fillable = [
-        'dokter_id',
+        'doctor_id',
         'hari',
         'jam_mulai',
         'jam_selesai',

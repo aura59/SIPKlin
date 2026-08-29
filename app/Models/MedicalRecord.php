@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class MedicalRecord extends Model
 {
-    protected $table = 'rekam_medis';
+    protected $table = 'medical_records';
 
     protected $fillable = [
-        'pasien_id',
-        'dokter_id',
+        'patient_id',
+        'doctor_id',
         'tanggal',
         'diagnosis',
         'treatment',
@@ -19,6 +19,6 @@ class MedicalRecord extends Model
     
     public function registration()
     {
-        return $this->belongsTo(Registration::class, 'pendaftaran_id');
+        return $this->belongsTo(Registration::class, 'registration_id');
     }
 }

@@ -29,7 +29,7 @@
     <style>
 
         body {
-            background: #eef4fa;
+            background: #f4f6fb;
         }
 
         .login-wrapper {
@@ -49,12 +49,12 @@
         }
 
         .logo-icon {
-            color: #2459a6;
+            color: #06285c;
             font-size: 34px;
         }
 
         .logo-name {
-            color: #173f6b;
+            color: #06285c;
             font-size: 28px;
             font-weight: 800;
         }
@@ -66,20 +66,20 @@
         }
 
         .login-title {
-            color: #173f6b;
+            color: #06285c;
             font-weight: 700;
             font-size: 18px;
         }
 
         .btn-sipklin {
-            background: #2459a6;
-            border-color: #2459a6;
+            background: #06285c;
+            border-color: #06285c;
             color: white;
         }
 
         .btn-sipklin:hover {
-            background: #173f6b;
-            border-color: #173f6b;
+            background: #06285c;
+            border-color: #06285c;
             color: white;
         }
 

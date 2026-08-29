@@ -21,13 +21,11 @@ class LoginController extends Controller
             'role' => ['required', 'in:admin,dokter'],
         ]);
 
-        $remember = $request->boolean('remember');
-
         if (Auth::attempt([
             'email' => $credentials['email'],
             'password' => $credentials['password'],
             'role' => $credentials['role'],
-        ], $remember)) {
+        ])) {
 
             $request->session()->regenerate();
 
@@ -36,13 +34,13 @@ class LoginController extends Controller
             }
 
             if (Auth::user()->role === 'dokter') {
-                return redirect()->route('dokter.dashboard');
+                return redirect()->route('doctor.dashboard');
             }
         }
 
         return back()
             ->withErrors([
-                'email' => 'Email atau password salah.',
+                'email' => 'Email, password, atau role tidak sesuai.',
             ])
             ->onlyInput('email');
     }

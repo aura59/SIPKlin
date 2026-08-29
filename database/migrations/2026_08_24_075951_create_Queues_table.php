@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
 {
-    Schema::create('antrean', function (Blueprint $table) {
+    Schema::create('queues', function (Blueprint $table) {
         $table->id();
 
-        $table->foreignId('pendaftaran_id')
-            ->constrained('pendaftaran')
+        $table->foreignId('registration_id')
+            ->constrained('registrations')
             ->cascadeOnDelete();
 
         $table->integer('nomor_antrean');
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('antrean');
+        Schema::dropIfExists('queues');
     }
 };

@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Doctor extends Model
 {
-    protected $table = 'dokter';
+    protected $table = 'doctors';
 
     protected $fillable = [
         'user_id',
-        'departement_id',
+        'department_id',
         'nama',
         'spesialis',
         'no_telepon',
@@ -21,9 +21,9 @@ class Doctor extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function departement()
+    public function department()
     {
-        return $this->belongsTo(Departement::class);
+        return $this->belongsTo(Department::class, 'department_id');
     }
 
     public function jadwal()

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Patient extends Model
 {
-    protected $table = 'pasien';
+    protected $table = 'patients';
 
     protected $fillable = [
         'nik',
@@ -19,6 +19,6 @@ class Patient extends Model
 
     public function registration()
     {
-        return $this->hasMany(Registration::class, 'pasien_id');
+        return $this->hasMany(Registration::class, 'patient_id');
     }
 }

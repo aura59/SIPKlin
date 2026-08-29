@@ -6,24 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
+        /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('poli', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama_poli');
-            $table->text('deskripsi')->nullable();
-        $table->timestamps();
-    });
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('avatar')->nullable()->after('role');
+        });
     }
+
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('poli');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('avatar');
+        });
     }
 };

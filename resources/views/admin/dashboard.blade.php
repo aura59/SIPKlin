@@ -189,7 +189,7 @@
     .dashboard-table th,
     .dashboard-table td {
         border: 1px solid #afaeae !important;
-        color: #2459A6;
+        color: #06285c;
     }
 
     .dashboard-table th {

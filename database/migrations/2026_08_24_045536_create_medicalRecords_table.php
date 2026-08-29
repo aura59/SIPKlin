@@ -11,12 +11,12 @@ return new class extends Migration
      */
  public function up(): void
 {
-    Schema::create('rekam_medis', function (Blueprint $table) {
+    Schema::create('medical_records', function (Blueprint $table) {
         $table->id();
 
-        $table->foreignId('pendaftaran_id')
+        $table->foreignId('registration_id')
             ->unique()
-            ->constrained('pendaftaran')
+            ->constrained('registrations')
             ->cascadeOnDelete();
 
         $table->text('keluhan');
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('rekam_medis');
+        Schema::dropIfExists('medical_records');
     }
 };
