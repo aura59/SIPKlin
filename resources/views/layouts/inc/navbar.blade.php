@@ -16,7 +16,7 @@
                 @if(Auth::user()->avatar)
                     <img class="img-profile rounded-circle" src="{{ asset(Auth::user()->avatar) }}" alt="Foto Profil">
                 @else
-                    <img class="img-profile rounded-circle" src="{{ asset('img/undraw_profile.svg') }}" alt="Foto Profil">
+                    <img class="img-profile rounded-circle" src="{{ asset('public/img/profile/undraw_profile.svg') }}" alt="Foto Profil">
                 @endif
 
                 <!-- Nama User -->

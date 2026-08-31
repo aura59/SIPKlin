@@ -22,8 +22,8 @@
 
     <div class="sidebar-heading">Data Klinik</div>
 
-    <li class="nav-item">
-        <a class="nav-link" href="#">
+   <li class="nav-item {{ request()->routeIs('patients.*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('patients.index') }}">
             <i class="fas fa-fw fa-users"></i>
             <span>Data Pasien</span>
         </a>

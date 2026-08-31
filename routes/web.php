@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PatientController;
 
 // login
 Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLogin'])->name('login');
@@ -26,3 +27,11 @@ Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'da
 
 // dashboard dokter
 Route::get('/dokter/dashboard', [App\Http\Controllers\AdminController::class, 'doctorDashboard'])->middleware('auth')->name('doctor.dashboard');
+
+
+// pasien
+Route::middleware('auth')->group(function () {
+
+Route::resource('/patients', App\Http\Controllers\PatientController::class);
+
+});

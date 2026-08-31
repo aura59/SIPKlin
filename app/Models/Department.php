@@ -9,7 +9,7 @@ class Department extends Model
     protected $table = 'departments';
 
     protected $fillable = [
-        'nama_poli',
+        'nama_department',
         'deskripsi',
     ];
 

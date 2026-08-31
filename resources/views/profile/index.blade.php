@@ -34,7 +34,7 @@
                             @if($user->avatar)
                                 <img src="{{ asset($user->avatar) }}" id="preview-avatar" alt="Foto Profil">
                             @else
-                                <img src="{{ asset('img/undraw_profile.svg') }}" id="preview-avatar" alt="Foto Profil">
+                                <img src="{{ asset('public/img/profile/undraw_profile.svg') }}" id="preview-avatar" alt="Foto Profil">
                             @endif
                         </div>
 

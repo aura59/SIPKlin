@@ -27,5 +27,19 @@ class UserSeeder extends Seeder
             'password' => Hash::make('bojai123'),
             'role' => 'dokter',
         ]);
+
+         User::create([
+            'name' => 'Dr. Lu Yuxiao',
+            'email' => 'xiaoxiao@gmail.com',
+            'password' => Hash::make('irene123'),
+            'role' => 'dokter',
+        ]);
+
+         User::create([
+            'name' => 'Dr. Tian Xiwei',
+            'email' => 'xiwei@gmail.com',
+            'password' => Hash::make('changyu123'),
+            'role' => 'dokter',
+        ]);
     }
 }

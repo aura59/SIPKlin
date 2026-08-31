@@ -26,5 +26,17 @@ class DoctorSeeder extends Seeder
             'spesialis' => 'Umum',
             'no_telepon' => '081234567890',
         ]);
+
+        $userDokter = User::where('email', 'xiaoxiao@gmail.com')->first();
+
+        $department = Department::where('name', 'Poli Anak')->first();
+
+        Doctor::create([
+            'user_id' => $userDokter->id,
+            'department_id' => $department->id,
+            'nama' => 'Dr. Lu Yuxiao',
+            'spesialis' => 'Anak',
+            'no_telepon' => '083813054300',
+        ]);
     }
 }

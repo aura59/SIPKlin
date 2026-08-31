@@ -16,7 +16,7 @@ public function up(): void
         $table->string('nik', 16)->unique();
         $table->string('nama');
         $table->date('tanggal_lahir');
-        $table->enum('jenis_kelamin', ['L', 'P']);
+        $table->enum('jenis_kelamin', ['laki-laki', 'perempuan']);
         $table->text('alamat');
         $table->string('no_telepon');
         $table->timestamps();
