@@ -38,11 +38,16 @@ class PatientController extends Controller
             'no_telepon' => 'required',
         ]);
 
-        Patient::create($request->all());
+        Patient::create([
+            'nik' => $request->nik,
+            'nama' => $request->nama,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'alamat' => $request->alamat,
+            'no_telepon' => $request->no_telepon,
+        ]);
 
-        return redirect()
-            ->route('patients.index')
-            ->with('success', 'Data pasien berhasil ditambahkan!');
+        return redirect()->route('patients.index')->with('success', 'Data pasien berhasil ditambahkan!');
     }
 
     /**
@@ -50,7 +55,9 @@ class PatientController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $patients = Patient::findOrFail($id);
+
+        return view('pages.patient.show', compact('patients'));
     }
 
     /**
@@ -58,7 +65,9 @@ class PatientController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $patients = Patient::findOrFail($id);
+
+        return view('pages.patient.edit', compact('patients'));
     }
 
     /**
@@ -66,7 +75,27 @@ class PatientController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $patients = Patient::findOrFail($id);
+
+        $request->validate([
+            'nik' => 'required',
+            'nama' => 'required',
+            'tanggal_lahir' => 'required',
+            'jenis_kelamin' => 'required|in:laki-laki,perempuan',
+            'alamat' => 'required',
+            'no_telepon' => 'required',
+        ]);
+
+        $patients->update([
+            'nik' => $request->nik,
+            'nama' => $request->nama,
+            'tangga_lahir' => $request->tanggal_lahir,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'alamat' => $request->alamat,
+            'no_telepon' => $request->no_telepon,
+        ]);
+
+        return redirect()->route('patients.index')->with('success', 'Berhasil mengubah data pasien ID: ' . $id);
     }
 
     /**
@@ -74,6 +103,10 @@ class PatientController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $patients = Patient::findOrFail($id);
+
+        $patients->delete();
+
+        return redirect()->route('admin.patient.index')->with('success', 'Berhasil menghapus dat pasien.');
     }
 }

@@ -3,18 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Patient;
 
 class AdminController extends Controller
 {
     // Dashboard Admin
     public function dashboard()
     {
-        return view('admin.dashboard');
+        $totalPasien = Patient::count();
+
+        return view('admin.dashboard', compact('totalPasien'));
     }
 
     // Dashboard Dokter
     public function doctorDashboard()
     {
-        return view('doctor.dashboard');
+        $totalPasien = Patient::count();
+
+       return view('doctor.dashboard', compact('totalPasien'));
     }
 }
