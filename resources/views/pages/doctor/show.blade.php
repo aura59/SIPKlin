@@ -1,67 +1,59 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Pasien - SIPKlin')
+@section('title', 'Detail Dokter - SIPKlin')
 
 @section('content')
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Detail Pasien</h1>
+    <h1 class="h3 mb-0 text-gray-800">Detail Data Dokter</h1>
 </div>
 
-<h1 class="h6 text-gray-800 mb-4">Data Klinik / Pasien / Detail</h1>
+<h1 class="h6 text-gray-800 mb-4">Data Klinik / Dokter / Detail</h1>
 
 <div class="row">
 
-    <!-- dokter -->
     <div class="col-md-7">
         <div class="card">
 
             <div class="card-header">
-                <h5 class="card-title mb-0">Informasi Pasien</h5>
+                <h5 class="card-title mb-0">Informasi Dokter</h5>
             </div>
 
             <div class="card-body">
-
                 <div class="detail-item">
-                    <label>NIK</label>
-                    <p>{{ $patients->nik }}</p>
+                    <label>Nama Dokter</label>
+                    <p>{{ $doctor->nama }}</p>
                 </div>
 
                 <div class="detail-item">
-                    <label>Nama Pasien</label>
-                    <p>{{ $patients->nama }}</p>
+                    <label>Email</label>
+                    <p>{{ $doctor->user->email ?? '-' }}</p>
                 </div>
 
                 <div class="detail-item">
-                    <label>Tanggal Lahir</label>
-                    <p>{{ $patients->tanggal_lahir }}</p>
+                    <label>Poli</label>
+                    <p>{{ $doctor->department->name ?? '-' }}</p>
                 </div>
 
                 <div class="detail-item">
-                    <label>Jenis Kelamin</label>
-                    <p>{{ ucfirst($patients->jenis_kelamin) }}</p>
-                </div>
-
-                <div class="detail-item">
-                    <label>Alamat</label>
-                    <p>{{ $patients->alamat }}</p>
+                    <label>Spesialis</label>
+                    <p>{{ $doctor->spesialis }}</p>
                 </div>
 
                 <div class="detail-item">
                     <label>No. Telepon</label>
-                    <p>{{ $patients->no_telepon }}</p>
+                    <p>{{ $doctor->no_telepon }}</p>
                 </div>
-
             </div>
 
-           <div class="card-footer">
-                <a href="{{ route('patients.index') }}" class="btn btn-secondary">
-                    <span class="fa fa-arrow-left"></span>
+            <div class="card-footer">
+                <a href="{{ route('doctors.index') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
                     Back
                 </a>
 
-                <a href="{{ route('patients.edit', $patients->id) }}" class="btn btn-sipklin  ">
-                    <span class="fa fa-edit"></span>
+                <a href="{{ route('doctors.edit', $doctor->id) }}" class="btn btn-sipklin">
+                    <i class="fas fa-edit"></i>
                     Edit
                 </a>
             </div>
@@ -70,41 +62,35 @@
     </div>
 
 
-    <!-- kanan -->
     <div class="col-md-5">
-        <div class="card info-patient-card h-100">
+        <div class="card info-doctor-card h-100">
 
             <div class="card-body text-center d-flex flex-column justify-content-center">
 
                 <div class="info-icon mb-4">
-                    <i class="fas fa-user-injured"></i>
+                    <i class="fas fa-user-md"></i>
                 </div>
 
-                <h3 class="info-title">
-                    {{ $patients->nama }}
-                </h3>
+                <h3 class="info-title">{{ $doctor->nama }}</h3>
 
-                <p class="text-muted">
-                    Informasi lengkap data pasien SIPKlin.
-                </p>
+                <p class="text-muted">Informasi lengkap data dokter SIPKlin.</p>
 
                 <hr>
 
-                <div class="patient-summary">
+                <div class="doctor-summary">
 
                     <div class="summary-item">
-                        <span>NIK</span>
-                        <strong>{{ $patients->nik }}</strong>
+                        <span>Poli</span>
+                        <strong>
+                            {{ $doctor->department->name ?? '-' }}
+                        </strong>
                     </div>
 
                     <div class="summary-item">
-                        <span>Jenis Kelamin</span>
-                        <strong>{{ ucfirst($patients->jenis_kelamin) }}</strong>
-                    </div>
-
-                    <div class="summary-item">
-                        <span>No. Telepon</span>
-                        <strong>{{ $patients->no_telepon }}</strong>
+                        <span>Spesialis</span>
+                        <strong>
+                            {{ $doctor->spesialis }}
+                        </strong>
                     </div>
 
                 </div>
@@ -151,27 +137,27 @@
         color: white !important;
     }
 
-    .info-patient-card {
+    .info-doctor-card {
         border-top: 4px solid #06285c;
     }
 
     .info-icon {
-        width: 180px;
-        height: 180px;
-        margin: 0 auto;
+    width: 180px;
+    height: 180px;
+    margin: 0 auto;
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        background-color: #EAF1FB;
-        border-radius: 50%;
+    background-color: #EAF1FB;
+    border-radius: 50%;
 
-        color: #06285c;
+    color: #06285c;
     }
 
-    .info-icon .fa-user-injured {
-        font-size: 110px !important;
+    .info-icon .fa-user-md {
+        font-size: 120px !important;
         line-height: 1 !important;
     }
 
@@ -180,7 +166,7 @@
         font-weight: 700;
     }
 
-    .patient-summary {
+    .doctor-summary {
         text-align: left;
         padding: 0 30px;
     }
@@ -190,7 +176,6 @@
         justify-content: space-between;
         padding: 12px 0;
         border-bottom: 1px solid #e3e6f0;
-        gap: 15px;
     }
 
     .summary-item span {
@@ -199,7 +184,6 @@
 
     .summary-item strong {
         color: #06285c;
-        text-align: right;
     }
 
 </style>

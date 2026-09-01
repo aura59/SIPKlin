@@ -41,5 +41,29 @@ class UserSeeder extends Seeder
             'password' => Hash::make('changyu123'),
             'role' => 'dokter',
         ]);
+
+        $doctors = [
+            'Dr. Zhang Linghe',
+            'Dr. Chen Zheyuan',
+            'Dr. Wang Xingyue',
+            'Dr. Bai Lu',
+            'Dr. Zhao Lusi',
+            'Dr. Yu Shuxin',
+            'Dr. Wu Lei',
+            'Dr. Dylan Wang',
+            'Dr. Gong Jun',
+            'Dr. Luo Yunxi',
+            'Dr. Cheng Yi',
+            'Dr. Xiao Zhan',
+        ];
+
+        foreach ($doctors as $key => $doctor) {
+            User::create([
+                'name' => $doctor,
+                'email' => 'dokter' . ($key + 1) . '@sipklin.com',
+                'password' => Hash::make('password'),
+                'role' => 'dokter',
+            ]);
+        }
     }
 }

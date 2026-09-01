@@ -33,5 +33,10 @@ Route::get('/dokter/dashboard', [App\Http\Controllers\AdminController::class, 'd
 Route::middleware('auth')->group(function () {
 
 Route::resource('/patients', App\Http\Controllers\PatientController::class);
+});
 
+// dokter
+Route::middleware('auth')->group(function () {
+
+Route::resource('/doctors', App\Http\Controllers\DoctorController::class);
 });

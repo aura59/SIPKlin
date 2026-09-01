@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Update Patient Page')
+@section('title', 'Update Doctors Page')
 
 @section('content')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Update Data Pasien</h1>
+    <h1 class="h3 mb-0 text-gray-800">Update Data Dokter</h1>
 </div>
 
-<h1 class="h6 text-gray-800 mb-4">Pasien / Update</h1>
+<h1 class="h6 text-gray-800 mb-4">Dokter / Update</h1>
 
 <div class="row">
 
     <div class="col-md-7">
         <div class="card">
-            <form action="{{ route('patients.update', $patients->id) }}" method="POST">
+            <form action="{{ route('doctors.update', $doctor->id) }}" method="POST">
                 @csrf
                 @method('PUT')
 
@@ -23,10 +23,19 @@
 
                 <div class="card-body">
                     <div class="form-group mb-3">
-                        <label for="nik" class="form-label">Nik</label>
-                        <input type="text" name="nik" id="nik" value="{{ old('nik', $patients->nik) }}" class="form-control @error('nik') is-invalid @enderror">
+                        <label for="user_id" class="form-label">Akun Dokter</label>
+                        <select name="user_id" id="user_id" class="form-control @error('user_id') is-invalid @enderror">
+                            <option value="">Pilih Akun Dokter</option>
 
-                        @error('nik')
+                            @foreach($users as $user)
+                                <option value="{{ $user->id }}"
+                                    {{ old('user_id', $doctor->user_id) == $user->id ? 'selected' : '' }}>
+                                    {{ $user->name }} - {{ $user->email }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        @error('user_id')
                             <div class="invalid-feedback d-block">
                                 {{ $message }}
                             </div>
@@ -34,8 +43,8 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="nama" class="form-label">Nama</label>
-                        <input type="text" name="nama" id="nama" value="{{ old('nama', $patients->nama) }}" class="form-control @error('nama') is-invalid @enderror">
+                        <label for="nama" class="form-label">Nama Dokter</label>
+                        <input type="text" name="nama" id="nama" value="{{ old('nama', $doctor->nama) }}" class="form-control @error('nama') is-invalid @enderror">
 
                         @error('nama')
                             <div class="invalid-feedback d-block">
@@ -45,10 +54,10 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
-                        <input type="date" name="tanggal_lahir" id="tanggal_lahir" value="{{ old('tanggal_lahir', $patients->tanggal_lahir) }}"  class="form-control @error('tanggal_lahir') is-invalid @enderror">
+                        <label for="spesialis" class="form-label">Spesialis</label>
+                        <input type="text" name="spesialis" id="spesialis" value="{{ old('spesialis', $doctor->spesialis) }}" class="form-control @error('spesialis') is-invalid @enderror">
 
-                        @error('tanggal_lahir')
+                        @error('spesialis')
                             <div class="invalid-feedback d-block">
                                 {{ $message }}
                             </div>
@@ -56,34 +65,28 @@
                     </div>
 
                     <div class="form-group mb-3">
-                        <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
-                        <select name="jenis_kelamin" id="jenis_kelamin" class="form-control @error('jenis_kelamin') is-invalid @enderror">
-                            <option value="">Pilih Jenis Kelamin</option>
-                            <option value="laki-laki" {{ old('jenis_kelamin', $patients->jenis_kelamin) == 'laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                            <option value="perempuan" {{ old('jenis_kelamin', $patients->jenis_kelamin) == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
+                        <label for="department_id" class="form-label">Poli</label>
+                        <select name="department_id" id="department_id" class="form-control @error('department_id') is-invalid @enderror">
+                            <option value="">Pilih Poli</option>
+
+                            @foreach($departments as $department)
+                                <option value="{{ $department->id }}"
+                                    {{ old('department_id', $doctor->department_id) == $department->id ? 'selected' : '' }}>
+                                    {{ $department->name }}
+                                </option>
+                            @endforeach
                         </select>
 
-                        @error('jenis_kelamin')
+                        @error('department_id')
                             <div class="invalid-feedback d-block">
                                 {{ $message }}
                             </div>
                         @enderror
                     </div>
 
-                     <div class="form-group mb-3">
-                        <label for="alamat" class="form-label">Alamat</label>
-                        <input type="text" name="alamat" id="alamat" value="{{ old('alamat', $patients->alamat) }}" class="form-control @error('alamat') is-invalid @enderror">
-
-                        @error('alamat')
-                            <div class="invalid-feedback d-block">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                     <div class="form-group mb-3">
+                    <div class="form-group mb-3">
                         <label for="no_telepon" class="form-label">No. Telp</label>
-                        <input type="text" name="no_telepon" id="no_telepon" value="{{ old('no_telepon', $patients->no_telepon) }}" class="form-control @error('no_telepon') is-invalid @enderror">
+                        <input type="text" name="no_telepon" id="no_telepon" value="{{ old('no_telepon', $doctor->no_telepon) }}" class="form-control @error('no_telepon') is-invalid @enderror">
 
                         @error('no_telepon')
                             <div class="invalid-feedback d-block">
@@ -99,7 +102,7 @@
                         Save
                     </button>
 
-                    <a href="{{ route('patients.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('doctors.index') }}" class="btn btn-secondary">
                         <span class="fa fa-times-circle"></span>
                         Cancel
                     </a>
@@ -111,7 +114,7 @@
 
 </div>
 
-@push ('styles')
+@push('styles')
 <style>
     label {
         color: #06285c !important;
@@ -138,7 +141,6 @@
         border-color: #041c40 !important;
         color: white !important;
     }
-
 </style>
 @endpush
 

@@ -24,13 +24,13 @@
 
    <li class="nav-item {{ request()->routeIs('patients.*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('patients.index') }}">
-            <i class="fas fa-fw fa-users"></i>
+            <i class="fas fa-user-injured"></i>
             <span>Data Pasien</span>
         </a>
     </li>
 
-    <li class="nav-item">
-        <a class="nav-link" href="#">
+    <li class="nav-item {{ request()->routeIs('doctors.*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('doctors.index') }}">
             <i class="fas fa-fw fa-user-md"></i>
             <span>Data Dokter</span>
         </a>

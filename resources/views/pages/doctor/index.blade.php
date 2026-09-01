@@ -1,62 +1,56 @@
 @extends('layouts.app')
 
-@section('title', 'Data Pasien - SIPKlin')
+@section('title', 'Data Dokter - SIPKlin')
 
 @section('content')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h5 class="h3 mb-0 text-gray-900">Data Pasien</h5>
+    <h5 class="h3 mb-0 text-gray-900">Data Dokter</h5>
 </div>
 
-<h1 class="h6 text-gray-800 mb-4">Data Klinik / Pasien</h1>
+<h1 class="h6 text-gray-800 mb-4">Data Klinik / Dokter</h1>
 
 <div class="card">
    <div class="card-header d-flex justify-content-between align-items-center">
 
     <div class="d-flex align-items-center">
-        <a href="{{ route('patients.create') }}" class="btn btn-sipklin px-4">
+        <a href="{{ route('doctors.create') }}" class="btn btn-sipklin px-4">
             <span class="fa fa-plus-circle mr-2"></span>
-            <span>Tambah Pasien</span>
+            <span>Tambah Dokter</span>
         </a>
     </div>
 
 </div>
 
    <div class="card-body">
-    <table class="table table-striped table-hover datatable dashboard-table">
+   <table class="table table-striped table-hover datatable dashboard-table">
         <thead>
             <tr>
                 <th>No</th>
-                <th>Nik</th>
-                <th>Nama</th>
-                <th>Tanggal Lahir</th>
-                <th>Jenis Kelamin</th>
-                <th>Alamat</th>
-                <th>No Telp</th>
+                <th>Nama Dokter</th>
+                <th>Poli</th>
+                <th>Spesialis</th>
                 <th width="150">Aksi</th>
             </tr>
         </thead>
 
         <tbody>
-            @forelse($patients as $patient)
+            @forelse($doctors as $doctor)
             <tr>
                 <td>{{ $loop->iteration }}</td>
-                <td>{{ $patient->nik }}</td>
-                <td>{{ $patient->nama }}</td>
-                <td>{{ $patient->tanggal_lahir }}</td>
-                <td>{{ $patient->jenis_kelamin }}</td>
-                <td>{{ $patient->alamat }}</td>
-                <td>{{ $patient->no_telepon }}</td>
+                <td>{{ $doctor->nama }}</td>
+                <td>{{ $doctor->department->name  }}</td>
+                <td>{{ $doctor->spesialis }}</td>
 
                 <td>
-                    <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-link text-secondary p-0 mx-1">
+                    <a href="{{ route('doctors.show', $doctor->id) }}" class="btn btn-link text-secondary p-0 mx-1">
                         <span class="fa fa-eye"></span>
                     </a>
 
-                    <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-link text-secondary p-0 mx-1">
+                    <a href="{{ route('doctors.edit', $doctor->id) }}" class="btn btn-link text-secondary p-0 mx-1">
                         <span class="fa fa-edit"></span>
                     </a>
 
-                    <a href="javascript:void(0)" onclick="actionDestroy('{{ route('patients.destroy', $patient->id) }}')" class="btn btn-link text-danger p-0 mx-1">
+                    <a href="javascript:void(0)" onclick="actionDestroy('{{ route('doctors.destroy', $doctor->id) }}')" class="btn btn-link text-danger p-0 mx-1">
                         <span class="fa fa-trash"></span>
                     </a>
                 </td>
@@ -64,7 +58,7 @@
 
             @empty
             <tr>
-                <td colspan="7" class="text-center">Belum ada data pasien</td>
+                <td colspan="7" class="text-center">Belum ada data dokter</td>
             </tr>
             @endforelse
         </tbody>
@@ -155,6 +149,13 @@
     .dataTables_paginate {
         color: #06285c !important;
     }
+
+    .dashboard-table th:first-child,
+    .dashboard-table td:first-child {
+    width: 60px !important;
+    max-width: 60px;
+    text-align: center;
+}
 
 </style>
 </style>

@@ -1,40 +1,51 @@
 @extends('layouts.app')
 
-@section('title', 'Create New - Patient Page')
+@section('title', 'Create New - Doctor Page')
 
 @section('content')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Pasien Baru</h1>
+    <h1 class="h3 mb-0 text-gray-800">Dokter Baru</h1>
 </div>
 
-<h1 class="h6 text-gray-800 mb-4">Pasien / Create</h1>
+<h1 class="h6 text-gray-800 mb-4">Dokter / Create</h1>
 
 <div class="row">
 
     <!-- kiri -->
     <div class="col-md-7">
         <div class="card">
-            <form action="{{ route('patients.store') }}" method="POST">
+            <form action="{{ route('doctors.store') }}" method="POST">
                 @csrf
 
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Input Data Pasien Baru</h5>
+                    <h5 class="card-title mb-0">Input Data Dokter Baru</h5>
                 </div>
 
                 <div class="card-body">
                     <div class="form-group mb-3">
-                        <label for="nik" class="form-label">Nik</label>
-                        <input type="text" name="nik" id="nik" value="{{ old('nik') }}" class="form-control @error('nik') is-invalid @enderror">
+                        <label for="user_id" class="form-label">Akun Dokter</label>
 
-                        @error('nik')
+                        <select name="user_id" id="user_id" class="form-control @error('user_id') is-invalid @enderror">
+                            <option value="">Pilih Akun Dokter</option>
+
+                            @foreach($users as $user)
+                                <option value="{{ $user->id }}"
+                                    {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                                    {{ $user->name }} - {{ $user->email }}
+                                </option>
+                            @endforeach
+                        </select>
+
+                        @error('user_id')
                             <div class="invalid-feedback d-block">
                                 {{ $message }}
                             </div>
                         @enderror
                     </div>
 
+
                     <div class="form-group mb-3">
-                        <label for="nama" class="form-label">Nama</label>
+                        <label for="nama" class="form-label">Nama Dokter</label>
                         <input type="text" name="nama" id="nama" value="{{ old('nama') }}" class="form-control @error('nama') is-invalid @enderror">
 
                         @error('nama')
@@ -44,46 +55,39 @@
                         @enderror
                     </div>
 
-                    <div class="form-group mb-3">
-                        <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
-                        <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control @error('tanggal_lahir') is-invalid @enderror">
 
-                        @error('tanggal_lahir')
+                    <div class="form-group mb-3">
+                        <label for="spesialis" class="form-label">Spesialis</label>
+                        <input type="text" name="spesialis" id="spesialis" value="{{ old('spesialis') }}" class="form-control @error('spesialis') is-invalid @enderror">
+
+                        @error('spesialis')
                             <div class="invalid-feedback d-block">
                                 {{ $message }}
                             </div>
                         @enderror
                     </div>
 
-                    <div class="form-group mb-3">
-                        <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
-                        <select name="jenis_kelamin" id="jenis_kelamin" class="form-control @error('jenis_kelamin') is-invalid @enderror">
+                     <div class="form-group mb-3">
+                        <label for="department_id" class="form-label">Poli</label>
+                        <select name="department_id" id="department_id" class="form-control @error('department_id') is-invalid @enderror">
+                            <option value="">Pilih Poli</option>
 
-                            <option value="">Pilih Jenis Kelamin</option>
-                            <option value="laki-laki">Laki-laki</option>
-                            <option value="perempuan">Perempuan</option>
-
+                            @foreach($departments as $department)
+                                <option value="{{ $department->id }}"
+                                    {{ old('department_id') == $department->id ? 'selected' : '' }}>
+                                    {{ $department->name }}
+                                </option>
+                            @endforeach
                         </select>
 
-                        @error('jenis_kelamin')
+                        @error('department_id')
                             <div class="invalid-feedback d-block">
                                 {{ $message }}
                             </div>
                         @enderror
                     </div>
 
-                     <div class="form-group mb-3">
-                        <label for="alamat" class="form-label">Alamat</label>
-                        <input type="text" name="alamat" id="alamat" value="{{ old('alamat') }}" class="form-control @error('alamat') is-invalid @enderror">
-
-                        @error('alamat')
-                            <div class="invalid-feedback d-block">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-
-                     <div class="form-group mb-3">
+                    <div class="form-group mb-3">
                         <label for="no_telepon" class="form-label">No. Telp</label>
                         <input type="text" name="no_telepon" id="no_telepon" value="{{ old('no_telepon') }}" class="form-control @error('no_telepon') is-invalid @enderror">
 
@@ -95,7 +99,7 @@
                     </div>
                 </div>
 
-                 <div class="card-footer">
+                <div class="card-footer">
                     <button type="submit" class="btn btn-primary">
                         <span class="fa fa-save"></span>
                         Save
@@ -115,22 +119,26 @@
     <!-- kanan -->
     <div class="col-md-5">
         <div class="card info-pasien-card h-100">
-
             <div class="card-body text-center d-flex flex-column justify-content-center">
-
                 <div class="info-icon mb-4">
-                    <i class="fas fa-heartbeat logo-icon mr-2"></i>
+                    <i class="fas fa-user-md logo-icon mr-2"></i>
                 </div>
 
-                <h3 class="info-title">Data Pasien Baru</h3>
-                <p class="text-muted px-4">Lengkapi informasi pasien dengan data yang benar dan sesuai identitas.</p>
+                <h3 class="info-title">Data Dokter Baru</h3>
+
+                <p class="text-muted px-4">Lengkapi informasi dokter dengan data yang benar dan sesuai.</p>
 
                 <hr class="mx-2">
 
                 <div class="info-list text-left px-5 mt-3">
                     <div class="info-item">
                         <i class="fas fa-check-circle"></i>
-                        <span>Pastikan NIK sesuai identitas pasien</span>
+                        <span>Pilih akun yang terdaftar sebagai dokter</span>
+                    </div>
+
+                    <div class="info-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Pastikan poli dan spesialis sesuai</span>
                     </div>
 
                     <div class="info-item">
@@ -143,15 +151,13 @@
                         <span>Periksa kembali data sebelum disimpan</span>
                     </div>
                 </div>
-
             </div>
-
         </div>
     </div>
 
 </div>
 
-@push ('styles')
+@push('styles')
 <style>
     label {
         color: #06285c !important;
@@ -212,6 +218,7 @@
         font-size: 18px;
         margin-right: 12px;
     }
+
 </style>
 @endpush
 
