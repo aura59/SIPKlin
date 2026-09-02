@@ -13,19 +13,13 @@ return new class extends Migration
 {
     Schema::create('queues', function (Blueprint $table) {
         $table->id();
-
-        $table->foreignId('registration_id')
-            ->constrained('registrations')
-            ->cascadeOnDelete();
-
+        $table->foreignId('registration_id')->constrained('registrations')->cascadeOnDelete();
         $table->integer('nomor_antrean');
-
         $table->enum('status', [
             'menunggu',
             'dipanggil',
             'selesai'
         ])->default('menunggu');
-
         $table->timestamps();
     });
 }

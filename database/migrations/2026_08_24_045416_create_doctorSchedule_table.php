@@ -9,23 +9,18 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-  public function up(): void
-{
-    Schema::create('doctor_schedules', function (Blueprint $table) {
-        $table->id();
-
-        $table->foreignId('doctor_id')
-            ->constrained('doctors')
-            ->cascadeOnDelete();
-
-        $table->string('hari');
-        $table->time('jam_mulai');
-        $table->time('jam_selesai');
-        $table->integer('kuota');
-
-        $table->timestamps();
-    });
-}
+    public function up(): void
+    {
+        Schema::create('doctor_schedules', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('doctor_id')->constrained('doctors')->cascadeOnDelete();
+            $table->string('hari');
+            $table->time('jam_mulai');
+            $table->time('jam_selesai');
+            $table->integer('kuota');
+            $table->timestamps();
+        });
+    }
 
     /**
      * Reverse the migrations.

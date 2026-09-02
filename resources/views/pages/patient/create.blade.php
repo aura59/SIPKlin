@@ -96,12 +96,12 @@
                 </div>
 
                  <div class="card-footer">
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-sipklin">
                         <span class="fa fa-save"></span>
                         Save
                     </button>
 
-                    <a href="{{ route('doctors.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('patients.index') }}" class="btn btn-secondary">
                         <span class="fa fa-times-circle"></span>
                         Cancel
                     </a>
@@ -211,6 +211,18 @@
         color: #28a745;
         font-size: 18px;
         margin-right: 12px;
+    }
+
+    .btn-sipklin {
+    background-color: #06285c !important;
+    border-color: #06285c !important;
+    color: white !important;
+    }
+
+    .btn-sipklin:hover {
+        background-color: #041c40 !important;
+        border-color: #041c40 !important;
+        color: white !important;
     }
 </style>
 @endpush

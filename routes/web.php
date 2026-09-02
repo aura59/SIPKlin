@@ -1,10 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PatientController;
 
 // login
 Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLogin'])->name('login');
@@ -39,4 +35,9 @@ Route::resource('/patients', App\Http\Controllers\PatientController::class);
 Route::middleware('auth')->group(function () {
 
 Route::resource('/doctors', App\Http\Controllers\DoctorController::class);
+});
+
+// poli
+Route::middleware('auth')->group(function () {
+Route::resource('/departments', App\Http\Controllers\DepartmentController::class);
 });

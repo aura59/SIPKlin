@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
-@section('title', 'Data Dokter - SIPKlin')
+@section('title', 'Data Poli - SIPKlin')
 
 @section('content')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h5 class="h3 mb-0 text-gray-900">Data Dokter</h5>
+    <h5 class="h3 mb-0 text-gray-900">Data Poli</h5>
 </div>
 
-<h1 class="h6 text-gray-800 mb-4">Data Klinik / Dokter</h1>
+<h1 class="h6 text-gray-800 mb-4">Data Klinik / Poli</h1>
 
 <div class="card">
    <div class="card-header d-flex justify-content-between align-items-center">
 
     <div class="d-flex align-items-center">
-        <a href="{{ route('doctors.create') }}" class="btn btn-sipklin px-4">
+        <a href="{{ route('departments.create') }}" class="btn btn-sipklin px-4">
             <span class="fa fa-plus-circle mr-2"></span>
-            <span>Tambah Dokter</span>
+            <span>Tambah Poli</span>
         </a>
     </div>
 
@@ -26,31 +26,29 @@
         <thead>
             <tr>
                 <th>No</th>
-                <th>Nama Dokter</th>
-                <th>Spesialis</th>
-                <th>Poli</th>
+                <th>Nama Poli</th>
+                <th>Deskripsi</th>
                 <th width="150">Aksi</th>
             </tr>
         </thead>
 
         <tbody>
-            @forelse($doctors as $doctor)
+            @forelse($departments as $department)
             <tr>
                 <td>{{ $loop->iteration }}</td>
-                <td>{{ $doctor->nama }}</td>
-                <td>{{ $doctor->spesialis }}</td>
-                <td>{{ $doctor->department->name  }}</td>
+                <td>{{ $department->name  }}</td>
+                <td>{{ $department->description }}</td>
 
                 <td>
-                    <a href="{{ route('doctors.show', $doctor->id) }}" class="btn btn-link text-secondary p-0 mx-1">
+                    <a href="{{ route('departments.show', $department->id) }}" class="btn btn-link text-secondary p-0 mx-1">
                         <span class="fa fa-eye"></span>
                     </a>
 
-                    <a href="{{ route('doctors.edit', $doctor->id) }}" class="btn btn-link text-secondary p-0 mx-1">
+                    <a href="{{ route('departments.edit', $department->id) }}" class="btn btn-link text-secondary p-0 mx-1">
                         <span class="fa fa-edit"></span>
                     </a>
 
-                    <a href="javascript:void(0)" onclick="actionDestroy('{{ route('doctors.destroy', $doctor->id) }}')" class="btn btn-link text-danger p-0 mx-1">
+                    <a href="javascript:void(0)" onclick="actionDestroy('{{ route('departments.destroy', $department->id) }}')" class="btn btn-link text-danger p-0 mx-1">
                         <span class="fa fa-trash"></span>
                     </a>
                 </td>
@@ -58,7 +56,7 @@
 
             @empty
             <tr>
-                <td colspan="7" class="text-center">Belum ada data dokter</td>
+                <td colspan="7" class="text-center">Belum ada data poli</td>
             </tr>
             @endforelse
         </tbody>

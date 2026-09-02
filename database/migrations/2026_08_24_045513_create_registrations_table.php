@@ -13,18 +13,10 @@ public function up(): void
 {
     Schema::create('registrations', function (Blueprint $table) {
         $table->id();
-
-        $table->foreignId('patient_id')
-            ->constrained('patients')
-            ->cascadeOnDelete();
-
-        $table->foreignId('doctor_schedule_id')
-            ->constrained('doctor_schedules')
-            ->cascadeOnDelete();
-
+        $table->foreignId('patient_id')->constrained('patients')->cascadeOnDelete();
+        $table->foreignId('doctor_schedule_id')->constrained('doctor_schedules')->cascadeOnDelete();
         $table->date('tanggal');
         $table->text('catatan')->nullable();
-
         $table->timestamps();
     });
 }

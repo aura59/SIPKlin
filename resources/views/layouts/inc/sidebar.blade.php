@@ -36,8 +36,8 @@
         </a>
     </li>
 
-    <li class="nav-item">
-        <a class="nav-link" href="#">
+    <li class="nav-item {{ request()->routeIs('departments.*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('departments.index') }}">
             <i class="fas fa-fw fa-hospital"></i>
             <span>Data Poli</span>
         </a>
