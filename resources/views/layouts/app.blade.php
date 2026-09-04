@@ -22,6 +22,18 @@
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
 
     <style>
+        #accordionSidebar {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        #content-wrapper {
+            margin-left: 224px;
+        }
 
         :root {
             --sipklin-blue: #06285c;

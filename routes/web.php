@@ -39,5 +39,11 @@ Route::resource('/doctors', App\Http\Controllers\DoctorController::class);
 
 // poli
 Route::middleware('auth')->group(function () {
+
 Route::resource('/departments', App\Http\Controllers\DepartmentController::class);
+});
+
+Route::middleware('auth')->group(function () {
+
+Route::resource('/doctorschedules', App\Http\Controllers\DoctorScheduleController::class);
 });

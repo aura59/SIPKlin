@@ -25,4 +25,5 @@ class DoctorSchedule extends Model
     {
         return $this->hasMany(Registration::class, 'doctor_schedule_id');
     }
+
 }

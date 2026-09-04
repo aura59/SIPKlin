@@ -4,52 +4,60 @@
 
 @section('content')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h5 class="h3 mb-0 text-gray-900">Data Poli</h5>
+    <h5 class="h3 mb-0 text-gray-900">Data Jadwal Dokter</h5>
 </div>
 
-<h1 class="h6 text-gray-800 mb-4">Data Klinik / Poli</h1>
+<h1 class="h6 text-gray-800 mb-4">Data Klinik / Jadwal Dokter</h1>
 
 <div class="card">
-   <div class="card-header d-flex justify-content-between align-items-center">
+    <div class="card-header d-flex justify-content-between align-items-center">
 
     <div class="d-flex align-items-center">
-        <a href="{{ route('departments.create') }}" class="btn btn-sipklin px-4">
+        <a href="{{ route('doctorschedules.create') }}" class="btn btn-sipklin px-4">
             <span class="fa fa-plus-circle mr-2"></span>
-            <span>Tambah Poli</span>
+            <span>Tambah Jadwal Dokter</span>
         </a>
     </div>
 
-   </div>
+    </div>
 </div>
 
 <div class="card-body">
-   <table class="table table-striped table-hover datatable dashboard-table">
+    <table class="table table-striped table-hover datatable dashboard-table">
         <thead>
             <tr>
                 <th>No</th>
-                <th>Nama Poli</th>
-                <th>Deskripsi</th>
+                <th>Dokter</th>
+                <th>Poli</th>
+                <th>Hari</th>
+                <th>Jam Mulai</th>
+                <th>Jam Selesai</th>
+                <th>Kuota</th>
                 <th width="150">Aksi</th>
             </tr>
         </thead>
 
         <tbody>
-            @forelse($departments as $department)
+            @forelse($doctorschedules as $doctorschedule)
             <tr>
                 <td>{{ $loop->iteration }}</td>
-                <td>{{ $department->name  }}</td>
-                <td>{{ $department->description }}</td>
+                <td>{{ $doctorschedule->doctor->nama }}</td>
+                <td>{{ $doctorschedule->doctor->department->name }}</td>
+                <td>{{ $doctorschedule->hari }}</td>
+                <td>{{ \Carbon\Carbon::parse($doctorschedule->jam_mulai)->format('H:i') }}</td>
+                <td>{{ \Carbon\Carbon::parse($doctorschedule->jam_selesai)->format('H:i') }}</td>
+                <td>{{ $doctorschedule->kuota }}</td>
 
                 <td>
-                    <a href="{{ route('departments.show', $department->id) }}" class="btn btn-link text-secondary p-0 mx-1">
+                    <a href="{{ route('doctorschedules.show', $doctorschedule->id) }}" class="btn btn-link text-secondary p-0 mx-1">
                         <span class="fa fa-eye"></span>
                     </a>
 
-                    <a href="{{ route('departments.edit', $department->id) }}" class="btn btn-link text-secondary p-0 mx-1">
+                    <a href="{{ route('doctorschedules.edit', $doctorschedule->id) }}" class="btn btn-link text-secondary p-0 mx-1">
                         <span class="fa fa-edit"></span>
                     </a>
 
-                    <a href="javascript:void(0)" onclick="actionDestroy('{{ route('departments.destroy', $department->id) }}')" class="btn btn-link text-danger p-0 mx-1">
+                    <a href="javascript:void(0)" onclick="actionDestroy('{{ route('doctorschedules.destroy', $doctorschedule->id) }}')" class="btn btn-link text-danger p-0 mx-1">
                         <span class="fa fa-trash"></span>
                     </a>
                 </td>
@@ -57,12 +65,14 @@
 
             @empty
             <tr>
-                <td colspan="7" class="text-center">Belum ada data poli</td>
+                <td colspan="7" class="text-center">Belum ada data jadwal dokter</td>
             </tr>
             @endforelse
         </tbody>
     </table>
 </div>
+
+
 
 @push('styles')
 <link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}">

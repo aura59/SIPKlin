@@ -7,7 +7,7 @@
     <h1 class="h3 mb-0 text-gray-800">Update Data Poli</h1>
 </div>
 
-<h1 class="h6 text-gray-800 mb-4">Poli / Update</h1>
+<h1 class="h6 text-gray-800 mb-4">Data Klinik / Poli / Update</h1>
 
 <div class="row">
 

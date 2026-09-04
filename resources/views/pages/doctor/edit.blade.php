@@ -7,7 +7,7 @@
     <h1 class="h3 mb-0 text-gray-800">Update Data Dokter</h1>
 </div>
 
-<h1 class="h6 text-gray-800 mb-4">Dokter / Update</h1>
+<h1 class="h6 text-gray-800 mb-4">Data Klinik / Dokter / Update</h1>
 
 <div class="row">
 
@@ -30,7 +30,7 @@
                             @foreach($users as $user)
                                 <option value="{{ $user->id }}"
                                     {{ old('user_id', $doctor->user_id) == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }} - {{ $user->email }}
+                                    {{ $user->name }} 
                                 </option>
                             @endforeach
                         </select>

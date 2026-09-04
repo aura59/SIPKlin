@@ -22,8 +22,8 @@
 
     <hr class="sidebar-divider">
 
-    <li class="nav-item">
-        <a class="nav-link" href="#">
+    <li class="nav-item {{ request()->routeIs('doctorschedules.*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('doctorschedules.index') }}">
             <i class="fas fa-fw fa-calendar-alt"></i>
             <span>Jadwal Dokter</span>
         </a>
