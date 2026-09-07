@@ -117,6 +117,15 @@
 
 @push('styles')
 <style>
+    .card-header {
+    background-color: #06285c !important;
+    color: white !important;
+    }
+
+    .card-header .card-title {
+        color: white !important;
+        font-weight: 600;
+    }
 
     .detail-item {
         margin-bottom: 20px;

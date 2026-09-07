@@ -43,7 +43,13 @@ Route::middleware('auth')->group(function () {
 Route::resource('/departments', App\Http\Controllers\DepartmentController::class);
 });
 
+// jadwal dokter
 Route::middleware('auth')->group(function () {
 
 Route::resource('/doctorschedules', App\Http\Controllers\DoctorScheduleController::class);
 });
+
+// pendaftaran pasien
+Route::get('/registrations', [App\Http\Controllers\RegistrationController::class, 'create'])->name('registrations.create');
+
+Route::post('/registrations', [App\Http\Controllers\RegistrationController::class, 'store'])->name('registrations.store');

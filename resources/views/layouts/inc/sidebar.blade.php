@@ -55,8 +55,8 @@
 
     <div class="sidebar-heading">Pelayanan</div>
 
-    <li class="nav-item">
-        <a class="nav-link" href="#">
+    <li class="nav-item {{ request()->routeIs('registrations.*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('registrations.create') }}">
             <i class="fas fa-fw fa-clipboard-list"></i>
             <span>Pendaftaran</span>
         </a>
@@ -64,7 +64,7 @@
 
     <li class="nav-item">
         <a class="nav-link" href="#">
-            <i class="fas fa-fw fa-list-ol"></i>
+            <i class="fas fa-list-ol"></i>
             <span>Antrean</span>
         </a>
     </li>
