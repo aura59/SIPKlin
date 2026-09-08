@@ -12,7 +12,6 @@ class Registration extends Model
         'patient_id',
         'doctor_schedule_id',
         'tanggal',
-        'keluhan',
         'catatan',
         'status'
     ];
@@ -25,11 +24,6 @@ class Registration extends Model
     public function doctorSchedule()
     {
         return $this->belongsTo(DoctorSchedule::class, 'doctor_schedule_id');
-    }
-
-    public function queue()
-    {
-        return $this->hasOne(Queue::class, 'registration_id');
     }
 
     public function medicalRecord()

@@ -53,3 +53,10 @@ Route::resource('/doctorschedules', App\Http\Controllers\DoctorScheduleControlle
 Route::get('/registrations', [App\Http\Controllers\RegistrationController::class, 'create'])->name('registrations.create');
 
 Route::post('/registrations', [App\Http\Controllers\RegistrationController::class, 'store'])->name('registrations.store');
+
+// antrean
+Route::get('/queues', [App\Http\Controllers\QueueController::class, 'index'])->name('queues.index');
+
+Route::patch('/queues/{id}/call', [App\Http\Controllers\QueueController::class, 'call'])->name('queues.call');
+
+Route::patch('/queues/{id}/finish', [App\Http\Controllers\QueueController::class, 'call'])->name('queues.finish');

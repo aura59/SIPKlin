@@ -123,12 +123,23 @@
                             </tr>
                         </thead>
 
-                        <tbody>
-                            <tr>
-                                <td colspan="5" class="text-center text-muted">Belum ada data pendaftaran</td>
-                            </tr>
+                         <tbody>
+                            @forelse ($pendaftaranHariIni as $pendaftaran)
+                                <tr>
+                                    <td class="text-center">{{ $loop->iteration }}</td>
+                                    <td>{{ $pendaftaran->patient->nama ?? '-' }}</td>
+                                    <td>{{ $pendaftaran->doctorSchedule->doctor->department->name ?? '-' }}</td>
+                                    <td>{{ $pendaftaran->doctorSchedule->doctor->nama ?? '-' }}</td>
+                                    <td class="text-center">{{ \Carbon\Carbon::parse($pendaftaran->doctorSchedule->jam_mulai)->format('H:i') }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted">
+                                        Belum ada data pendaftaran
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
-
                     </table>
                 </div>
             </div>
@@ -157,9 +168,16 @@
                         </thead>
 
                         <tbody>
-                            <tr>
-                                <td colspan="2" class="text-center text-muted">Belum ada antrean</td>
-                            </tr>
+                            @forelse ($antreanMenunggu as $poli => $jumlah)
+                                <tr>
+                                    <td>{{ $poli }}</td>
+                                    <td class="text-center">{{ $jumlah }}</td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="2" class="text-center text-muted">Belum ada data antrean menunggu</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

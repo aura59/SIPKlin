@@ -10,21 +10,24 @@
         <h1 class="h3 mb-0 text-gray-800">Pendaftaran Pasien</h1>
     </div>
 
-    <div class="row">
-        <div class="col-md-8">
-        <div class="card">
-            <form action="{{ route('registrations.store') }}" method="POST">
-                @csrf
+    <h1 class="h6 text-gray-800 mb-4">Data Pelayanan / Pendaftaran</h1>
 
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Form Pendaftaran</h5>
-                </div>
+    <div class="row">
+
+        <div class="col-md-8">
+            <div class="card">
+                <form action="{{ route('registrations.store') }}" method="POST">
+                    @csrf
+
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Form Pendaftaran</h5>
+                    </div>
 
                     <div class="card-body">
 
                         <div class="form-row-costum">
                             <label for="patient_id">Pasien</label>
-                            <select class="form-control" id="patient_id" name="patient_id">
+                            <select class="form-control" id="patient_id" name="patient_id" required>
                                 <option value="">Pilih Pasien</option>
                                 @foreach ($patients as $patient)
                                     <option value="{{ $patient->id }}">
@@ -36,7 +39,7 @@
 
                         <div class="form-row-costum">
                             <label for="department_id">Poli</label>
-                            <select class="form-control" id="department_id" name="department_id">
+                            <select class="form-control" id="department_id" name="department_id" required>
                                 <option value="">Pilih Poli</option>
                                 @foreach ($departments as $department)
                                     <option value="{{ $department->id }}">
@@ -48,7 +51,7 @@
 
                         <div class="form-row-costum">
                             <label for="doctor_id">Dokter</label>
-                            <select class="form-control" id="doctor_id" name="doctor_id">
+                            <select class="form-control" id="doctor_id" name="doctor_id" disabled required>
                                 <option value="">Pilih Dokter</option>
                                 @foreach ($doctors as $doctor)
                                     <option value="{{ $doctor->id }}"
@@ -61,11 +64,13 @@
 
                         <div class="form-row-costum">
                             <label for="doctor_schedule_id">Jadwal</label>
-                            <select class="form-control" id="doctor_schedule_id" name="doctor_schedule_id">
+                            <select class="form-control" id="doctor_schedule_id" name="doctor_schedule_id" disabled required>
                                 <option value="">Pilih Jadwal</option>
                                 @foreach ($doctorschedules as $schedule)
-                                    <option value="{{ $schedule->id }}" data-doctor="{{ $schedule->doctor_id }}">
-                                        {{ $schedule->hari }} - {{ \Carbon\Carbon::parse($schedule->jam_mulai)->format('H:i') }} - {{ \Carbon\Carbon::parse($schedule->jam_selesai)->format('H:i') }}
+                                    <option value="{{ $schedule->id }}" data-doctor="{{ $schedule->doctor_id }}" data-day="{{ $schedule->hari }}" data-start="{{ $schedule->jam_mulai }}" data-end="{{ $schedule->jam_selesai }}" data-quota="{{ $schedule->kuota }}">
+                                        {{ $schedule->hari }} -
+                                        {{ \Carbon\Carbon::parse($schedule->jam_mulai)->format('H:i') }} -
+                                        {{ \Carbon\Carbon::parse($schedule->jam_selesai)->format('H:i') }}
                                     </option>
                                 @endforeach
                             </select>
@@ -73,83 +78,82 @@
 
                         <div class="form-row-costum">
                             <label for="tanggal">Tanggal</label>
-                            <input type="date" class="form-control" id="tanggal" name="tanggal">
+                            <input type="date" class="form-control" id="tanggal" name="tanggal" required>
                         </div>
 
                         <div class="form-row-costum">
-                            <label for="keluhan">Keluhan/Catatan</label>
-                            <textarea class="form-control" id="keluhan" name="keluhan" rows="4" placeholder="Masukkan keluhan pasien..."></textarea>
+                            <label for="catatan">Keluhan/Catatan</label>
+                            <textarea class="form-control" id="catatan" name="catatan" rows="4" placeholder="Masukkan keluhan pasien..." required></textarea>
                         </div>
 
                     </div>
 
                     <div class="card-footer">
-                    <button type="submit" class="btn btn-sipklin">
-                        <span class="fa fa-save"></span>
-                        Save
-                    </button>
+                        <button type="submit" class="btn btn-sipklin">
+                            <span class="fa fa-save"></span>
+                            Save
+                        </button>
 
-                    <a href="{{ route('patients.index') }}" class="btn btn-secondary">
-                        <span class="fa fa-times-circle"></span>
-                        Cancel
-                    </a>
-                </div>
+                        <a href="{{ route('patients.index') }}" class="btn btn-secondary">
+                            <span class="fa fa-times-circle"></span>
+                            Cancel
+                        </a>
+                    </div>
 
                 </form>
-
             </div>
         </div>
 
 
-         <div class="col-md-4">
-        <div class="card info-registration-card h-100">
-            <div class="card-body">
+        <div class="col-md-4">
+            <div class="card info-registration-card h-100">
+                <div class="card-body">
 
-                <div class="text-center mb-4">
-                    <div class="registration-icon">
-                        <i class="fas fa-list-ol"></i>
+                    <div class="text-center mb-4">
+                        <div class="registration-icon">
+                            <i class="fas fa-list-ol"></i>
+                        </div>
+
+                        <h3 class="card-title mb-0">Informasi Antrean</h3>
+                        <p class="card-text text-muted">Informasi singkat mengenai antrean pasien di klinik.</p>
                     </div>
 
-                    <h3 class="card-title mb-0">Informasi Antrean</h3>
+                    <hr>
 
-                    <p class="card-text text-muted">
-                        Informasi singkat mengenai antrean pasien di klinik.
-                    </p>
-                </div>
+                    <div class="registration-info-list">
 
-                <hr>
+                        <div class="registration-info-item">
+                            <span><i class="fas fa-hospital mr-2"></i>Poli</span>
+                            <strong id="info-department">-</strong>
+                        </div>
 
-                <div class="registration-info-list">
+                        <div class="registration-info-item">
+                            <span><i class="fas fa-user-md mr-2"></i>Dokter</span>
+                            <strong id="info-doctor">-</strong>
+                        </div>
 
-                    <div class="registration-info-item">
-                        <span><i class="fas fa-hospital mr-2"></i>Poli</span>
-                        <strong id="info-department">-</strong>
+                        <div class="registration-info-item">
+                            <span><i class="fas fa-calendar-alt mr-2"></i>Jadwal</span>
+                            <strong id="info-schedule">-</strong>
+                        </div>
+
+                        <div class="registration-info-item">
+                            <span><i class="fas fa-users mr-2"></i>Kuota Tersedia</span>
+                            <strong id="info-quota">-</strong>
+                        </div>
+
+                        <div class="queue-box">
+                            <span>Nomor Antrean Berikutnya</span>
+                            <strong id="info-queue">{{ $nextQueueNumber ?? '-' }}</strong>
+                        </div>
+
                     </div>
-
-                    <div class="registration-info-item">
-                        <span><i class="fas fa-user-md mr-2"></i>Dokter</span>
-                        <strong id="info-doctor">-</strong>
-                    </div>
-
-                    <div class="registration-info-item">
-                        <span><i class="fas fa-calendar-alt mr-2"></i>Jadwal</span>
-                        <strong id="info-quota">-</strong>
-                    </div>
-
-                     <div class="registration-info-item">
-                        <span><i class="fas fa-users mr-2"></i>Kuota Tersedia</span>
-                        <strong id="info-schedule">-</strong>
-                    </div>
-
-                    <div class="queue-box">
-                        <span>Nomor Antrean Berikutnya</span>
-                        <strong id="info-queue">{{ $nextQueueNumber ?? '-' }}</strong>
-                    </div>
-
                 </div>
             </div>
         </div>
+
     </div>
+
 </div>
 
 @push('styles')
@@ -315,9 +319,155 @@
         margin-top: 10px;
     }
 
-
 </style>
 
 @endpush
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const departmentSelect = document.getElementById('department_id');
+    const doctorSelect = document.getElementById('doctor_id');
+    const scheduleSelect = document.getElementById('doctor_schedule_id');
+
+    const infoDepartment = document.getElementById('info-department');
+    const infoDoctor = document.getElementById('info-doctor');
+    const infoSchedule = document.getElementById('info-schedule');
+    const infoQuota = document.getElementById('info-quota');
+
+    const doctorOptions = Array.from(
+        doctorSelect.querySelectorAll('option[data-department]')
+    );
+
+    const scheduleOptions = Array.from(
+        scheduleSelect.querySelectorAll('option[data-doctor]')
+    );
+
+
+    departmentSelect.addEventListener('change', function () {
+
+        const departmentId = this.value;
+
+        doctorSelect.innerHTML = '<option value="">Pilih Dokter</option>';
+        scheduleSelect.innerHTML = '<option value="">Pilih Jadwal</option>';
+
+        doctorSelect.disabled = true;
+        scheduleSelect.disabled = true;
+
+        infoDepartment.textContent = '-';
+        infoDoctor.textContent = '-';
+        infoSchedule.textContent = '-';
+        infoQuota.textContent = '-';
+
+
+        if (!departmentId) {
+            return;
+        }
+
+
+        const selectedDepartment = this.options[this.selectedIndex];
+
+        infoDepartment.textContent =
+            selectedDepartment.textContent.trim();
+
+
+        doctorOptions.forEach(function (option) {
+
+            if (option.dataset.department === departmentId) {
+
+                doctorSelect.appendChild(
+                    option.cloneNode(true)
+                );
+
+            }
+
+        });
+
+
+        doctorSelect.disabled = false;
+
+    });
+
+
+    doctorSelect.addEventListener('change', function () {
+
+        const doctorId = this.value;
+
+        scheduleSelect.innerHTML =
+            '<option value="">Pilih Jadwal</option>';
+
+        scheduleSelect.disabled = true;
+
+        infoDoctor.textContent = '-';
+        infoSchedule.textContent = '-';
+        infoQuota.textContent = '-';
+
+
+        if (!doctorId) {
+            return;
+        }
+
+
+        const selectedDoctor = this.options[this.selectedIndex];
+
+        infoDoctor.textContent =
+            selectedDoctor.textContent.trim();
+
+
+        scheduleOptions.forEach(function (option) {
+
+            if (option.dataset.doctor === doctorId) {
+
+                scheduleSelect.appendChild(
+                    option.cloneNode(true)
+                );
+
+            }
+
+        });
+
+
+        scheduleSelect.disabled = false;
+
+    });
+
+
+    scheduleSelect.addEventListener('change', function () {
+
+        const selectedOption =
+            this.options[this.selectedIndex];
+
+
+        if (!this.value) {
+
+            infoSchedule.textContent = '-';
+            infoQuota.textContent = '-';
+
+            return;
+        }
+
+
+        const day = selectedOption.dataset.day;
+
+        const start =
+            selectedOption.dataset.start.substring(0, 5);
+
+        const end =
+            selectedOption.dataset.end.substring(0, 5);
+
+        const quota =
+            selectedOption.dataset.quota;
+
+
+        infoSchedule.textContent =
+            day + ' - ' + start + ' - ' + end;
+
+        infoQuota.textContent =
+            quota + ' pasien';
+
+    });
+
+});
+</script>
 
 @endsection

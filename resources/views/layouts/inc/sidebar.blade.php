@@ -62,8 +62,8 @@
         </a>
     </li>
 
-    <li class="nav-item">
-        <a class="nav-link" href="#">
+    <li class="nav-item {{ request()->routeIs('queues.*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('queues.index') }}">
             <i class="fas fa-list-ol"></i>
             <span>Antrean</span>
         </a>

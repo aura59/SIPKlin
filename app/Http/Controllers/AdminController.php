@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Patient;
 use App\Models\Doctor;
+use App\Models\Registration;
 
 class AdminController extends Controller
 {
@@ -13,30 +14,58 @@ class AdminController extends Controller
     {
         $totalPasien = Patient::count();
         $totalDokter = Doctor::count();
-        $totalPendaftaranHariIni = 0;
-        $totalAntreanMenunggu = 0;
+        $pendaftaranHariIni = Registration::with('patient', 'doctorSchedule.doctor.department')->whereDate('tanggal', today())->orderBy('created_at', 'asc')->get();
+        $totalPendaftaranHariIni = $pendaftaranHariIni->count();
+        $totalAntreanMenunggu = Registration::where('status', 'menunggu')->whereDate('tanggal', today())->count();
+
+        $antreanMenunggu = Registration::with('doctorSchedule.doctor.department')
+            ->where('status', 'menunggu')
+            ->whereDate('tanggal', today())
+            ->get()
+            ->groupBy(function ($registration) {
+                return $registration->doctorSchedule->doctor->department->name;
+            })
+            ->map(function ($registrations) {
+                return $registrations->count();
+            });
 
         return view('admin.dashboard', compact(
             'totalPasien',
             'totalDokter',
             'totalPendaftaranHariIni',
-            'totalAntreanMenunggu'
+            'totalAntreanMenunggu',
+            'pendaftaranHariIni',
+            'antreanMenunggu'
         ));
     }
 
     // Dashboard Dokter
     public function doctorDashboard()
     {
-        $totalPasien = Patient::count();
+       $totalPasien = Patient::count();
         $totalDokter = Doctor::count();
-        $totalPendaftaranHariIni = 0;
-        $totalAntreanMenunggu = 0;
+        $pendaftaranHariIni = Registration::with('patient', 'doctorSchedule.doctor.department')->whereDate('tanggal', today())->orderBy('created_at', 'asc')->get();
+        $totalPendaftaranHariIni = $pendaftaranHariIni->count();
+        $totalAntreanMenunggu = Registration::where('status', 'menunggu')->whereDate('tanggal', today())->count();
 
-        return view('doctor.dashboard', compact(
+        $antreanMenunggu = Registration::with('doctorSchedule.doctor.department')
+            ->where('status', 'menunggu')
+            ->whereDate('tanggal', today())
+            ->get()
+            ->groupBy(function ($registration) {
+                return $registration->doctorSchedule->doctor->department->name;
+            })
+            ->map(function ($registrations) {
+                return $registrations->count();
+            });
+
+        return view('admin.dashboard', compact(
             'totalPasien',
             'totalDokter',
             'totalPendaftaranHariIni',
-            'totalAntreanMenunggu'
+            'totalAntreanMenunggu',
+            'pendaftaranHariIni',
+            'antreanMenunggu'
         ));
     }
 }
