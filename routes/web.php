@@ -59,4 +59,9 @@ Route::get('/queues', [App\Http\Controllers\QueueController::class, 'index'])->n
 
 Route::patch('/queues/{id}/call', [App\Http\Controllers\QueueController::class, 'call'])->name('queues.call');
 
-Route::patch('/queues/{id}/finish', [App\Http\Controllers\QueueController::class, 'call'])->name('queues.finish');
+Route::patch('/queues/{id}/finish', [App\Http\Controllers\QueueController::class, 'finish'])->name('queues.finish');
+
+// rekam medis
+Route::get('/medical-records/create', [App\Http\Controllers\MedicalRecordController::class, 'create'])->name('medical-records.create');
+
+Route::post('/medical-records', [App\Http\Controllers\MedicalRecordController::class, 'store'])->name('medical-records.store');

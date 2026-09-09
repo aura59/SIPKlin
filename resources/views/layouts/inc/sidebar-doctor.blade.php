@@ -36,13 +36,13 @@
         </a>
     </li>
 
-    <li class="nav-item">
-        <a class="nav-link" href="#">
+    <li class="nav-item {{ request()->routeIs('medical-records.create') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('medical-records.create') }}">
             <i class="fas fa-fw fa-notes-medical"></i>
             <span>Rekam Medis</span>
         </a>
     </li>
-
+    
     <li class="nav-item">
         <a class="nav-link" href="#">
             <i class="fas fa-fw fa-history"></i>

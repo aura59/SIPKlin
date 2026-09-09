@@ -71,13 +71,6 @@
 
     <li class="nav-item">
         <a class="nav-link" href="#">
-            <i class="fas fa-fw fa-notes-medical"></i>
-            <span>Rekam Medis</span>
-        </a>
-    </li>
-
-    <li class="nav-item">
-        <a class="nav-link" href="#">
             <i class="fas fa-fw fa-history"></i>
             <span>Riwayat Kunjungan</span>
         </a>
