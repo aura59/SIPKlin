@@ -15,8 +15,13 @@ class DoctorScheduleController extends Controller
      */
     public function index()
     {
-        $doctorschedules = DoctorSchedule::with('doctor.department')->get();
-        return view('pages.doctorSchedule.index', compact('doctorschedules'));
+        $doctorschedules = DoctorSchedule::with('doctor.department')->withCount([
+                'registration as registration_today_count' => function ($query) {
+                    $query->whereDate('tanggal', today());
+                }
+            ])->get();
+
+        return view('pages.doctorschedule.index', compact('doctorschedules'));
     }
 
     /**

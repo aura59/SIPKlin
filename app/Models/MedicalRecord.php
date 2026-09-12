@@ -9,12 +9,10 @@ class MedicalRecord extends Model
     protected $table = 'medical_records';
 
     protected $fillable = [
-        'patient_id',
-        'doctor_id',
-        'tanggal',
+        'registration_id',
+        'keluhan',
         'diagnosis',
-        'treatment',
-        'catatan'
+        'tindakan',
     ];
     
     public function registration()

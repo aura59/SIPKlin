@@ -69,8 +69,8 @@
         </a>
     </li>
 
-    <li class="nav-item">
-        <a class="nav-link" href="#">
+    <li class="nav-item {{ request()->routeIs('visit-history.*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('visit-history.index') }}">
             <i class="fas fa-fw fa-history"></i>
             <span>Riwayat Kunjungan</span>
         </a>

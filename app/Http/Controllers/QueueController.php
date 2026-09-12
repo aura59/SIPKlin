@@ -12,11 +12,15 @@ class QueueController extends Controller
     {
         $departments = Department::all();
 
-        $registrations = Registration::with(['patient', 'doctorSchedule.doctor.department'
-        ])->when($request->tanggal, function ($query) use ($request) {
-            $query->whereDate('tanggal', $request->tanggal);
+        $tanggal = $request->tanggal ?? now('Asia/Jakarta')->format('Y-m-d');
 
-        })->when($request->department_id, function ($query) use ($request) {
+        $registrations = Registration::with([
+            'patient',
+            'doctorSchedule.doctor.department',
+            'queue'
+        ])
+        ->whereDate('tanggal', $tanggal)
+        ->when($request->department_id, function ($query) use ($request) {
             $query->whereHas('doctorSchedule.doctor', function ($q) use ($request) {
                 $q->where('department_id', $request->department_id);
             });
@@ -25,29 +29,39 @@ class QueueController extends Controller
         $selectedDepartment = null;
 
         if ($request->department_id) {
-            $selectedDepartment = $departments->firstWhere('id', $request->department_id);
+            $selectedDepartment = $departments->firstWhere(
+                'id',
+                $request->department_id
+            );
         }
 
         $currentRegistration = $registrations->where('status', 'dipanggil')->first();
+
         $nextRegistration = $registrations->where('status', 'menunggu')->first();
 
-        return view('pages.queue.index', compact('registrations','departments', 'selectedDepartment', 'currentRegistration', 'nextRegistration' ));
+        return view('pages.queue.index', compact('registrations','departments','selectedDepartment','currentRegistration','nextRegistration','tanggal'
+        ));
     }
+
 
     public function call($id)
     {
-        $registration = Registration::with('doctorSchedule.doctor')->findOrFail($id);
+        $registration = Registration::with(['doctorSchedule.doctor'])->findOrFail($id);
+
         Registration::where('status', 'dipanggil')->update(['status' => 'selesai']);
+
         $registration->update(['status' => 'dipanggil']);
 
-        return back()->with('success', 'Antrean berhasil dipanggil.');
+        return back()->with('success','Antrean berhasil dipanggil.');
     }
+
 
     public function finish($id)
     {
         $registration = Registration::findOrFail($id);
-        $registration->update(['status' => 'selesai']);
 
-        return back()->with('success', 'Antrean  berhasil diselesaikan');
+        $registration->update(['status' => 'selesai' ]);
+
+        return back()->with('success','Antrean berhasil diselesaikan.');
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VisitHistoryController;
 
 // login
 Route::get('/', [App\Http\Controllers\Auth\LoginController::class, 'showLogin'])->name('login');
@@ -65,3 +66,8 @@ Route::patch('/queues/{id}/finish', [App\Http\Controllers\QueueController::class
 Route::get('/medical-records/create', [App\Http\Controllers\MedicalRecordController::class, 'create'])->name('medical-records.create');
 
 Route::post('/medical-records', [App\Http\Controllers\MedicalRecordController::class, 'store'])->name('medical-records.store');
+
+// riwayat kunjungan
+Route::get('/visit-history', [VisitHistoryController::class, 'index'])->middleware('auth')->name('visit-history.index');
+
+Route::get('/visit-history/{id}', [VisitHistoryController::class, 'show'])->middleware('auth')->name('visit-history.show');
