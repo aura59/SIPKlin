@@ -169,7 +169,10 @@
 </div>
 
 
-<div id="registration-data" data-registration-counts="{{ json_encode($registrationCounts ?? []) }}"></div>
+<div id="registration-data" 
+    data-registration-counts="{{ json_encode($registrationCounts ?? []) }}" 
+    data-queue-numbers="{{ json_encode($queueNumbers ?? []) }}">
+</div>
 
 @push('styles')
 
@@ -351,6 +354,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const infoDoctor = document.getElementById('info-doctor');
     const infoSchedule = document.getElementById('info-schedule');
     const infoQuota = document.getElementById('info-quota');
+    const infoQueue = document.getElementById('info-queue');
 
     const registrationData = document.getElementById('registration-data');
 
@@ -358,23 +362,29 @@ document.addEventListener('DOMContentLoaded', function () {
 
     try {
         registrationCounts = JSON.parse(
-                registrationData.dataset.registrationCounts || '{}'
-            );
-
-    } catch (error) {
-
-        console.error('Data jumlah pendaftaran tidak valid:',
-            error
+            registrationData.dataset.registrationCounts || '{}'
         );
+    } catch (error) {
+        console.error('Data jumlah pendaftaran tidak valid:', error);
+    }
+
+    let queueNumbers = {};
+
+    try {
+        queueNumbers = JSON.parse(
+            registrationData.dataset.queueNumbers || '{}'
+        );
+    } catch (error) {
+        console.error('Data nomor antrean tidak valid:', error);
     }
 
     const doctorOptions = Array.from(
-            doctorSelect.querySelectorAll('option[data-department]')
-        );
+        doctorSelect.querySelectorAll('option[data-department]')
+    );
 
     const scheduleOptions = Array.from(
-            scheduleSelect.querySelectorAll('option[data-doctor]')
-        );
+        scheduleSelect.querySelectorAll('option[data-doctor]')
+    );
 
     function updateQuota() {
 
@@ -388,8 +398,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const selectedOption = scheduleSelect.options[
-                scheduleSelect.selectedIndex
-            ];
+            scheduleSelect.selectedIndex
+        ];
 
         if (!selectedOption) {
             infoQuota.textContent = '-';
@@ -398,12 +408,16 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const quota = parseInt(
-                selectedOption.dataset.quota, 10
-            );
+            selectedOption.dataset.quota,
+            10
+        );
 
         const key = scheduleId + '_' + tanggal;
 
-        const jumlahPendaftaran = parseInt( registrationCounts[key] || 0, 10 );
+        const jumlahPendaftaran = parseInt(
+            registrationCounts[key] || 0,
+            10
+        );
 
         const quotaTersedia = quota - jumlahPendaftaran;
 
@@ -417,112 +431,137 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
-    departmentSelect.addEventListener( 'change', function () {
-            const departmentId = this.value;
+    function updateQueue() {
 
-            doctorSelect.innerHTML ='<option value="">Pilih Dokter</option>';
-            scheduleSelect.innerHTML ='<option value="">Pilih Jadwal</option>';
-            doctorSelect.disabled = true;
-            scheduleSelect.disabled = true;
-            infoDepartment.textContent = '-';
-            infoDoctor.textContent = '-';
+        const departmentId = departmentSelect.value;
+        const tanggal = tanggalInput.value;
+
+        if (!departmentId || !tanggal) {
+            infoQueue.textContent = '-';
+            return;
+        }
+
+        const key = departmentId + '_' + tanggal;
+
+        const lastQueueNumber = parseInt(
+            queueNumbers[key] || 0,
+            10
+        );
+
+        infoQueue.textContent = lastQueueNumber + 1;
+    }
+
+    departmentSelect.addEventListener('change', function () {
+
+        const departmentId = this.value;
+
+        doctorSelect.innerHTML = '<option value="">Pilih Dokter</option>';
+        scheduleSelect.innerHTML = '<option value="">Pilih Jadwal</option>';
+
+        doctorSelect.disabled = true;
+        scheduleSelect.disabled = true;
+
+        infoDepartment.textContent = '-';
+        infoDoctor.textContent = '-';
+        infoSchedule.textContent = '-';
+        infoQuota.textContent = '-';
+        infoQueue.textContent = '-';
+
+        submitButton.disabled = false;
+
+        if (!departmentId) {
+            return;
+        }
+
+        const selectedDepartment = this.options[
+            this.selectedIndex
+        ];
+
+        infoDepartment.textContent = selectedDepartment.textContent.trim();
+
+        doctorOptions.forEach(
+            function (option) {
+
+                if (
+                    option.dataset.department === departmentId
+                ) {
+                    doctorSelect.appendChild(
+                        option.cloneNode(true)
+                    );
+                }
+
+            }
+        );
+        doctorSelect.disabled = false;
+        updateQueue();
+    });
+
+    doctorSelect.addEventListener('change', function () {
+
+        const doctorId = this.value;
+
+        scheduleSelect.innerHTML = '<option value="">Pilih Jadwal</option>';
+        scheduleSelect.disabled = true;
+
+        infoDoctor.textContent = '-';
+        infoSchedule.textContent = '-';
+        infoQuota.textContent = '-';
+
+        submitButton.disabled = false;
+
+        if (!doctorId) {
+            return;
+        }
+
+        const selectedDoctor = this.options[
+            this.selectedIndex
+        ];
+
+        infoDoctor.textContent = selectedDoctor.textContent.trim();
+
+        scheduleOptions.forEach(
+            function (option) {
+
+                if (
+                    option.dataset.doctor === doctorId
+                ) {
+                    scheduleSelect.appendChild(
+                        option.cloneNode(true)
+                    );
+                }
+
+            }
+        );
+
+        scheduleSelect.disabled = false;
+
+    });
+
+    scheduleSelect.addEventListener('change', function () {
+
+        const selectedOption = this.options[
+            this.selectedIndex
+        ];
+
+        if (!this.value) {
             infoSchedule.textContent = '-';
             infoQuota.textContent = '-';
             submitButton.disabled = false;
-
-            if (!departmentId) {
-                return;
-            }
-
-            const selectedDepartment = this.options[ this.selectedIndex ];
-
-            infoDepartment.textContent = selectedDepartment.textContent.trim();
-            doctorOptions.forEach(
-                function (option) {
-                    if (
-                        option.dataset.department === departmentId
-                    ) {
-                        doctorSelect.appendChild(option.cloneNode(true) );
-                    }
-                }
-            );
-
-            doctorSelect.disabled = false;
-
+            return;
         }
-    );
 
-    doctorSelect.addEventListener( 'change',
-        function () {
+        const day = selectedOption.dataset.day;
+        const start = selectedOption.dataset.start.substring(0, 5);
+        const end = selectedOption.dataset.end.substring(0, 5);
+        infoSchedule.textContent = day + ' - ' + start + ' - ' + end;
+        updateQuota();
 
-            const doctorId = this.value;
+    });
 
-            scheduleSelect.innerHTML = '<option value="">Pilih Jadwal</option>';
-            scheduleSelect.disabled = true;
-            infoDoctor.textContent = '-';
-            infoSchedule.textContent = '-';
-            infoQuota.textContent = '-';
-            submitButton.disabled = false;
-
-            if (!doctorId) {
-                return;
-            }
-
-            const selectedDoctor = this.options[
-                    this.selectedIndex
-                ];
-
-            infoDoctor.textContent = selectedDoctor.textContent.trim();
-
-            scheduleOptions.forEach(
-                function (option) {
-                    if (
-                        option.dataset.doctor === doctorId
-                    ) {
-                        scheduleSelect.appendChild(
-                            option.cloneNode(true)
-                        );
-                    }
-                }
-            );
-
-            scheduleSelect.disabled = false;
-
-        }
-    );
-
-    scheduleSelect.addEventListener( 'change',
-        function () {
-
-            const selectedOption = this.options[
-                    this.selectedIndex
-                ];
-
-            if (!this.value) {
-                infoSchedule.textContent ='-';
-                infoQuota.textContent = '-';
-                submitButton.disabled = false;
-                return;
-            }
-
-            const day = selectedOption.dataset.day;
-
-            const start = selectedOption.dataset.start.substring(0, 5);
-
-            const end = selectedOption.dataset.end.substring(0, 5);
-
-            infoSchedule.textContent = day + ' - ' + start + ' - ' + end;
-
-            updateQuota();
-
-        }
-    );
-
-    tanggalInput.addEventListener( 'change',
-        function () {
-            updateQuota();
-        }
-    );
+    tanggalInput.addEventListener('change', function () {
+        updateQuota();
+        updateQueue();
+    });
 
 });
 

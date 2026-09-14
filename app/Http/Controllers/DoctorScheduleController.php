@@ -19,7 +19,7 @@ class DoctorScheduleController extends Controller
                 'registration as registration_today_count' => function ($query) {
                     $query->whereDate('tanggal', today());
                 }
-            ])->get();
+            ])->paginate(10);
 
         return view('pages.doctorschedule.index', compact('doctorschedules'));
     }

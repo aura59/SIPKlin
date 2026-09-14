@@ -426,6 +426,26 @@
         padding: 7px 10px;
     }
 
+    .pagination {
+        margin-bottom: 0;
+    }
+
+    .pagination .page-link {
+        color: #06285c;
+        border: 1px solid #ddd;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #06285c;
+        border-color: #06285c;
+        color: white;
+    }
+
+    .pagination .page-link:hover {
+        background-color: #EAF1FB;
+        color: #06285c;
+    }
+
 </style>
 
 @endpush

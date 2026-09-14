@@ -13,17 +13,20 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
 
-        <div class="d-flex align-items-center">
             <a href="{{ route('doctorschedules.create') }}" class="btn btn-sipklin px-4">
                 <span class="fa fa-plus-circle mr-2"></span>
                 <span>Tambah Jadwal Dokter</span>
             </a>
-        </div>
+
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchJadwalDokter" placeholder="Cari Jadwal Dokter...">
+            </div>
 
     </div>
 
     <div class="card-body">
-        <table class="table table-striped table-hover datatable dashboard-table">
+        <table class="table table-striped table-hover dashboard-table" id="tableJadwalDokter">
 
             <thead>
                 <tr>
@@ -76,14 +79,14 @@
             </tbody>
 
         </table>
+        <div class="d-flex justify-content-end mt-3">
+            {{ $doctorschedules->links() }}
+        </div>
     </div>
 </div>
 
 
 @push('styles')
-
-<link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}">
-
 <style>
 
     .btn-sipklin {
@@ -98,6 +101,27 @@
         color: white !important;
     }
 
+    .search-box {
+        position: relative;
+        width: 220px;
+    }
+
+    .search-box i {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #06285c;
+    }
+
+    .search-box input {
+        width: 220px;
+        height: 38px;
+        border: 1px solid #06285c;
+        border-radius: 5px;
+        color: #06285c;
+        padding-right: 35px;
+    }
 
     .dashboard-table,
     .dashboard-table th,
@@ -131,28 +155,6 @@
         background-color: #f4f7fc !important;
     }
 
-
-    .dataTables_filter input {
-        border: 1px solid #06285c !important;
-        color: #06285c !important;
-        border-radius: 5px;
-    }
-
-
-    .dataTables_filter input:focus {
-        border-color: #06285c !important;
-        box-shadow: 0 0 0 0.2rem rgba(6, 40, 92, 0.15) !important;
-        outline: none;
-    }
-
-
-    .dataTables_length select {
-        border: 1px solid #06285c !important;
-        color: #06285c !important;
-        border-radius: 5px;
-    }
-
-
     .page-item.active .page-link {
         background-color: #06285c !important;
         border-color: #06285c !important;
@@ -170,20 +172,31 @@
         color: #06285c !important;
     }
 
-
-    .dataTables_info,
-    .dataTables_length,
-    .dataTables_filter,
-    .dataTables_paginate {
-        color: #06285c !important;
-    }
-
-
     .dashboard-table th:first-child,
     .dashboard-table td:first-child {
         width: 60px !important;
         max-width: 60px;
         text-align: center;
+    }
+
+    .pagination {
+        margin-bottom: 0;
+    }
+
+    .pagination .page-link {
+        color: #06285c;
+        border: 1px solid #ddd;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #06285c;
+        border-color: #06285c;
+        color: white;
+    }
+
+    .pagination .page-link:hover {
+        background-color: #EAF1FB;
+        color: #06285c;
     }
 
 </style>
@@ -200,16 +213,22 @@
 
 
 @push('script')
-
-<script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
-
 <script>
 
-$(document).ready(function () {
-    $('.datatable').DataTable();
-});
+document.getElementById('searchJadwalDokter').addEventListener('keyup', function () {
+    let keyword = this.value.toLowerCase();
+    let rows = document.querySelectorAll('#tableJadwalDokter tbody tr');
 
+    rows.forEach(function (row) {
+        let text = row.textContent.toLowerCase();
+
+        if (text.includes(keyword)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
 
 function actionDestroy(url) {
     Swal.fire({

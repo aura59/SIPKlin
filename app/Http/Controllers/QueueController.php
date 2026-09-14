@@ -24,7 +24,7 @@ class QueueController extends Controller
             $query->whereHas('doctorSchedule.doctor', function ($q) use ($request) {
                 $q->where('department_id', $request->department_id);
             });
-        })->orderBy('created_at', 'asc')->get();
+        })->orderBy('created_at', 'asc')->paginate(10);
 
         $selectedDepartment = null;
 

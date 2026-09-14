@@ -26,17 +26,28 @@ class RegistrationController extends Controller
         ->get()
         ->mapWithKeys(function ($registration) {
             return [
-                $registration->doctor_schedule_id . '_' . $registration->tanggal
-                    => $registration->jumlah
+                $registration->doctor_schedule_id . '_' . $registration->tanggal=> $registration->jumlah
             ];
         });
+
+        $queueNumbers = Queue::whereHas('registration', function ($query) {
+            $query->whereDate('tanggal', '>=', today());
+        })
+        ->with('registration.doctorSchedule.doctor')
+        ->get()
+        ->groupBy(function ($queue) {
+            return $queue->registration->doctorSchedule->doctor->department_id . '_' . $queue->registration->tanggal;
+            })->map(function ($queues) {
+                return $queues->max('nomor_antrean');
+            });
 
         return view('pages.registration.create', compact(
             'patients',
             'departments',
             'doctors',
             'doctorschedules',
-            'registrationCounts'
+            'registrationCounts',
+            'queueNumbers'
         ));
     }
 

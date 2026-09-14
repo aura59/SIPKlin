@@ -56,7 +56,6 @@
 </div>
 
 @push('styles')
-<link rel="stylesheet" href="{{ asset('vendor/datatables/dataTables.bootstrap4.min.css') }}">
 
 <style>
 
@@ -100,24 +99,6 @@
         background-color: #f4f7fc !important;
     }
 
-    .dataTables_filter input {
-        border: 1px solid #06285c !important;
-        color: #06285c !important;
-        border-radius: 5px;
-    }
-
-    .dataTables_filter input:focus {
-        border-color: #06285c !important;
-        box-shadow: 0 0 0 0.2rem rgba(6, 40, 92, 0.15) !important;
-        outline: none;
-    }
-
-    .dataTables_length select {
-        border: 1px solid #06285c !important;
-        color: #06285c !important;
-        border-radius: 5px;
-    }
-
     .page-item.active .page-link {
         background-color: #06285c !important;
         border-color: #06285c !important;
@@ -133,12 +114,26 @@
         color: #06285c !important;
     }
 
-    .dataTables_info,
-    .dataTables_length,
-    .dataTables_filter,
-    .dataTables_paginate {
-        color: #06285c !important;
+    .pagination {
+        margin-bottom: 0;
     }
+
+    .pagination .page-link {
+        color: #06285c;
+        border: 1px solid #ddd;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #06285c;
+        border-color: #06285c;
+        color: white;
+    }
+
+    .pagination .page-link:hover {
+        background-color: #EAF1FB;
+        color: #06285c;
+    }
+
 
 </style>
 @endpush
@@ -147,14 +142,6 @@
 @endsection
 
 @push('script')
-<script src="{{ asset('vendor/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('vendor/datatables/dataTables.bootstrap4.min.js') }}"></script>
-
-<script>
-$(document).ready(function () {
-    $('.datatable').DataTable();
-});
-</script>
 
 @if (Session::has('success'))
 <script>

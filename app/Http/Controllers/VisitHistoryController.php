@@ -18,7 +18,7 @@ class VisitHistoryController extends Controller
         ->where('status', 'selesai')
         ->orderBy('tanggal', 'desc')
         ->orderBy('created_at', 'desc')
-        ->get();
+        ->paginate(10);
 
         return view('pages.visit-history.index', compact('registrations'));
     }
