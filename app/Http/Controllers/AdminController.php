@@ -59,7 +59,7 @@ class AdminController extends Controller
                 return $registrations->count();
             });
 
-        return view('admin.dashboard', compact(
+        return view('doctor.dashboard', compact(
             'totalPasien',
             'totalDokter',
             'totalPendaftaranHariIni',

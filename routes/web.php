@@ -20,10 +20,10 @@ Route::put('/dokter/profile', [App\Http\Controllers\ProfileController::class, 'u
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
 // dshboard admin
-Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard'])->middleware('auth')->name('admin.dashboard');
+Route::get('/admin/dashboard', [App\Http\Controllers\AdminController::class, 'dashboard'])->middleware(['auth', 'role:admin'])->name('admin.dashboard');
 
 // dashboard dokter
-Route::get('/dokter/dashboard', [App\Http\Controllers\AdminController::class, 'doctorDashboard'])->middleware('auth')->name('doctor.dashboard');
+Route::get('/dokter/dashboard', [App\Http\Controllers\AdminController::class, 'doctorDashboard'])->middleware(['auth', 'role:dokter'])->name('doctor.dashboard');
 
 
 // pasien

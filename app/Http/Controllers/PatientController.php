@@ -89,7 +89,7 @@ class PatientController extends Controller
         $patients->update([
             'nik' => $request->nik,
             'nama' => $request->nama,
-            'tangga_lahir' => $request->tanggal_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
             'jenis_kelamin' => $request->jenis_kelamin,
             'alamat' => $request->alamat,
             'no_telepon' => $request->no_telepon,
@@ -107,6 +107,6 @@ class PatientController extends Controller
 
         $patients->delete();
 
-        return redirect()->route('admin.patient.index')->with('success', 'Berhasil menghapus dat pasien.');
+        return redirect()->route('pages.patient.index')->with('success', 'Berhasil menghapus data pasien.');
     }
 }

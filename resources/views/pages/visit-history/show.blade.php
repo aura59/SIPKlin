@@ -34,8 +34,7 @@
                 <div class="detail-item">
                     <div class="detail-label">No. Antrean</div>
                     <div class="detail-value">
-                        {{ chr(64 + $registration->doctorSchedule->doctor->department->id) }}-{{ str_pad(optional($registration->queue)->nomor_antrean ?? 0, 2, '0', STR_PAD_LEFT) }}
-                    </div>
+                        {{ $registration->doctorSchedule->doctor->deparment->kode_poli ?? '-'}}-{{str_pad(optional($registration->queue)->nomor_anrean ?? 0, 3,, '0', STR_PAD_LEFT) }}
                 </div>
 
                 <div class="detail-item">

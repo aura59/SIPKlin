@@ -52,7 +52,7 @@
                             </select>
                         </div>
 
-                        <div class="patient-information" style="display: none;">
+                        <div id="patient-information" style="display: none;">
 
                             <div class="row">
 
