@@ -13,20 +13,24 @@ class RoleMiddleware
      *
      * @param  Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $role): Response
+    public function handle(Request $request, Closure $next, ...$roles): Response
     {
         if (!$request->user()) {
             return redirect()->route('login');
         }
-        if ($request->user()->role !== $role) {
-            if($request->user()->role === 'admin') {
+
+        if (!in_array($request->user()->role, $roles)) {
+            if ($request->user()->role === 'admin') {
                 return redirect()->route('admin.dashboard');
             }
-            if($request->user()->role === 'dokter') {
+
+            if ($request->user()->role === 'dokter') {
                 return redirect()->route('doctor.dashboard');
             }
+
             abort(403);
         }
+
         return $next($request);
     }
 }

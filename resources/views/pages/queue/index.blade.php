@@ -96,7 +96,7 @@
                         @endphp
 
                         <strong>
-                            {{ $currentCode }}-{{ str_pad($currentNumber, ,3 '0', STR_PAD_LEFT) }}
+                            {{ $currentCode }}-{{ str_pad($currentNumber, 3, '0', STR_PAD_LEFT) }}
                         </strong>
 
                         <p>{{ $currentRegistration->patient->nama ?? '-' }}</p>
@@ -119,7 +119,7 @@
                         @endphp
 
                         <strong>
-                            {{ $nextCode }}-{{ str_pad($nextNumber, ,3, '0', STR_PAD_LEFT) }}
+                            {{ $nextCode }}-{{ str_pad($nextNumber, 3, '0', STR_PAD_LEFT) }}
                         </strong>
 
                         <p>{{ $nextRegistration->patient->nama ?? '-' }}</p>
@@ -131,7 +131,7 @@
                             <button type="submit" class="btn btn-sipklin btn-block">
                                 <i class="fas fa-bullhorn mr-2"></i>
                                 Panggil
-                                {{ $nextCode }}-{{ str_pad($nextNumber, ,3, '0', STR_PAD_LEFT) }}
+                                {{ $nextCode }}-{{ str_pad($nextNumber, 3, '0', STR_PAD_LEFT) }}
                             </button>
                         </form>
 
@@ -187,7 +187,7 @@
 
                                     <td>{{ $loop->iteration }}</td>
                                     <td>
-                                        <strong>{{ $kodePoli }}-{{ str_pad($nomorAntrean, ,3, '0', STR_PAD_LEFT) }}</strong>
+                                        <strong>{{ $kodePoli }}-{{ str_pad($nomorAntrean, 3, '0', STR_PAD_LEFT) }}</strong>
                                     </td>
                                     <td>{{ $registration->patient->nama ?? '-' }}</td>
                                     <td>{{ $registration->doctorSchedule->doctor->department->name ?? '-' }}</td>

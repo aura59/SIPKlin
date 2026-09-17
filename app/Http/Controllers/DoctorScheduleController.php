@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Department;
 use App\Models\Doctor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DoctorScheduleController extends Controller
 {
@@ -22,6 +23,24 @@ class DoctorScheduleController extends Controller
             ])->paginate(10);
 
         return view('pages.doctorschedule.index', compact('doctorschedules'));
+    }
+
+    public function doctorSchedule()
+    {
+        $user = Auth::user();
+
+        $doctor = Doctor::where('user_id', $user->id)->firstOrFail();
+
+        $doctorschedules = DoctorSchedule::with('doctor.department')
+            ->withCount([
+                'registration as registration_today_count' => function ($query) {
+                    $query->whereDate('tanggal', today());
+                }
+            ])
+            ->where('doctor_id', $doctor->id)
+            ->paginate(10);
+
+        return view('pages.doctorschedule.doctor', compact('doctorschedules'));
     }
 
     /**
@@ -64,6 +83,14 @@ class DoctorScheduleController extends Controller
     public function show(string $id)
     {
         $doctorschedule = DoctorSchedule::with('doctor.department')->findOrFail($id);
+
+        if (Auth::user()->role === 'dokter') {
+            $doctor = Doctor::where('user_id', Auth::id())->firstOrFail();
+
+            if ($doctorschedule->doctor_id != $doctor->id) {
+                abort(403);
+            }
+        }
 
         return view('pages.doctorSchedule.show', compact('doctorschedule'));
     }

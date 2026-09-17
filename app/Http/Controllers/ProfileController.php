@@ -54,6 +54,14 @@ class ProfileController extends Controller
 
         $user->save();
 
-        return redirect()->route('admin.profile')->with('success', 'Profil berhasil diperbarui.');
+        if ($user->role === 'admin') {
+            return redirect()->route('admin.profile')->with('success', 'Profil berhasil diperbarui.');
+        }
+
+        if ($user->role === 'dokter') {
+            return redirect()->route('doctor.profile')->with('success', 'Profil berhasil diperbarui.');
+        }
+
+        return redirect()->route('login');
     }
 }

@@ -29,7 +29,7 @@
                             <option value="">Pilih Dokter</option>
 
                             @foreach($doctors as $doctor)
-                                <option value="{{ $doctor->id }}"
+                                <option value="{{ $doctor->id }}" data-department="{{ $doctor->department->name }}"
                                     {{ old('doctor_id') == $doctor->id ? 'selected' : '' }}>
                                     {{ $doctor->nama }}
                                 </option>
@@ -56,7 +56,7 @@
                             <option value="Senin"{{ old('hari') == 'Senin' ? 'selected' : '' }}>Senin</option>
                             <option value="Selasa"{{ old('hari') == 'Selasa' ? 'selected' : '' }}>Selasa</option>
                             <option value="Rabu"{{ old('hari') == 'Rabu' ? 'selected' : '' }}>Rabu</option>
-                            <option value="Kamis"{ old('hari') == 'Kamis' ? 'selected' : '' }}>Kamis</option>
+                            <option value="Kamis"{{ old('hari') == 'Kamis' ? 'selected' : '' }}>Kamis</option>
                             <option value="Jumat"{{ old('hari') == 'Jumat' ? 'selected' : '' }}>Jumat</option>
                             <option value="Sabtu"{{ old('hari') == 'Sabtu' ? 'selected' : '' }}>Sabtu</option>
                             <option value="Minggu"{{ old('hari') == 'Minggu' ? 'selected' : '' }}>Minggu</option>
@@ -251,3 +251,19 @@
 @endpush
 
 @endsection
+
+@push('script')
+<script>
+    document.getElementById('doctor_id').addEventListener('change', function () {
+        const selectedDoctor = this.options[this.selectedIndex];
+        const department = selectedDoctor.getAttribute('data-department');
+        const poliInput = document.getElementById('poli');
+
+        if (department) {
+            poliInput.value = department;
+        } else {
+            poliInput.value = '';
+        }
+    });
+</script>
+@endpush

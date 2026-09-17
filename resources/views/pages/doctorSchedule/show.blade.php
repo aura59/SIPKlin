@@ -52,6 +52,14 @@
             </div>
 
             <div class="card-footer">
+                @if(auth()->user()->role === 'dokter')
+                <a href="{{ route('doctor.schedules') }}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i>
+                    Back
+                </a>
+
+                @else
+
                 <a href="{{ route('doctorschedules.index') }}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i>
                     Back
@@ -61,6 +69,7 @@
                     <i class="fas fa-edit"></i>
                     Edit
                 </a>
+                @endif
             </div>
 
         </div>

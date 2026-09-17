@@ -29,10 +29,10 @@ class MedicalRecordController extends Controller
             'registration_id' => 'required|exists:registrations,id',
             'keluhan' => 'required|string|max:500',
             'diagnosis' => 'required|string|max:500',
-            'tindakan' => 'nullable|string|max:500',
+            'tindakan' => 'required|string|max:500',
         ]);
 
-        $registration = Registration::findOrFail($request->registration_id);
+        $registration = Registration::with('queue')->findOrFail($request->registration_id);
 
         if ($registration->medicalRecord()->exists()) {
             return back()->withErrors(['registration_id' =>'Rekam medis untuk kunjungan ini sudah dibuat.'])->withInput();
@@ -46,6 +46,9 @@ class MedicalRecordController extends Controller
         ]);
 
         $registration->update(['status' => 'selesai']);
+            if ($registration->queue) {
+                $registration->queue->update(['status' => 'selesai']);
+            }
 
         return redirect()->route('queues.index')->with('success', 'Rekam medis berhasil disimpan.');
     }

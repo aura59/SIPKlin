@@ -19,7 +19,7 @@
 
 
     <div class="card-body p-4">
-        <form action="{{ route('admin.profile.update') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ $user->role === 'admin' ? route('admin.profile.update') : route('doctor.profile.update') }}" method="POST" enctype="multipart/form-data">
 
             @csrf
             @method('PUT')
@@ -34,7 +34,7 @@
                             @if($user->avatar)
                                 <img src="{{ asset($user->avatar) }}" id="preview-avatar" alt="Foto Profil">
                             @else
-                                <img src="{{ asset('public/img/profile/undraw_profile.svg') }}" id="preview-avatar" alt="Foto Profil">
+                                <img src="{{ asset('img/profile/undraw_profile.svg') }}" id="preview-avatar" alt="Foto Profil">
                             @endif
                         </div>
 

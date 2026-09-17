@@ -27,47 +27,48 @@ Route::get('/dokter/dashboard', [App\Http\Controllers\AdminController::class, 'd
 
 
 // pasien
-Route::middleware('auth')->group(function () {
-
+Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::resource('/patients', App\Http\Controllers\PatientController::class);
 });
 
 // dokter
-Route::middleware('auth')->group(function () {
-
+Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::resource('/doctors', App\Http\Controllers\DoctorController::class);
 });
 
 // poli
-Route::middleware('auth')->group(function () {
-
+Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::resource('/departments', App\Http\Controllers\DepartmentController::class);
 });
 
 // jadwal dokter
-Route::middleware('auth')->group(function () {
-
-Route::resource('/doctorschedules', App\Http\Controllers\DoctorScheduleController::class);
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('/doctorschedules', App\Http\Controllers\DoctorScheduleController::class)
+        ->except(['show']);
 });
 
-// pendaftaran pasien
-Route::get('/registrations', [App\Http\Controllers\RegistrationController::class, 'create'])->name('registrations.create');
+Route::get('/doctorschedules/{id}', [App\Http\Controllers\DoctorScheduleController::class, 'show'])->middleware(['auth', 'role:admin,dokter'])->name('doctorschedules.show');
+Route::get('/dokter/jadwal', [App\Http\Controllers\DoctorScheduleController::class, 'doctorSchedule'])->middleware(['auth', 'role:dokter'])->name('doctor.schedules');
 
+// pendaftaran pasien
+Route::middleware(['auth', 'role:admin'])->group(function () {
+Route::get('/registrations', [App\Http\Controllers\RegistrationController::class, 'create'])->name('registrations.create');
 Route::post('/registrations', [App\Http\Controllers\RegistrationController::class, 'store'])->name('registrations.store');
+});
 
 // antrean
-Route::get('/queues', [App\Http\Controllers\QueueController::class, 'index'])->name('queues.index');
-
-Route::patch('/queues/{id}/call', [App\Http\Controllers\QueueController::class, 'call'])->name('queues.call');
-
-Route::patch('/queues/{id}/finish', [App\Http\Controllers\QueueController::class, 'finish'])->name('queues.finish');
+Route::middleware(['auth', 'role:admin,dokter'])->group(function () {
+    Route::get('/queues', [App\Http\Controllers\QueueController::class, 'index'])->name('queues.index');
+    Route::patch('/queues/{id}/call', [App\Http\Controllers\QueueController::class, 'call'])->name('queues.call');
+    Route::patch('/queues/{id}/finish', [App\Http\Controllers\QueueController::class, 'finish'])->name('queues.finish');
+});
 
 // rekam medis
+Route::middleware(['auth', 'role:dokter'])->group(function () {
 Route::get('/medical-records/create', [App\Http\Controllers\MedicalRecordController::class, 'create'])->name('medical-records.create');
-
 Route::post('/medical-records', [App\Http\Controllers\MedicalRecordController::class, 'store'])->name('medical-records.store');
+});
 
 // riwayat kunjungan
 Route::get('/visit-history', [VisitHistoryController::class, 'index'])->middleware('auth')->name('visit-history.index');
-
 Route::get('/visit-history/{id}', [VisitHistoryController::class, 'show'])->middleware('auth')->name('visit-history.show');
