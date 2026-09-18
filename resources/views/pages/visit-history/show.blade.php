@@ -10,7 +10,7 @@
 
 <h1 class="h6 text-gray-800 mb-4">Data Klinik / Riwayat Kunjungan / Detail</h1>
 
-<div class="row">
+<div class="row rekam-medis-row">
 
     <div class="col-md-7">
 
@@ -30,7 +30,7 @@
                 <div class="detail-item">
                     <label>No. Antrean</label>
                     <p>
-                        {{ $registration->doctorSchedule->doctor->department->kode_poli ?? '-'}}-{{str_pad(optional($registration->queue)->nomor_antrean ?? 0, 3, '0', STR_PAD_LEFT) }}
+                        {{ $registration->doctorSchedule->doctor->department->kode_poli ?? '-' }}-{{ str_pad(optional($registration->queue)->nomor_antrean ?? 0, 3, '0', STR_PAD_LEFT) }}
                     </p>
                 </div>
 
@@ -102,7 +102,7 @@
 
     <div class="col-md-5">
 
-        <div class="card info-patient-card h-100">
+        <div class="card info-patient-card">
 
             <div class="card-body text-center d-flex flex-column justify-content-center">
 
@@ -147,8 +147,8 @@
 @push('styles')
 <style>
     .card-header {
-    background-color: #06285c !important;
-    color: white !important;
+        background-color: #06285c !important;
+        color: white !important;
     }
 
     .card-header .card-title {
@@ -282,6 +282,14 @@
     .btn-secondary {
         background-color: #6c757d;
         border-color: #6c757d;
+    }
+
+    .rekam-medis-row {
+        align-items: flex-start;
+    }
+
+    .rekam-medis-row .card {
+        height: auto !important;
     }
 
     @media (max-width: 768px) {
