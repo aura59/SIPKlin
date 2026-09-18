@@ -7,7 +7,7 @@
     <h1 class="h3 mb-0 text-gray-800">Pendaftaran Pasien</h1>
 </div>
 
-<h1 class="h6 text-gray-800 mb-4">Data Pelayanan / Pendaftaran</h1>
+<h1 class="h6 text-gray-800 mb-4">Pelayanan / Pendaftaran</h1>
 
 <div class="row">
     <div class="col-md-8">

@@ -127,7 +127,7 @@
         <div class="card info-pasien-card h-100">
             <div class="card-body text-center d-flex flex-column justify-content-center">
                 <div class="info-icon mb-4">
-                    <i class="fas fa-calendar-alt"></i>
+                   <i class="fas fa-heartbeat logo-icon mr-2"></i>
                 </div>
 
                 <h3 class="info-title">Data Jadwal Dokter Baru</h3>

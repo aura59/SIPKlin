@@ -34,7 +34,13 @@ class DepartmentController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        Department::create($request->all());
+        $kode_poli = chr(65 + Department::count()); 
+
+        Department::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'kode_poli' => $kode_poli,
+        ]);
 
         return redirect()->route('departments.index')->with('success', 'Data poli berhasil ditambahkan!');
     }

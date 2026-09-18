@@ -22,12 +22,18 @@
 
     <hr class="sidebar-divider">
 
+    <div class="sidebar-heading">Data Klinik</div>
+
     <li class="nav-item {{ request()->routeIs('doctor.schedules') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('doctor.schedules') }}">
             <i class="fas fa-fw fa-calendar-alt"></i>
             <span>Jadwal Dokter</span>
         </a>
     </li>
+
+    <hr class="sidebar-divider">
+
+    <div class="sidebar-heading">Pelayanan</div>
 
    <li class="nav-item {{ request()->routeIs('queues.*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('queues.index') }}">

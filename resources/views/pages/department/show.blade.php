@@ -106,6 +106,7 @@
     .card-header .card-title {
         color: white !important;
         font-weight: 600;
+        font-size: 18px !important;
     }
 
     .detail-item {
@@ -118,13 +119,15 @@
         display: block;
         color: #06285c !important;
         font-weight: 600;
-        margin-bottom: 5px;
+        font-size: 16px !important;
+        margin-bottom: 7px;
     }
 
     .detail-item p {
         margin-bottom: 0;
         color: #555;
-        font-size: 16px;
+        font-size: 18px !important;
+        line-height: 1.5;
     }
 
     .btn-sipklin {
@@ -179,21 +182,41 @@
         justify-content: space-between;
         padding: 12px 0;
         border-bottom: 1px solid #e3e6f0;
-        gap: 20px;
+        font-size: 15px;
+        gap: 15px;
     }
 
     .summary-item span {
         color: #777;
-        min-width: 100px;
-        flex-shrink: 0;
+        font-size: 15px;
     }
 
     .summary-item strong {
         color: #06285c;
+        font-size: 15px;
         text-align: right;
-        flex: 1;
-        line-height: 1.6;
     }
+
+     @media (max-width: 768px) {
+
+        .col-md-7,
+        .col-md-5 {
+            margin-bottom: 20px;
+        }
+
+        .detail-item p {
+            font-size: 17px !important;
+        }
+
+        .info-icon {
+            width: 140px;
+            height: 140px;
+        }
+
+        .info-icon .fa-user-md {
+            font-size: 90px !important;
+        }
+}
 
 </style>
 @endpush

@@ -5,16 +5,22 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\MedicalRecord;
 use App\Models\Registration;
+use App\Models\Doctor;
+use Illuminate\Support\Facades\Auth;
 
 class MedicalRecordController extends Controller
 {
     public function create()
     {
+        $doctor = Doctor::where('user_id', Auth::id())->firstOrFail();
         $registrations = Registration::with([
             'patient',
             'doctorSchedule.doctor.department'
         ])
         ->whereDate('tanggal', today())
+        ->whereHas('doctorSchedule', function ($query) use ($doctor) {
+            $query->where('doctor_id', $doctor->id);
+        })
         ->where('status', 'dipanggil')
         ->doesntHave('medicalRecord')
         ->orderBy('created_at', 'asc')
@@ -32,7 +38,9 @@ class MedicalRecordController extends Controller
             'tindakan' => 'required|string|max:500',
         ]);
 
-        $registration = Registration::with('queue')->findOrFail($request->registration_id);
+        $registration = Registration::with('queue', 'doctorSchedule')->findOrFail($request->registration_id);
+
+        $doctor = Doctor::where('user_id', Auth::id())->firstOrFail();
 
         if ($registration->medicalRecord()->exists()) {
             return back()->withErrors(['registration_id' =>'Rekam medis untuk kunjungan ini sudah dibuat.'])->withInput();

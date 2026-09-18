@@ -107,6 +107,6 @@ class PatientController extends Controller
 
         $patients->delete();
 
-        return redirect()->route('patient.index')->with('success', 'Berhasil menghapus data pasien.');
+        return redirect()->route('patients.index')->with('success', 'Berhasil menghapus data pasien.');
     }
 }

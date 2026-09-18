@@ -63,6 +63,14 @@ class RegistrationController extends Controller
 
         $schedule = DoctorSchedule::with('doctor.department')->findOrFail($request->doctor_schedule_id);
 
+        $hariTanggal = \Carbon\Carbon::parse($request->tanggal)->locale('id')->translatedFormat('l');
+
+        if ($hariTanggal !== $schedule->hari) {
+            return back()->withErrors([
+                    'tanggal' =>'Tanggal yang dipilih tidak sesuai dengan hari jadwal dokter.'
+                ])->withInput();
+        }
+
         if ($schedule->doctor_id != $request->doctor_id) {
             return back()->withErrors([
                     'doctor_schedule_id' =>'Jadwal dokter tidak sesuai dengan dokter yang dipilih.'

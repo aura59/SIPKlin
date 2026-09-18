@@ -5,7 +5,7 @@
 @section('content')
 
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Detail Data Dokter</h1>
+    <h1 class="h3 mb-0 text-gray-800">Detail Jadwal Dokter</h1>
 </div>
 
 <h1 class="h6 text-gray-800 mb-4">Data Klinik / Jadwal Dokter / Detail</h1>
@@ -134,6 +134,7 @@
     .card-header .card-title {
         color: white !important;
         font-weight: 600;
+        font-size: 18px !important;
     }
 
     .detail-item {
@@ -146,13 +147,15 @@
         display: block;
         color: #06285c !important;
         font-weight: 600;
+        font-size: 16px !important;
         margin-bottom: 5px;
     }
 
     .detail-item p {
         margin-bottom: 0;
         color: #555;
-        font-size: 16px;
+        font-size: 18px !important;
+        line-height: 1.5;
     }
 
     .btn-sipklin {
@@ -175,14 +178,11 @@
     width: 180px;
     height: 180px;
     margin: 0 auto;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     background-color: #EAF1FB;
     border-radius: 50%;
-
     color: #06285c;
     }
 
@@ -208,17 +208,44 @@
     .summary-item {
         display: flex;
         justify-content: space-between;
-        padding: 12px 0;
+        align-items: center;
+        padding: 14px 0;
         border-bottom: 1px solid #e3e6f0;
+        font-size: 15px;
+        gap: 15px;
     }
 
     .summary-item span {
         color: #777;
+        font-size: 15px;
     }
 
     .summary-item strong {
         color: #06285c;
+        font-size: 15px;
+        text-align: right;
     }
+
+     @media (max-width: 768px) {
+
+        .col-md-7,
+        .col-md-5 {
+            margin-bottom: 20px;
+        }
+
+        .detail-item p {
+            font-size: 17px !important;
+        }
+
+        .info-icon {
+            width: 140px;
+            height: 140px;
+        }
+
+        .info-icon .fa-user-md {
+            font-size: 90px !important;
+        }
+     }
 
 </style>
 @endpush

@@ -72,7 +72,7 @@
 
             <div class="card-body text-center d-flex flex-column justify-content-center">
                 <div class="info-icon mb-4">
-                    <i class="fas fa-fw fa-hospital"></i>
+                    <i class="fas fa-heartbeat logo-icon mr-2"></i>
                 </div>
 
                 <h3 class="info-title">Data Poli Baru </h3>

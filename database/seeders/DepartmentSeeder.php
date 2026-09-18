@@ -48,7 +48,7 @@ class DepartmentSeeder extends Seeder
         Department::create([
             'name' => 'Poli THT',
             'kode_poli' => 'G',
-            'description' => 'Pelayanan kesehatan khusus untuk Telingan, Hidung, dan Tenggorokan.',
+            'description' => 'Pelayanan kesehatan khusus untuk Telinga, Hidung, dan Tenggorokan.',
         ]);
 
         Department::create([

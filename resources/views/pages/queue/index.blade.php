@@ -6,7 +6,7 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <div>
         <h1 class="h3 mb-4 text-gray-900">Antrean Pasien</h1>
-        <h1 class="h6 text-gray-800 mb-2">Data Pelayanan / Antrean</h1>
+        <h1 class="h6 text-gray-800 mb-2">Pelayanan / Antrean</h1>
     </div>
 
     <form action="{{ route('queues.index') }}" method="GET" class="queue-filter">

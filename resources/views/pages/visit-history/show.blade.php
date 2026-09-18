@@ -16,76 +16,73 @@
 
         <div class="card">
 
-            <div class="card-header detail-header">
-                <h6 class="m-0 font-weight-bold">
-                    Informasi Rekam Medis
-                </h6>
+            <div class="card-header">
+                <h5 class="card-title mb-0">Informasi Rekam Medis</h5>
             </div>
 
             <div class="card-body">
 
                 <div class="detail-item">
-                    <div class="detail-label">Pasien</div>
-                    <div class="detail-value">
-                        {{ $registration->patient->nama ?? '-' }}
-                    </div>
+                    <label>Pasien</label>
+                    <p>{{ $registration->patient->nama }}</p>
                 </div>
 
                 <div class="detail-item">
-                    <div class="detail-label">No. Antrean</div>
-                    <div class="detail-value">
-                        {{ $registration->doctorSchedule->doctor->department->kode_poli ?? '-'}}-{{str_pad(optional($registration->queue)->nomor_antrean ?? 0, 3,, '0', STR_PAD_LEFT) }}
+                    <label>No. Antrean</label>
+                    <p>
+                        {{ $registration->doctorSchedule->doctor->department->kode_poli ?? '-'}}-{{str_pad(optional($registration->queue)->nomor_antrean ?? 0, 3, '0', STR_PAD_LEFT) }}
+                    </p>
                 </div>
 
                 <div class="detail-item">
-                    <div class="detail-label">Poli</div>
-                    <div class="detail-value">
+                    <label>Poli</label>
+                    <p>
                         {{ $registration->doctorSchedule->doctor->department->name ?? '-' }}
-                    </div>
+                    </p>
                 </div>
 
                 <div class="detail-item">
-                    <div class="detail-label">Tanggal</div>
-                    <div class="detail-value">
+                    <label>Tanggal</label>
+                    <p>
                         {{ \Carbon\Carbon::parse($registration->tanggal)->format('d F Y') }}
-                    </div>
+                    </p>
                 </div>
 
                 <div class="detail-item">
-                    <div class="detail-label">Dokter</div>
-                    <div class="detail-value">
+                    <label>Dokter</label>
+                    <p>
                         {{ $registration->doctorSchedule->doctor->nama ?? '-' }}
-                    </div>
+                    </p>
                 </div>
 
                 <div class="detail-item">
-                    <div class="detail-label">Status</div>
-                    <div class="detail-value">
+                    <label>Status</label>
+                    <p>
                         <span class="badge badge-success">
                             {{ ucfirst($registration->status) }}
                         </span>
-                    </div>
+                    </p>
                 </div>
 
-                <div class="medical-item">
-                    <div class="medical-label">Keluhan</div>
-                    <div class="medical-value">
+                <div class="detail-item">
+                    <label>Keluhan</label>
+                    <p>
                         {{ $registration->medicalRecord->keluhan ?? '-' }}
-                    </div>
+                    </p>
                 </div>
 
-                <div class="medical-item">
-                    <div class="medical-label">Diagnosis</div>
-                    <div class="medical-value">
+                <div class="detail-item">
+                    <label>Diagnosis</label>
+                    <p>
                         {{ $registration->medicalRecord->diagnosis ?? '-' }}
-                    </div>
+                    </p>
                 </div>
 
-                <div class="medical-item">
-                    <div class="medical-label">Tindakan</div>
-                    <div class="medical-value">
+                <div class="detail-item">
+                    <label>Tindakan</label>
+                    <p>
                         {{ $registration->medicalRecord->tindakan ?? '-' }}
-                    </div>
+                    </p>
                 </div>
 
             </div>
@@ -149,20 +146,36 @@
 
 @push('styles')
 <style>
-    .detail-header {
-        background-color: #06285c !important;
-        color: white !important;
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
+    .card-header {
+    background-color: #06285c !important;
+    color: white !important;
     }
 
-    .detail-header h6 {
+    .card-header .card-title {
         color: white !important;
+        font-weight: 600;
+        font-size: 18px !important;
     }
 
     .detail-item {
-        padding: 12px 0;
-        border-bottom: 1px solid #e1e5eb;
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid #e3e6f0;
+    }
+
+    .detail-item label {
+        display: block;
+        color: #06285c !important;
+        font-weight: 600;
+        font-size: 16px !important;
+        margin-bottom: 7px;
+    }
+
+    .detail-item p {
+        margin-bottom: 0;
+        color: #555;
+        font-size: 18px !important;
+        line-height: 1.5;
     }
 
     .detail-label {
@@ -242,33 +255,27 @@
 
     .patient-summary {
         text-align: left;
-        padding: 0 20px;
+        padding: 0 30px;
     }
 
     .summary-item {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 15px 0;
+        padding: 14px 0;
         border-bottom: 1px solid #e1e5eb;
         font-size: 15px;
-        gap: 20px;
-    }
-
-    .summary-item:last-child {
-        border-bottom: none;
+        gap: 15px;
     }
 
     .summary-item span {
         color: #777;
         font-size: 15px;
-        font-weight: 500;
     }
 
     .summary-item strong {
         color: #06285c;
         font-size: 15px;
-        font-weight: 600;
         text-align: right;
     }
 

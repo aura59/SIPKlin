@@ -11,12 +11,10 @@
 
 <div class="card">
     <div class="card-header d-flex justify-content-end align-items-center">
-
-    <div class="search-box">
-        <i class="fas fa-search"></i>
-        <input type="text" id="searchJadwalDokter" placeholder="Cari Jadwal...">
-    </div>
-
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchJadwalDokter" placeholder="Cari Jadwal...">
+        </div>
     </div>
 
     <div class="card-body">
@@ -66,7 +64,7 @@
 
         </table>
 
-       <div class="d-flex justify-content-end mt-3">
+        <div class="d-flex justify-content-end mt-3">
             {{ $doctorschedules->links() }}
         </div>
     </div>

@@ -38,5 +38,17 @@ class DoctorSeeder extends Seeder
             'spesialis' => 'Anak',
             'no_telepon' => '083813054300',
         ]);
+
+        $userDokter = User::where('email', 'tian@gmail.com')->first();
+
+        $department = Department::where('name', 'Poli Gigi')->first();
+
+        Doctor::create([
+            'user_id' => $userDokter->id,
+            'department_id' => $department->id,
+            'nama' => 'Dr. Tian Xiwei',
+            'spesialis' => 'Gigi',
+            'no_telepon' => '083873925822',
+        ]);
     }
 }
