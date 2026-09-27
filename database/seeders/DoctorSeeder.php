@@ -15,26 +15,26 @@ class DoctorSeeder extends Seeder
      */
     public function run(): void
     {
-        $userDokter = User::where('email', 'bojai@gmail.com')->first();
+        $userDokter = User::where('email', 'neo@gmail.com')->first();
 
         $department = Department::where('name', 'Poli Umum')->first();
 
         Doctor::create([
             'user_id' => $userDokter->id,
             'department_id' => $department->id,
-            'nama' => 'Dr. Hou Minghao',
+            'nama' => 'Dr. Hau Mingga Pradana',
             'spesialis' => 'Umum',
             'no_telepon' => '081234567890',
         ]);
 
-        $userDokter = User::where('email', 'xiaoxiao@gmail.com')->first();
+        $userDokter = User::where('email', 'lulu@gmail.com')->first();
 
         $department = Department::where('name', 'Poli Anak')->first();
 
         Doctor::create([
             'user_id' => $userDokter->id,
             'department_id' => $department->id,
-            'nama' => 'Dr. Lu Yuxiao',
+            'nama' => 'Dr. Luna Yusvara',
             'spesialis' => 'Anak',
             'no_telepon' => '083813054300',
         ]);
@@ -46,7 +46,7 @@ class DoctorSeeder extends Seeder
         Doctor::create([
             'user_id' => $userDokter->id,
             'department_id' => $department->id,
-            'nama' => 'Dr. Tian Xiwei',
+            'nama' => 'Dr. Tiara Xiandra',
             'spesialis' => 'Gigi',
             'no_telepon' => '083873925822',
         ]);

@@ -21,7 +21,7 @@ class DoctorScheduleSeeder extends Seeder
             'hari' => 'Senin',
             'jam_mulai' => '08:00',
             'jam_selesai' => '16:00',
-            'kuota' => 20,
+            'kuota' => 15,
         ]);
     }
 }

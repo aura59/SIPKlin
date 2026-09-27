@@ -22,6 +22,5 @@ class DatabaseSeeder extends Seeder
             DoctorScheduleSeeder::class,
         ]);
         
-        // User::factory(10)->create()
     }
 }

@@ -22,39 +22,39 @@ class UserSeeder extends Seeder
         ]);
 
         User::create([
-            'name' => 'Dr. Hou Minghao',
-            'email' => 'bojai@gmail.com',
+            'name' => 'Dr. Hau Mingga Pradana',
+            'email' => 'neo@gmail.com',
             'password' => Hash::make('bojai123'),
             'role' => 'dokter',
         ]);
 
          User::create([
-            'name' => 'Dr. Lu Yuxiao',
-            'email' => 'xiaoxiao@gmail.com',
+            'name' => 'Dr. Luna Yusvara',
+            'email' => 'lulu@gmail.com',
             'password' => Hash::make('irene123'),
             'role' => 'dokter',
         ]);
 
          User::create([
-            'name' => 'Dr. Tian Xiwei',
+            'name' => 'Dr. Tiara Xiandra',
             'email' => 'tian@gmail.com',
             'password' => Hash::make('changyu123'),
             'role' => 'dokter',
         ]);
 
         $doctors = [
-            'Dr. Zhang Linghe',
-            'Dr. Chen Zheyuan',
-            'Dr. Wang Xingyue',
-            'Dr. Bai Lu',
-            'Dr. Zhao Lusi',
-            'Dr. Yu Shuxin',
-            'Dr. Wu Lei',
-            'Dr. Dylan Wang',
-            'Dr. Gong Jun',
-            'Dr. Luo Yunxi',
-            'Dr. Cheng Yi',
-            'Dr. Xiao Zhan',
+            'Dr. Zayn Lingga',
+            'Dr. Bella Kaila',
+            'Dr. Miona Zhanggara',
+            'Dr. Yura Shavina',
+            'Dr. Luki Ardhana',
+            'Dr. Yoren Zayandra',
+            'Dr. Dena Anesya',
+            'Dr. Chandra Wasena',
+            'Dr. Yuna Yutania',
+            'Dr. Heyu Adinata',
+            'Dr. Gavin Juna',
+            'Dr. Dion Yudhistira',
         ];
 
         foreach ($doctors as $key => $doctor) {
