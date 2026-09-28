@@ -19,6 +19,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => Hash::make('admin123'),
             'role' => 'admin',
+            'avatar' => 'img/profile/yeonjun.jpg',
         ]);
 
         User::create([
@@ -26,6 +27,7 @@ class UserSeeder extends Seeder
             'email' => 'neo@gmail.com',
             'password' => Hash::make('bojai123'),
             'role' => 'dokter',
+            'avatar' => 'img/profile/download (23).jpg',
         ]);
 
          User::create([
@@ -33,6 +35,7 @@ class UserSeeder extends Seeder
             'email' => 'lulu@gmail.com',
             'password' => Hash::make('irene123'),
             'role' => 'dokter',
+            'avatar' => 'img/profile/download (30).jpg',
         ]);
 
          User::create([
@@ -40,6 +43,7 @@ class UserSeeder extends Seeder
             'email' => 'tian@gmail.com',
             'password' => Hash::make('changyu123'),
             'role' => 'dokter',
+            'avatar' => 'img/profile/download (31).jpg',
         ]);
 
         $doctors = [
