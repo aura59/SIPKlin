@@ -17,7 +17,7 @@ class DoctorScheduleController extends Controller
     public function index()
     {
         $doctorschedules = DoctorSchedule::with('doctor.department')->withCount([
-                'registration as registration_today_count' => function ($query) {
+                 'registration as registration_today_count' => function ($query) {
                     $query->whereDate('tanggal', today());
                 }
             ])->paginate(10);

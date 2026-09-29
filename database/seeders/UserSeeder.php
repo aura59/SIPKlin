@@ -46,28 +46,60 @@ class UserSeeder extends Seeder
             'avatar' => 'img/profile/download (31).jpg',
         ]);
 
-        $doctors = [
-            'Dr. Zayn Lingga',
-            'Dr. Bella Kaila',
-            'Dr. Miona Zhanggara',
-            'Dr. Yura Shavina',
-            'Dr. Luki Ardhana',
-            'Dr. Yoren Zayandra',
-            'Dr. Dena Anesya',
-            'Dr. Chandra Wasena',
-            'Dr. Yuna Yutania',
-            'Dr. Heyu Adinata',
-            'Dr. Gavin Juna',
-            'Dr. Dion Yudhistira',
-        ];
+        User::create([
+            'name' => 'Dr. Bella Kaila',
+            'email' => 'bella@gmail.com',
+            'password' => Hash::make('bailu123'),
+            'role' => 'dokter',
+            'avatar' => 'img/profile/bailu.jpg',
+        ]);
 
-        foreach ($doctors as $key => $doctor) {
-            User::create([
-                'name' => $doctor,
-                'email' => 'dokter' . ($key + 1) . '@sipklin.com',
-                'password' => Hash::make('password'),
-                'role' => 'dokter',
-            ]);
-        }
+        User::create([
+            'name' => 'Dr. Yura Shavina',
+            'email' => 'yuyu@gmail.com',
+            'password' => Hash::make('estheryu'),
+            'role' => 'dokter',
+            'avatar' => 'img/profile/esther.jpg',
+        ]);
+
+        User::create([
+            'name' => 'Dr. Luki Ardhana',
+            'email' => 'luqi@gmail.com',
+            'password' => Hash::make('buxiu123'),
+            'role' => 'dokter',
+            'avatar' => 'img/profile/luqi.jpg',
+        ]);
+
+        User::create([
+            'name' => 'Dr. Dena Anesya',
+            'email' => 'Dena@gmail.com',
+            'password' => Hash::make('dengenxi'),
+            'role' => 'dokter',
+            'avatar' => 'img/profile/enxi.jpg',
+        ]);
+
+        User::create([
+            'name' => 'Dr. Chandra Wasena',
+            'email' => 'Chandra@gmail.com',
+            'password' => Hash::make('huasen123'),
+            'role' => 'dokter',
+            'avatar' => 'img/profile/chang.jpg',
+        ]);
+
+        User::create([
+            'name' => 'Dr. Heyu Adinata',
+            'email' => 'heyu@gmail.com',
+            'password' => Hash::make('heyu123'),
+            'role' => 'dokter',
+            'avatar' => 'img/profile/heyu.jpg',
+        ]);
+
+        User::create([
+            'name' => 'Dr. Dion Yudhistira',
+            'email' => 'ryan@gmail.com',
+            'password' => Hash::make('dingyuxi'),
+            'role' => 'dokter',
+            'avatar' => 'img/profile/ryan.jpg',
+        ]);
     }
 }
