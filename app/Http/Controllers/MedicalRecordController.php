@@ -13,6 +13,7 @@ class MedicalRecordController extends Controller
     public function create()
     {
         $doctor = Doctor::where('user_id', Auth::id())->firstOrFail();
+
         $registrations = Registration::with([
             'patient',
             'doctorSchedule.doctor.department'

@@ -86,14 +86,31 @@ class QueueController extends Controller
         $departmentId = $registration->doctorSchedule->doctor->department_id;
         $tanggal = $registration->tanggal;
 
-        Registration::where('status', 'dipanggil')
+        $currentRegistration = Registration::with('queue')
+            ->where('status', 'dipanggil')
             ->whereDate('tanggal', $tanggal)
             ->whereHas('doctorSchedule.doctor', function ($query) use ($departmentId) {
                 $query->where('department_id', $departmentId);
             })
-            ->update([
+            ->first();
+
+        if ($currentRegistration && !$currentRegistration->medicalRecord()->exists()) {
+            return back()->withErrors([
+                'registration' => 'Selesaikan rekam medis pasien yang sedang dipanggil terlebih dahulu.'
+            ]);
+        }
+
+        if ($currentRegistration) {
+            $currentRegistration->update([
                 'status' => 'selesai'
             ]);
+
+            if ($currentRegistration->queue) {
+                $currentRegistration->queue->update([
+                    'status' => 'selesai'
+                ]);
+            }
+        }
 
         $registration->update([
             'status' => 'dipanggil'
