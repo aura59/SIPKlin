@@ -151,12 +151,6 @@
     <div class="col-md-9 mb-4">
         <div class="card queue-table-card">
 
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <strong>Daftar Antrean</strong>
-            </div>
-
-            <div class="card-body">
-
                 <div class="table-responsive">
 
                     <table class="table table-striped table-hover dashboard-table">
@@ -253,9 +247,6 @@
                     </table>
 
                 </div>
-
-            </div>
-
         </div>
     </div>
 
