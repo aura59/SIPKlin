@@ -14,18 +14,48 @@ class DoctorScheduleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $doctorschedules = DoctorSchedule::with('doctor.department')->withCount([
-                 'registration as registration_today_count' => function ($query) {
+        $search = $request->string('search')->trim()->toString();
+        $doctorschedules = DoctorSchedule::with('doctor.department')
+            ->withCount([
+                'registration as registration_today_count' => function ($query) {
                     $query->whereDate('tanggal', today());
-                }
-            ])->paginate(10);
+                },
+            ])
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->whereHas('doctor', function ($query) use ($search) {
+                        $query->where('nama', 'like', "%{$search}%")
+                            ->orWhereHas('department', function ($query) use ($search) {
+                                $query->where('name', 'like', "%{$search}%");
+                            });
+                    })
+                    ->orWhere('hari', 'like', "%{$search}%")
+                    ->orWhere('jam_mulai', 'like', "%{$search}%")
+                    ->orWhere('jam_selesai', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('doctor_id')
+            ->orderByRaw("CASE hari
+                WHEN 'Senin' THEN 1
+                WHEN 'Selasa' THEN 2
+                WHEN 'Rabu' THEN 3
+                WHEN 'Kamis' THEN 4
+                WHEN 'Jumat' THEN 5
+                WHEN 'Sabtu' THEN 6
+                WHEN 'Minggu' THEN 7
+                ELSE 8
+            END")
+            ->orderBy('jam_mulai')
+            ->orderBy('id')
+            ->paginate(10)
+            ->withQueryString();
 
         return view('pages.doctorschedule.index', compact('doctorschedules'));
     }
 
-    public function doctorSchedule()
+    public function doctorSchedule(Request $request)
     {
         $user = Auth::user();
 
@@ -38,7 +68,31 @@ class DoctorScheduleController extends Controller
                 }
             ])
             ->where('doctor_id', $doctor->id)
-            ->paginate(10);
+            ->when($request->string('search')->trim()->toString() !== '', function ($query) use ($request) {
+                $search = $request->string('search')->trim()->toString();
+                $query->where(function ($query) use ($search) {
+                    $query->where('hari', 'like', "%{$search}%")
+                        ->orWhere('jam_mulai', 'like', "%{$search}%")
+                        ->orWhere('jam_selesai', 'like', "%{$search}%")
+                        ->orWhereHas('doctor.department', function ($query) use ($search) {
+                            $query->where('name', 'like', "%{$search}%");
+                        });
+                });
+            })
+            ->orderByRaw("CASE hari
+                WHEN 'Senin' THEN 1
+                WHEN 'Selasa' THEN 2
+                WHEN 'Rabu' THEN 3
+                WHEN 'Kamis' THEN 4
+                WHEN 'Jumat' THEN 5
+                WHEN 'Sabtu' THEN 6
+                WHEN 'Minggu' THEN 7
+                ELSE 8
+            END")
+            ->orderBy('jam_mulai')
+            ->orderBy('id')
+            ->paginate(10)
+            ->withQueryString();
 
         return view('pages.doctorschedule.doctor', compact('doctorschedules'));
     }
@@ -74,7 +128,8 @@ class DoctorScheduleController extends Controller
             'kuota' => $request->kuota,
         ]);
 
-        return redirect()->route('doctorschedules.index')->with('success', 'Data jadwal dokter berhasil ditambahkan!');
+        return redirect()->route('doctorschedules.index', $request->only(['page', 'search']))
+            ->with('success', 'Data jadwal dokter berhasil ditambahkan!');
     }
 
     /**
@@ -128,17 +183,19 @@ class DoctorScheduleController extends Controller
             'kuota' => $request->kuota,
         ]);
 
-        return redirect()->route('doctorschedules.index')->with('success', 'Data jadwal dokter berhasil diperbarui!');
+        return redirect()->route('doctorschedules.index', $request->only(['page', 'search']))
+            ->with('success', 'Data jadwal dokter berhasil diperbarui!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
         $doctorschedule = DoctorSchedule::findOrFail($id);
         $doctorschedule->delete();
 
-        return redirect()->route('doctorschedules.index')->with('success', 'Data jadwal dokter berhasil dihapus!');
+        return redirect()->route('doctorschedules.index', $request->only(['page', 'search']))
+            ->with('success', 'Data jadwal dokter berhasil dihapus!');
     }
 }

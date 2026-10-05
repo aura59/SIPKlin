@@ -32,12 +32,12 @@
             </div>
 
             <div class="card-footer">
-                <a href="{{ route('departments.index') }}" class="btn btn-secondary">
+                <a href="{{ route('departments.index', request()->only(['page', 'search'])) }}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i>
                     Back
                 </a>
 
-                <a href="{{ route('departments.edit', $department->id) }}" class="btn btn-sipklin">
+                <a href="{{ route('departments.edit', array_merge(['department' => $department->id], request()->only(['page', 'search']))) }}" class="btn btn-sipklin">
                     <i class="fas fa-edit"></i>
                     Edit
                 </a>

@@ -7,6 +7,8 @@ use App\Models\MedicalRecord;
 use App\Models\Registration;
 use App\Models\Doctor;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class MedicalRecordController extends Controller
 {
@@ -39,25 +41,47 @@ class MedicalRecordController extends Controller
             'tindakan' => 'required|string|max:500',
         ]);
 
-        $registration = Registration::with('queue', 'doctorSchedule')->findOrFail($request->registration_id);
-
         $doctor = Doctor::where('user_id', Auth::id())->firstOrFail();
+        $registration = Registration::with('queue', 'doctorSchedule')
+            ->findOrFail($request->registration_id);
 
-        if ($registration->medicalRecord()->exists()) {
-            return back()->withErrors(['registration_id' =>'Rekam medis untuk kunjungan ini sudah dibuat.'])->withInput();
+        if ($registration->doctorSchedule->doctor_id !== $doctor->id) {
+            abort(403);
         }
 
-        MedicalRecord::create([
-            'registration_id' => $request->registration_id,
-            'keluhan' => $request->keluhan,
-            'diagnosis' => $request->diagnosis,
-            'tindakan' => $request->tindakan,
-        ]);
+        if ($registration->status !== 'dipanggil') {
+            return back()->withErrors([
+                'registration_id' => 'Rekam medis hanya bisa dibuat saat pasien sedang dipanggil.'
+            ])->withInput();
+        }
 
-        $registration->update(['status' => 'selesai']);
-            if ($registration->queue) {
-                $registration->queue->update(['status' => 'selesai']);
+        DB::transaction(function () use ($request, $registration) {
+            $registration = Registration::with('queue')
+                ->lockForUpdate()
+                ->findOrFail($registration->id);
+
+            if ($registration->medicalRecord()->exists()) {
+                throw ValidationException::withMessages([
+                    'registration_id' => 'Rekam medis untuk kunjungan ini sudah dibuat.'
+                ]);
             }
+
+            if ($registration->status !== 'dipanggil') {
+                throw ValidationException::withMessages([
+                    'registration_id' => 'Rekam medis hanya bisa dibuat saat pasien sedang dipanggil.'
+                ]);
+            }
+
+            MedicalRecord::create([
+                'registration_id' => $registration->id,
+                'keluhan' => $request->keluhan,
+                'diagnosis' => $request->diagnosis,
+                'tindakan' => $request->tindakan,
+            ]);
+
+            $registration->update(['status' => 'selesai']);
+            $registration->queue?->update(['status' => 'selesai']);
+        });
 
         return redirect()->route('queues.index')->with('success', 'Rekam medis berhasil disimpan.');
     }

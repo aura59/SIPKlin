@@ -16,6 +16,9 @@
         <div class="card">
             <form action="{{ route('doctorschedules.store') }}" method="POST">
                 @csrf
+                @foreach(request()->only(['page', 'search']) as $key => $value)
+                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                @endforeach
 
                 <div class="card-header">
                     <h5 class="card-title mb-0">Input Data Jadwal Dokter Baru</h5>
@@ -111,7 +114,7 @@
                         Save
                     </button>
 
-                    <a href="{{ route('doctorschedules.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('doctorschedules.index', request()->only(['page', 'search'])) }}" class="btn btn-secondary">
                         <span class="fa fa-times-circle"></span>
                         Cancel
                     </a>

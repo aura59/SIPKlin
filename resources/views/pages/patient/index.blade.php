@@ -12,15 +12,15 @@
 <div class="card">
    <div class="card-header d-flex justify-content-between align-items-center">
 
-        <a href="{{ route('patients.create') }}" class="btn btn-sipklin px-4">
+        <a href="{{ route('patients.create', request()->only(['page', 'search'])) }}" class="btn btn-sipklin px-4">
             <span class="fa fa-plus-circle mr-2"></span>
             <span>Tambah Pasien</span>
         </a>
 
-        <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input type="text" id="searchPasien" placeholder="Cari Pasien...">
-        </div>
+        <form action="{{ route('patients.index') }}" method="GET" class="search-box">
+            <button type="submit" aria-label="Cari pasien"><i class="fas fa-search"></i></button>
+            <input type="text" name="search" id="searchPasien" value="{{ request('search') }}" placeholder="Cari Pasien...">
+        </form>
         
     </div>
 </div>
@@ -52,15 +52,15 @@
                 <td>{{ $patient->no_telepon }}</td>
 
                 <td>
-                    <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-link text-secondary p-0 mx-1">
+                    <a href="{{ route('patients.show', array_merge(['patient' => $patient->id], request()->only(['page', 'search']))) }}" class="btn btn-link text-secondary p-0 mx-1">
                         <span class="fa fa-eye"></span>
                     </a>
 
-                    <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-link text-secondary p-0 mx-1">
+                    <a href="{{ route('patients.edit', array_merge(['patient' => $patient->id], request()->only(['page', 'search']))) }}" class="btn btn-link text-secondary p-0 mx-1">
                         <span class="fa fa-edit"></span>
                     </a>
 
-                    <a href="javascript:void(0)" onclick="actionDestroy('{{ route('patients.destroy', $patient->id) }}')" class="btn btn-link text-danger p-0 mx-1">
+                    <a href="javascript:void(0)" onclick="actionDestroy(this.dataset.url)" data-url="{{ route('patients.destroy', array_merge(['patient' => $patient->id], request()->only(['page', 'search']))) }}" class="btn btn-link text-danger p-0 mx-1">
                         <span class="fa fa-trash"></span>
                     </a>
                 </td>
@@ -98,12 +98,16 @@
         width: 220px;
     }
 
-    .search-box i {
+    .search-box button {
         position: absolute;
         right: 12px;
         top: 50%;
         transform: translateY(-50%);
         color: #06285c;
+        border: 0;
+        padding: 0;
+        background: transparent;
+        cursor: pointer;
     }
 
     .search-box input {
@@ -195,22 +199,6 @@
 @push('script')
 
 <script>
-
-document.getElementById('searchPasien').addEventListener('keyup', function () {
-    let keyword = this.value.toLowerCase();
-    let rows = document.querySelectorAll('#tablePasien tbody tr');
-
-    rows.forEach(function (row) {
-        let text = row.textContent.toLowerCase();
-
-        if (text.includes(keyword)) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-    });
-});
-
 function actionDestroy(url) {
     Swal.fire({
         title: 'Apakah Anda yakin ingin menghapus data ini?',
@@ -242,4 +230,3 @@ Swal.fire({
 </script>
 @endif
 @endpush
-

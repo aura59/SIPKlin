@@ -10,9 +10,24 @@ class PatientController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $patients = Patient::paginate(10);
+        $search = $request->string('search')->trim()->toString();
+        $patients = Patient::query()
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('nik', 'like', "%{$search}%")
+                        ->orWhere('nama', 'like', "%{$search}%")
+                        ->orWhere('tanggal_lahir', 'like', "%{$search}%")
+                        ->orWhere('jenis_kelamin', 'like', "%{$search}%")
+                        ->orWhere('alamat', 'like', "%{$search}%")
+                        ->orWhere('no_telepon', 'like', "%{$search}%");
+                });
+            })
+            ->orderBy('id')
+            ->paginate(10)
+            ->withQueryString();
+
         return view('pages.patient.index', compact('patients'));
     }
 
@@ -47,7 +62,8 @@ class PatientController extends Controller
             'no_telepon' => $request->no_telepon,
         ]);
 
-        return redirect()->route('patients.index')->with('success', 'Data pasien berhasil ditambahkan!');
+        return redirect()->route('patients.index', $request->only(['page', 'search']))
+            ->with('success', 'Data pasien berhasil ditambahkan!');
     }
 
     /**
@@ -95,18 +111,20 @@ class PatientController extends Controller
             'no_telepon' => $request->no_telepon,
         ]);
 
-        return redirect()->route('patients.index')->with('success', 'Berhasil mengubah data pasien ID: ' . $id);
+        return redirect()->route('patients.index', $request->only(['page', 'search']))
+            ->with('success', 'Berhasil mengubah data pasien ID: ' . $id);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
         $patients = Patient::findOrFail($id);
 
         $patients->delete();
 
-        return redirect()->route('patients.index')->with('success', 'Berhasil menghapus data pasien.');
+        return redirect()->route('patients.index', $request->only(['page', 'search']))
+            ->with('success', 'Berhasil menghapus data pasien.');
     }
 }

@@ -12,10 +12,15 @@
 <div class="card">
    <div class="card-header d-flex justify-content-between align-items-center">
 
-        <a href="{{ route('departments.create') }}" class="btn btn-sipklin px-4">
+        <a href="{{ route('departments.create', request()->only(['page', 'search'])) }}" class="btn btn-sipklin px-4">
             <span class="fa fa-plus-circle mr-2"></span>
             <span>Tambah Poli</span>
         </a>
+
+        <form action="{{ route('departments.index') }}" method="GET" class="search-box">
+            <button type="submit" aria-label="Cari poli"><i class="fas fa-search"></i></button>
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Poli...">
+        </form>
 
     </div>
 </div>
@@ -39,15 +44,15 @@
                 <td>{{ $department->description }}</td>
 
                 <td>
-                    <a href="{{ route('departments.show', $department->id) }}" class="btn btn-link text-secondary p-0 mx-1">
+                    <a href="{{ route('departments.show', array_merge(['department' => $department->id], request()->only(['page', 'search']))) }}" class="btn btn-link text-secondary p-0 mx-1">
                         <span class="fa fa-eye"></span>
                     </a>
 
-                    <a href="{{ route('departments.edit', $department->id) }}" class="btn btn-link text-secondary p-0 mx-1">
+                    <a href="{{ route('departments.edit', array_merge(['department' => $department->id], request()->only(['page', 'search']))) }}" class="btn btn-link text-secondary p-0 mx-1">
                         <span class="fa fa-edit"></span>
                     </a>
 
-                    <a href="javascript:void(0)" onclick="actionDestroy('{{ route('departments.destroy', $department->id) }}')" class="btn btn-link text-danger p-0 mx-1">
+                    <a href="javascript:void(0)" onclick="actionDestroy(this.dataset.url)" data-url="{{ route('departments.destroy', array_merge(['department' => $department->id], request()->only(['page', 'search']))) }}" class="btn btn-link text-danger p-0 mx-1">
                         <span class="fa fa-trash"></span>
                     </a>
                 </td>
@@ -121,6 +126,32 @@
         margin-bottom: 0;
     }
 
+    .search-box {
+        position: relative;
+        width: 220px;
+    }
+
+    .search-box button {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #06285c;
+        border: 0;
+        padding: 0;
+        background: transparent;
+        cursor: pointer;
+    }
+
+    .search-box input {
+        width: 220px;
+        height: 38px;
+        border: 1px solid #06285c;
+        border-radius: 5px;
+        color: #06285c;
+        padding-right: 35px;
+    }
+
     .pagination .page-link {
         color: #06285c !important;
         border: 1px solid #ddd;
@@ -191,4 +222,3 @@ Swal.fire({
 </script>
 @endif
 @endpush
-

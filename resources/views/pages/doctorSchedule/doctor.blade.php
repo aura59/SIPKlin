@@ -11,10 +11,10 @@
 
 <div class="card">
     <div class="card-header d-flex justify-content-end align-items-center">
-        <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input type="text" id="searchJadwalDokter" placeholder="Cari Jadwal...">
-        </div>
+        <form action="{{ route('doctor.schedules') }}" method="GET" class="search-box">
+            <button type="submit" aria-label="Cari jadwal"><i class="fas fa-search"></i></button>
+            <input type="text" name="search" id="searchJadwalDokter" value="{{ request('search') }}" placeholder="Cari Jadwal...">
+        </form>
     </div>
 
     <div class="card-body">
@@ -44,7 +44,7 @@
                     <td>{{ \Carbon\Carbon::parse($schedule->jam_selesai)->format('H:i') }}</td>
                     <td>{{ max(0, $schedule->kuota - $schedule->registration_today_count) }}</td>
                     <td class="text-center">
-                        <a href="{{ route('doctorschedules.show', $schedule->id) }}" class="btn btn-link text-secondary p-0 mx-1">
+                        <a href="{{ route('doctorschedules.show', array_merge(['id' => $schedule->id], request()->only(['page', 'search']))) }}" class="btn btn-link text-secondary p-0 mx-1">
                             <span class="fa fa-eye"></span>
                         </a>
                     </td>
@@ -78,12 +78,16 @@
         width: 220px;
     }
 
-    .search-box i {
+    .search-box button {
         position: absolute;
         right: 12px;
         top: 50%;
         transform: translateY(-50%);
         color: #06285c;
+        border: 0;
+        padding: 0;
+        background: transparent;
+        cursor: pointer;
     }
 
     .search-box input {
@@ -163,31 +167,4 @@
 </style>
 @endpush
 
-
 @endsection
-
-
-@push('script')
-<script>
-
-document.getElementById('searchJadwalDokter').addEventListener('keyup', function () {
-
-    let keyword = this.value.toLowerCase();
-    let rows = document.querySelectorAll('#tableJadwalDokter tbody tr');
-
-    rows.forEach(function (row) {
-
-        let text = row.textContent.toLowerCase();
-
-        if (text.includes(keyword)) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-
-    });
-
-});
-
-</script>
-@endpush

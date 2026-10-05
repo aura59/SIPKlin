@@ -10,9 +10,18 @@ class DepartmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $departments = Department::paginate(10);
+        $search = $request->string('search')->trim()->toString();
+        $departments = Department::query()
+            ->when($search !== '', function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            })
+            ->orderBy('id')
+            ->paginate(10)
+            ->withQueryString();
+
         return view('pages.department.index', compact('departments'));
     }
 
@@ -42,7 +51,8 @@ class DepartmentController extends Controller
             'kode_poli' => $kode_poli,
         ]);
 
-        return redirect()->route('departments.index')->with('success', 'Data poli berhasil ditambahkan!');
+        return redirect()->route('departments.index', $request->only(['page', 'search']))
+            ->with('success', 'Data poli berhasil ditambahkan!');
     }
 
     /**
@@ -78,17 +88,19 @@ class DepartmentController extends Controller
         $department = Department::findOrFail($id);
         $department->update($request->all());
 
-        return redirect()->route('departments.index')->with('success', 'Data poli berhasil diperbarui!');
+        return redirect()->route('departments.index', $request->only(['page', 'search']))
+            ->with('success', 'Data poli berhasil diperbarui!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
         $department = Department::findOrFail($id);
         $department->delete();
 
-        return redirect()->route('departments.index')->with('success', 'Data poli berhasil dihapus!');
+        return redirect()->route('departments.index', $request->only(['page', 'search']))
+            ->with('success', 'Data poli berhasil dihapus!');
     }
 }

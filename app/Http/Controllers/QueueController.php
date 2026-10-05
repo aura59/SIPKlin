@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Registration;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class QueueController extends Controller
 {
@@ -78,49 +80,46 @@ class QueueController extends Controller
 
     public function call($id)
     {
-        $registration = Registration::with([
-            'doctorSchedule.doctor.department',
-            'queue'
-        ])->findOrFail($id);
+        DB::transaction(function () use ($id) {
+            $registration = Registration::with([
+                'doctorSchedule.doctor.department',
+                'queue'
+            ])->lockForUpdate()->findOrFail($id);
 
-        $departmentId = $registration->doctorSchedule->doctor->department_id;
-        $tanggal = $registration->tanggal;
-
-        $currentRegistration = Registration::with('queue')
-            ->where('status', 'dipanggil')
-            ->whereDate('tanggal', $tanggal)
-            ->whereHas('doctorSchedule.doctor', function ($query) use ($departmentId) {
-                $query->where('department_id', $departmentId);
-            })
-            ->first();
-
-        if ($currentRegistration && !$currentRegistration->medicalRecord()->exists()) {
-            return back()->withErrors([
-                'registration' => 'Selesaikan rekam medis pasien yang sedang dipanggil terlebih dahulu.'
-            ]);
-        }
-
-        if ($currentRegistration) {
-            $currentRegistration->update([
-                'status' => 'selesai'
-            ]);
-
-            if ($currentRegistration->queue) {
-                $currentRegistration->queue->update([
-                    'status' => 'selesai'
+            if ($registration->status !== 'menunggu') {
+                throw ValidationException::withMessages([
+                    'registration' => 'Hanya antrean yang masih menunggu yang bisa dipanggil.'
                 ]);
             }
-        }
 
-        $registration->update([
-            'status' => 'dipanggil'
-        ]);
+            $departmentId = $registration->doctorSchedule->doctor->department_id;
+            $tanggal = $registration->tanggal;
 
-        if ($registration->queue) {
-            $registration->queue->update([
-                'status' => 'dipanggil'
-            ]);
-        }
+            Department::whereKey($departmentId)->lockForUpdate()->firstOrFail();
+
+            $currentRegistration = Registration::with('queue')
+                ->where('status', 'dipanggil')
+                ->whereDate('tanggal', $tanggal)
+                ->whereHas('doctorSchedule.doctor', function ($query) use ($departmentId) {
+                    $query->where('department_id', $departmentId);
+                })
+                ->lockForUpdate()
+                ->first();
+
+            if ($currentRegistration && !$currentRegistration->medicalRecord()->exists()) {
+                throw ValidationException::withMessages([
+                    'registration' => 'Selesaikan rekam medis pasien yang sedang dipanggil terlebih dahulu.'
+                ]);
+            }
+
+            if ($currentRegistration) {
+                $currentRegistration->update(['status' => 'selesai']);
+                $currentRegistration->queue?->update(['status' => 'selesai']);
+            }
+
+            $registration->update(['status' => 'dipanggil']);
+            $registration->queue?->update(['status' => 'dipanggil']);
+        });
 
         return back()->with('success', 'Antrean berhasil dipanggil.');
     }

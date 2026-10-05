@@ -13,9 +13,12 @@
 
     <div class="col-md-7">
         <div class="card">
-            <form action="{{ route('departments.update', $department->id) }}" method="POST">
+            <form action="{{ route('departments.update', array_merge(['department' => $department->id], request()->only(['page', 'search']))) }}" method="POST">
                 @csrf
                 @method('PUT')
+                @foreach(request()->only(['page', 'search']) as $key => $value)
+                    <input type="hidden" name="{{ $key }}" value="{{ $value }}">
+                @endforeach
 
                 <div class="card-header">
                     <h5 class="card-title mb-0">Update Data</h5>
@@ -52,7 +55,7 @@
                         Save
                     </button>
 
-                    <a href="{{ route('departments.index') }}" class="btn btn-secondary">
+                    <a href="{{ route('departments.index', request()->only(['page', 'search'])) }}" class="btn btn-secondary">
                         <span class="fa fa-times-circle"></span>
                         Cancel
                     </a>

@@ -59,9 +59,12 @@ Route::post('/registrations', [App\Http\Controllers\RegistrationController::clas
 // antrean
 Route::middleware(['auth', 'role:admin,dokter'])->group(function () {
     Route::get('/queues', [App\Http\Controllers\QueueController::class, 'index'])->name('queues.index');
-    Route::patch('/queues/{id}/call', [App\Http\Controllers\QueueController::class, 'call'])->name('queues.call');
     Route::patch('/queues/{id}/finish', [App\Http\Controllers\QueueController::class, 'finish'])->name('queues.finish');
 });
+
+Route::patch('/queues/{id}/call', [App\Http\Controllers\QueueController::class, 'call'])
+    ->middleware(['auth', 'role:admin'])
+    ->name('queues.call');
 
 // rekam medis
 Route::middleware(['auth', 'role:dokter'])->group(function () {

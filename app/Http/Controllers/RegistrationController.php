@@ -9,6 +9,8 @@ use App\Models\Patient;
 use App\Models\Doctor;
 use App\Models\Department;
 use App\Models\Queue;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class RegistrationController extends Controller
 {
@@ -17,7 +19,21 @@ class RegistrationController extends Controller
         $patients = Patient::all();
         $departments = Department::all();
         $doctors = Doctor::with('department')->get();
-        $doctorschedules = DoctorSchedule::with('doctor.department')->get();
+        $doctorschedules = DoctorSchedule::with('doctor.department')
+            ->orderBy('doctor_id')
+            ->orderByRaw("CASE hari
+                WHEN 'Senin' THEN 1
+                WHEN 'Selasa' THEN 2
+                WHEN 'Rabu' THEN 3
+                WHEN 'Kamis' THEN 4
+                WHEN 'Jumat' THEN 5
+                WHEN 'Sabtu' THEN 6
+                WHEN 'Minggu' THEN 7
+                ELSE 8
+            END")
+            ->orderBy('jam_mulai')
+            ->orderBy('id')
+            ->get();
 
         $registrationCounts = Registration::selectRaw(
             'doctor_schedule_id, tanggal, COUNT(*) as jumlah'
@@ -77,43 +93,43 @@ class RegistrationController extends Controller
                 ])->withInput();
         }
 
-        $jumlahPendaftaran = Registration::where('doctor_schedule_id',$request->doctor_schedule_id)
-        ->whereDate('tanggal', $request->tanggal)
-        ->count();
+        DB::transaction(function () use ($request, $schedule) {
+            $department = Department::whereKey($schedule->doctor->department_id)
+                ->lockForUpdate()
+                ->firstOrFail();
 
-        if ($jumlahPendaftaran >= $schedule->kuota) {
-            return back()->withErrors([
-                    'doctor_schedule_id' =>'Kuota pendaftaran untuk jadwal ini sudah penuh.'
-                ])->withInput();
-        }
+            $jumlahPendaftaran = Registration::where('doctor_schedule_id', $schedule->id)
+                ->whereDate('tanggal', $request->tanggal)
+                ->count();
 
-        $department = $schedule->doctor->department;
+            if ($jumlahPendaftaran >= $schedule->kuota) {
+                throw ValidationException::withMessages([
+                    'doctor_schedule_id' => 'Kuota pendaftaran untuk jadwal ini sudah penuh.'
+                ]);
+            }
 
-        $kodePoli = chr(64 + $department->id);
+            $registration = Registration::create([
+                'patient_id' => $request->patient_id,
+                'doctor_schedule_id' => $schedule->id,
+                'tanggal' => $request->tanggal,
+                'catatan' => $request->catatan,
+                'status' => 'menunggu',
+            ]);
 
-        $registration = Registration::create([
-            'patient_id' => $request->patient_id,
-            'doctor_schedule_id' => $request->doctor_schedule_id,
-            'tanggal' => $request->tanggal,
-            'catatan' => $request->catatan,
-            'status' => 'menunggu',
-        ]);
+            $lastQueue = Queue::whereHas('registration.doctorSchedule.doctor', function ($query) use ($department) {
+                $query->where('department_id', $department->id);
+            })
+            ->whereHas('registration', function ($query) use ($request) {
+                $query->whereDate('tanggal', $request->tanggal);
+            })
+            ->max('nomor_antrean');
 
-        $lastQueue = Queue::whereHas('registration.doctorSchedule.doctor', function ($query) use ($department) {
-            $query->where('department_id', $department->id);
-        })
-        ->whereHas('registration', function ($query) use ($request) {
-            $query->whereDate('tanggal', $request->tanggal);
-        })
-        ->max('nomor_antrean');
-
-        $nextQueueNumber = $lastQueue ? $lastQueue + 1 : 1;
-
-        Queue::create([
-            'registration_id' => $registration->id,
-            'nomor_antrean' => $nextQueueNumber,
-            'status' => 'menunggu',
-        ]);
+            Queue::create([
+                'registration_id' => $registration->id,
+                'nomor_antrean' => $lastQueue ? $lastQueue + 1 : 1,
+                'status' => 'menunggu',
+            ]);
+        });
 
         return redirect()->route('queues.index')->with('success', 'Pendaftaran berhasil ditambahkan.');
     }

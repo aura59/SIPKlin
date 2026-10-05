@@ -55,12 +55,12 @@
             </div>
 
            <div class="card-footer">
-                <a href="{{ route('patients.index') }}" class="btn btn-secondary">
+                <a href="{{ route('patients.index', request()->only(['page', 'search'])) }}" class="btn btn-secondary">
                     <span class="fa fa-arrow-left"></span>
                     Back
                 </a>
 
-                <a href="{{ route('patients.edit', $patients->id) }}" class="btn btn-sipklin  ">
+                <a href="{{ route('patients.edit', array_merge(['patient' => $patients->id], request()->only(['page', 'search']))) }}" class="btn btn-sipklin  ">
                     <span class="fa fa-edit"></span>
                     Edit
                 </a>

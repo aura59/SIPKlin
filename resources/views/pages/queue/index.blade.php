@@ -124,16 +124,18 @@
 
                         <p>{{ $nextRegistration->patient->nama ?? '-' }}</p>
 
-                        <form action="{{ route('queues.call', $nextRegistration->id) }}" method="POST">
-                            @csrf
-                            @method('PATCH')
+                        @if (auth()->user()->role === 'admin')
+                            <form action="{{ route('queues.call', $nextRegistration->id) }}" method="POST">
+                                @csrf
+                                @method('PATCH')
 
-                            <button type="submit" class="btn btn-sipklin btn-block">
-                                <i class="fas fa-bullhorn mr-2"></i>
-                                Panggil
-                                {{ $nextCode }}-{{ str_pad($nextNumber, 3, '0', STR_PAD_LEFT) }}
-                            </button>
-                        </form>
+                                <button type="submit" class="btn btn-sipklin btn-block">
+                                    <i class="fas fa-bullhorn mr-2"></i>
+                                    Panggil
+                                    {{ $nextCode }}-{{ str_pad($nextNumber, 3, '0', STR_PAD_LEFT) }}
+                                </button>
+                            </form>
+                        @endif
 
                     @else
                         <strong>-</strong>
@@ -201,7 +203,7 @@
                                     </td>
 
                                     <td>
-                                        @if ($registration->status == 'menunggu')
+                                        @if ($registration->status == 'menunggu' && auth()->user()->role === 'admin')
 
                                             <form action="{{ route('queues.call', $registration->id) }}" method="POST" class="d-inline">
                                                 @csrf
@@ -211,6 +213,9 @@
                                                     <i class="fas fa-bullhorn"></i>
                                                 </button>
                                             </form>
+                                        @elseif ($registration->status == 'menunggu')
+
+                                            <span class="text-muted">Menunggu panggilan admin</span>
 
                                         @elseif ($registration->status == 'dipanggil')
 

@@ -13,15 +13,15 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
 
-            <a href="{{ route('doctorschedules.create') }}" class="btn btn-sipklin px-4">
+            <a href="{{ route('doctorschedules.create', request()->only(['page', 'search'])) }}" class="btn btn-sipklin px-4">
                 <span class="fa fa-plus-circle mr-2"></span>
                 <span>Tambah Jadwal Dokter</span>
             </a>
 
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchJadwalDokter" placeholder="Cari Jadwal Dokter...">
-            </div>
+            <form action="{{ route('doctorschedules.index') }}" method="GET" class="search-box">
+                <button type="submit" aria-label="Cari jadwal dokter"><i class="fas fa-search"></i></button>
+                <input type="text" name="search" id="searchJadwalDokter" value="{{ request('search') }}" placeholder="Cari Jadwal Dokter...">
+            </form>
 
     </div>
 
@@ -54,15 +54,15 @@
                     <td>{{ \Carbon\Carbon::parse($schedule->jam_selesai)->format('H:i') }}</td>
                     <td>{{ max(0, $schedule->kuota - $schedule->registration_today_count) }}</td>
                     <td>
-                        <a href="{{ route('doctorschedules.show', $schedule->id) }}" class="btn btn-link text-secondary p-0 mx-1">
+                        <a href="{{ route('doctorschedules.show', array_merge(['id' => $schedule->id], request()->only(['page', 'search']))) }}" class="btn btn-link text-secondary p-0 mx-1">
                             <span class="fa fa-eye"></span>
                         </a>
 
-                        <a href="{{ route('doctorschedules.edit', $schedule->id) }}" class="btn btn-link text-secondary p-0 mx-1">
+                        <a href="{{ route('doctorschedules.edit', array_merge(['doctorschedule' => $schedule->id], request()->only(['page', 'search']))) }}" class="btn btn-link text-secondary p-0 mx-1">
                             <span class="fa fa-edit"></span>
                         </a>
 
-                        <a href="javascript:void(0)" onclick="actionDestroy('{{ route('doctorschedules.destroy', $schedule->id) }}')" class="btn btn-link text-danger p-0 mx-1">
+                        <a href="javascript:void(0)" onclick="actionDestroy(this.dataset.url)" data-url="{{ route('doctorschedules.destroy', array_merge(['doctorschedule' => $schedule->id], request()->only(['page', 'search']))) }}" class="btn btn-link text-danger p-0 mx-1">
                             <span class="fa fa-trash"></span>
                         </a>
                     </td>
@@ -106,12 +106,16 @@
         width: 220px;
     }
 
-    .search-box i {
+    .search-box button {
         position: absolute;
         right: 12px;
         top: 50%;
         transform: translateY(-50%);
         color: #06285c;
+        border: 0;
+        padding: 0;
+        background: transparent;
+        cursor: pointer;
     }
 
     .search-box input {
@@ -207,22 +211,6 @@
 
 @push('script')
 <script>
-
-document.getElementById('searchJadwalDokter').addEventListener('keyup', function () {
-    let keyword = this.value.toLowerCase();
-    let rows = document.querySelectorAll('#tableJadwalDokter tbody tr');
-
-    rows.forEach(function (row) {
-        let text = row.textContent.toLowerCase();
-
-        if (text.includes(keyword)) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
-        }
-    });
-});
-
 function actionDestroy(url) {
     Swal.fire({
         title: 'Apakah Anda yakin ingin menghapus data ini?',

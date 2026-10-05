@@ -53,19 +53,19 @@
 
             <div class="card-footer">
                 @if(auth()->user()->role === 'dokter')
-                <a href="{{ route('doctor.schedules') }}" class="btn btn-secondary">
+                <a href="{{ route('doctor.schedules', request()->only(['page', 'search'])) }}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i>
                     Back
                 </a>
 
                 @else
 
-                <a href="{{ route('doctorschedules.index') }}" class="btn btn-secondary">
+                <a href="{{ route('doctorschedules.index', request()->only(['page', 'search'])) }}" class="btn btn-secondary">
                     <i class="fas fa-arrow-left"></i>
                     Back
                 </a>
 
-                <a href="{{ route('doctorschedules.edit', $doctorschedule->id) }}" class="btn btn-sipklin">
+                <a href="{{ route('doctorschedules.edit', array_merge(['doctorschedule' => $doctorschedule->id], request()->only(['page', 'search']))) }}" class="btn btn-sipklin">
                     <i class="fas fa-edit"></i>
                     Edit
                 </a>
