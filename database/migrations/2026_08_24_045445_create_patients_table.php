@@ -13,6 +13,7 @@ public function up(): void
 {
     Schema::create('patients', function (Blueprint $table) {
         $table->id();
+        $table->string('no_rm', 20)->unique();
         $table->string('nik', 16)->unique();
         $table->string('nama');
         $table->date('tanggal_lahir');

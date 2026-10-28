@@ -1,0 +1,346 @@
+
+/* ========================================
+   SIPKLIN - RESPONSIVE UNTUK SEMUA HALAMAN
+======================================== */
+
+html,
+body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+#wrapper,
+#content-wrapper,
+#content,
+.container-fluid,
+.card,
+.card-body {
+    min-width: 0;
+}
+
+#content-wrapper {
+    box-sizing: border-box;
+}
+
+img,
+canvas,
+video,
+svg {
+    max-width: 100%;
+}
+
+.form-control,
+.custom-select,
+select,
+textarea {
+    max-width: 100%;
+}
+
+.card {
+    overflow-wrap: break-word;
+}
+
+.card-header,
+.card-footer {
+    min-width: 0;
+}
+
+.table-responsive {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive table {
+    white-space: nowrap;
+}
+
+/* Tabel DataTables */
+.dataTables_wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.dataTables_wrapper .row {
+    margin-left: 0;
+    margin-right: 0;
+    flex-wrap: wrap;
+}
+
+.dataTables_wrapper .dataTables_filter {
+    text-align: left !important;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    max-width: 100%;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    max-width: 100%;
+}
+
+.pagination {
+    flex-wrap: wrap;
+}
+
+/* Gambar profil */
+.profile-photo {
+    max-width: 100%;
+}
+
+/* Grafik */
+#myAreaChart,
+#myBarChart,
+#myPieChart {
+    max-width: 100%;
+}
+
+/* ========================================
+   TABLET DAN HP
+======================================== */
+
+@media (max-width: 767.98px) {
+
+    /* Sidebar */
+    #accordionSidebar {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        width: 224px !important;
+        max-width: 85vw;
+        height: 100vh;
+        height: 100dvh;
+        overflow-y: auto;
+        z-index: 1050;
+        transform: translateX(0);
+        transition: transform 0.25s ease;
+    }
+
+    #accordionSidebar.toggled {
+        width: 224px !important;
+        max-width: 85vw;
+        transform: translateX(-100%);
+    }
+
+    /* Konten menggunakan lebar layar HP */
+    #content-wrapper {
+        width: 100% !important;
+        max-width: 100%;
+        margin-left: 0 !important;
+    }
+
+    #content {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    #wrapper {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* Lapisan ketika sidebar dibuka */
+    body:not(.sidebar-toggled)::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.35);
+        z-index: 1040;
+    }
+
+    /* Ruang konten */
+    .container-fluid {
+        width: 100%;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    .row {
+        min-width: 0;
+    }
+
+    .row > [class*="col-"] {
+        min-width: 0;
+    }
+
+    /* Kartu */
+    .card {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .card-header {
+        padding: 0.75rem 1rem;
+    }
+
+    .card-header h5,
+    .card-header h6 {
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+    }
+
+    /* Judul halaman */
+    .d-sm-flex.align-items-center.justify-content-between {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    h1.h3 {
+        font-size: 1.3rem;
+        line-height: 1.4;
+    }
+
+    /* Formulir pendaftaran dan rekam medis */
+    .form-row-costum {
+        grid-template-columns: minmax(0, 1fr) !important;
+        row-gap: 8px;
+        column-gap: 0;
+    }
+
+    .form-row-costum label {
+        margin-bottom: 0;
+    }
+
+    .form-row-costum .form-control {
+        width: 100%;
+    }
+
+    .form-control,
+    .custom-select,
+    select,
+    textarea {
+        width: 100%;
+        font-size: 16px;
+    }
+
+    /* Informasi pasien */
+    .patient-data-box {
+        padding: 1rem;
+    }
+
+    .patient-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .patient-info strong {
+        max-width: 100%;
+        text-align: left;
+        overflow-wrap: anywhere;
+    }
+
+    /* Filter halaman antrean */
+    .queue-filter {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .filter-item {
+        width: 100% !important;
+    }
+
+    .filter-item .form-control {
+        width: 100%;
+    }
+
+    .btn-tampilkan {
+        width: 100%;
+    }
+
+    /* Tabel biasa yang belum dibungkus table-responsive */
+    .card-body > table.table:not(.dataTable) {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Tabel DataTables tetap bisa digeser */
+    .dataTables_wrapper table.dataTable {
+        min-width: 600px;
+    }
+
+    .dataTables_wrapper .dataTables_paginate {
+        overflow-x: auto;
+    }
+
+    /* Tombol formulir */
+    .card-footer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .card-footer .btn {
+        margin: 0;
+    }
+
+    /* Foto profil */
+    .profile-photo {
+        width: min(220px, 60vw);
+        height: min(220px, 60vw);
+    }
+
+    /* Navbar */
+    .topbar {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    /* Konten grafik */
+    #myAreaChart,
+    #myBarChart,
+    #myPieChart {
+        width: 100% !important;
+    }
+}
+
+/* ========================================
+   HP KECIL
+======================================== */
+
+@media (max-width: 575.98px) {
+
+    .container-fluid {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .card-body {
+        padding: 0.85rem;
+    }
+
+    .card-header {
+        padding: 0.75rem;
+    }
+
+    .btn {
+        max-width: 100%;
+    }
+
+    .registration-info-item {
+        gap: 8px;
+        align-items: flex-start;
+    }
+
+    .registration-info-item strong {
+        overflow-wrap: anywhere;
+    }
+
+    .pagination {
+        gap: 2px;
+    }
+
+    .pagination .page-link {
+        padding: 0.4rem 0.6rem;
+    }
+}

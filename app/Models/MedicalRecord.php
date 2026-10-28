@@ -13,6 +13,10 @@ class MedicalRecord extends Model
         'keluhan',
         'diagnosis',
         'tindakan',
+        'resep_obat',
+        'perlu_kontrol',
+        'tanggal_kontrol',
+        'catatan_kontrol',
     ];
     
     public function registration()

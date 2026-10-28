@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('title', 'Dashboard - SIPKlin')
@@ -106,7 +107,10 @@
         <div class="card shadow mb-4">
 
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-sipklin">Pendaftaran Hari Ini</h6>
+                <h6 class="m-0 font-weight-bold text-sipklin">
+                    <i class="fas fa-calendar-plus fa-2x text-success mr-2"></i>
+                    Pendaftaran Hari Ini
+                </h6>
             </div>
 
             <div class="card-body">
@@ -123,7 +127,7 @@
                             </tr>
                         </thead>
 
-                         <tbody>
+                        <tbody>
                             @forelse ($pendaftaranHariIni as $pendaftaran)
                                 <tr>
                                     <td class="text-center">{{ $loop->iteration }}</td>
@@ -153,7 +157,10 @@
         <div class="card shadow mb-4">
 
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-sipklin">Antrean Menunggu</h6>
+                <h6 class="m-0 font-weight-bold text-sipklin">
+                    <i class="fas fa-user-clock fa-2x text-info mr-2"></i>
+                    Antrean Menunggu
+                </h6>
             </div>
 
             <div class="card-body">
@@ -188,10 +195,127 @@
 
 </div>
 
+
+<div class="row">
+
+    <!-- Grafik Kunjungan Pasien -->
+    <div class="col-lg-8">
+        <div class="card shadow mb-4">
+
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-sipklin">
+                    <i class="fas fa-chart-line fa-2x text-sipklin mr-2"></i>
+                    Grafik Kunjungan Pasien
+                </h6>
+            </div>
+
+            <div class="card-body">
+                <div style="position: relative; height: 320px;">
+                    <canvas id="myAreaChart"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Jadwal Kontrol Pasien -->
+    <div class="col-lg-4">
+        <div class="card shadow mb-4">
+
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-sipklin">
+                    <i class="fas fa-calendar-check fa-2x text-warning mr-2"></i>
+                    Jadwal Kontrol Pasien
+                </h6>
+            </div>
+
+    <div class="card-body">
+
+        <div class="text-center mb-3">
+            <i class="fas fa-calendar-check fa-3x text-sipklin mb-3"></i>
+
+            <h6 class="font-weight-bold text-gray-800">
+                Kontrol Hari Ini
+            </h6>
+
+            <p class="text-muted small">
+                Pasien yang dijadwalkan kontrol hari ini.
+            </p>
+
+            <div class="h2 font-weight-bold text-sipklin">
+                {{ $totalKontrolHariIni ?? 0 }}
+            </div>
+
+            <small class="text-muted">Jadwal kontrol</small>
+        </div>
+
+        <hr>
+
+        @forelse ($jadwalKontrolHariIni ?? [] as $item)
+
+            <div class="border rounded p-3 mb-3">
+
+                <div class="font-weight-bold text-gray-800">
+                    <i class="fas fa-user-circle text-sipklin mr-1"></i>
+                    {{ $item->registration->patient->nama ?? 'Nama pasien tidak tersedia' }}
+                </div>
+
+                <div class="small text-muted mt-2">
+                    <i class="fas fa-hospital mr-1"></i>
+                    Poli:
+                    {{ $item->registration->doctorSchedule->doctor->department->name ?? '-' }}
+                </div>
+
+                <div class="small text-muted mt-1">
+                    <i class="fas fa-user-md mr-1"></i>
+                    Dokter:
+                    {{ $item->registration->doctorSchedule->doctor->nama ?? '-' }}
+                </div>
+
+                <div class="small text-muted mt-1">
+                    <i class="fas fa-sticky-note mr-1"></i>
+                    Catatan:
+                    {{ $item->catatan_kontrol ?: 'Tidak ada catatan' }}
+                </div>
+
+            </div>
+
+        @empty
+
+            <div class="text-center text-muted small py-3">
+                <i class="fas fa-calendar-times fa-2x mb-2"></i>
+
+                <p class="mb-0">
+                    Tidak ada pasien yang dijadwalkan kontrol hari ini.
+                </p>
+            </div>
+
+        @endforelse
+
+        <a href="{{ route('control-schedules.index') }}"
+        class="btn btn-sipklin btn-block">
+            Lihat Semua Jadwal
+            <i class="fas fa-arrow-right ml-1"></i>
+        </a>
+
+    </div>
+
+        </div>
+    </div>
+
+</div>
+
+
 @endsection
 
 @push('styles')
 <style>
+    .btn-sipklin {
+        background-color: #06285c !important;
+        border-color: #06285c !important;
+        color: white !important;
+    }
 
     .dashboard-table,
     .dashboard-table th,
@@ -206,4 +330,18 @@
     }
 
 </style>
+@endpush
+
+{{-- Grafik Kunjungan Pasien SIPKlin --}}
+@push('script')
+    <script>
+        window.sipklinChartLabels = [
+            'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun',
+            'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
+        ];
+
+        window.sipklinChartValues = {{ Js::from($grafikKunjungan ?? array_fill(0, 12, 0)) }};
+    </script>
+
+    <script src="{{ asset('js/demo/chart-area-sipklin.js') }}"></script>
 @endpush

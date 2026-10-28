@@ -9,6 +9,7 @@ class Patient extends Model
     protected $table = 'patients';
 
     protected $fillable = [
+        'no_rm',
         'nik',
         'nama',
         'tanggal_lahir',

@@ -54,8 +54,8 @@
             </tbody>
         </table>
 
-        <div class="d-flex justify-content-end mt-3">
-            {{ $registrations->links() }}
+        <div class="d-flex justify-content-center mt-3">
+            {{ $registrations->links('pagination::bootstrap-4') }}
         </div>
     </div>
 </div>
@@ -146,19 +146,29 @@
     }
 
     .pagination .page-link {
-        color: #06285c;
+        color: #06285c !important;
         border: 1px solid #ddd;
+        font-size: 14px !important;
+        line-height: 1.2;
+        padding: 6px 10px;
     }
 
     .pagination .page-item.active .page-link {
-        background-color: #06285c;
-        border-color: #06285c;
-        color: white;
+        background-color: #06285c !important;
+        border-color: #06285c !important;
+        color: white !important;
     }
 
     .pagination .page-link:hover {
-        background-color: #EAF1FB;
-        color: #06285c;
+        background-color: #EAF1FB !important;
+        color: #06285c !important;
+    }
+
+    .pagination svg {
+        width: 16px !important;
+        height: 16px !important;
+        max-width: 16px !important;
+        max-height: 16px !important;
     }
 
 

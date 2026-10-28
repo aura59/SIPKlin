@@ -39,6 +39,10 @@ class MedicalRecordController extends Controller
             'keluhan' => 'required|string|max:500',
             'diagnosis' => 'required|string|max:500',
             'tindakan' => 'required|string|max:500',
+            'resep_obat' => 'nullable|string',
+            'perlu_kontrol' => 'nullable|boolean',
+            'tanggal_kontrol' => 'nullable|required_if:perlu_kontrol,1|date|after_or_equal:today',
+            'catatan_kontrol' => 'nullable|required_if:perlu_kontrol,1|string',
         ]);
 
         $doctor = Doctor::where('user_id', Auth::id())->firstOrFail();
@@ -77,6 +81,10 @@ class MedicalRecordController extends Controller
                 'keluhan' => $request->keluhan,
                 'diagnosis' => $request->diagnosis,
                 'tindakan' => $request->tindakan,
+                'resep_obat' => $request->resep_obat,
+                'perlu_kontrol' => $request->perlu_kontrol,
+                'tanggal_kontrol' => $request->perlu_kontrol ? $request->tanggal_kontrol : null,
+                'catatan_kontrol' => $request->perlu_kontrol ? $request->catatan_kontrol : null,
             ]);
 
             $registration->update(['status' => 'selesai']);

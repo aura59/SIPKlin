@@ -196,7 +196,7 @@ function previewFoto(event) {
 
 Swal.fire({
     icon: 'success',
-    title: 'Berhasil!',
+    title: 'Berhasil Mengubah Profil!',
     text: "{{ session('success') }}",
     timer: 2000,
     showConfirmButton: false

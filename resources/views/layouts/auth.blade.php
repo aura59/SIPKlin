@@ -27,6 +27,31 @@
         rel="stylesheet">
 
     <style>
+        
+        @media (max-width: 575.98px) {
+            .login-wrapper {
+                min-height: 100vh;
+                padding: 16px 12px;
+            }
+
+            .sipklin-login-card {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .sipklin-login-card .card-body {
+                padding: 1.5rem !important;
+            }
+
+            .logo-name {
+                font-size: 25px;
+            }
+
+            .logo-icon {
+                font-size: 30px;
+            }
+        }
+
 
         body {
             background: #f4f6fb;

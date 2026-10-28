@@ -30,6 +30,7 @@
         <thead>
             <tr>
                 <th>No</th>
+                <th>No. RM</th>
                 <th>Nik</th>
                 <th>Nama</th>
                 <th>Tanggal Lahir</th>
@@ -44,6 +45,7 @@
             @forelse($patients as $patient)
             <tr>
                 <td>{{ $patients->firstItem() + $loop->index }}</td>
+                <td>{{ $patient->no_rm }}</td>
                 <td>{{ $patient->nik }}</td>
                 <td>{{ $patient->nama }}</td>
                 <td>{{ $patient->tanggal_lahir }}</td>
@@ -68,7 +70,7 @@
 
             @empty
             <tr>
-                <td colspan="8" class="text-center">Belum ada data pasien</td>
+                <td colspan="9" class="text-center">Belum ada data pasien</td>
             </tr>
             @endforelse
         </tbody>

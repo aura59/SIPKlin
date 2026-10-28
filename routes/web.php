@@ -54,6 +54,9 @@ Route::get('/dokter/jadwal', [App\Http\Controllers\DoctorScheduleController::cla
 Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::get('/registrations', [App\Http\Controllers\RegistrationController::class, 'create'])->name('registrations.create');
 Route::post('/registrations', [App\Http\Controllers\RegistrationController::class, 'store'])->name('registrations.store');
+
+// halaman tiket antrean
+    Route::get('/registrations/{id}/ticket', [App\Http\Controllers\RegistrationController::class, 'ticket'])->name('registrations.ticket');
 });
 
 // antrean
@@ -75,3 +78,7 @@ Route::post('/medical-records', [App\Http\Controllers\MedicalRecordController::c
 // riwayat kunjungan
 Route::get('/visit-history', [VisitHistoryController::class, 'index'])->middleware('auth')->name('visit-history.index');
 Route::get('/visit-history/{id}', [VisitHistoryController::class, 'show'])->middleware('auth')->name('visit-history.show');
+
+
+ // jadwal kontrol pasien
+Route::get('/jadwal-kontrol', [App\Http\Controllers\ControlScheduleController::class, 'index'])->middleware(['auth', 'role:admin,dokter'])->name('control-schedules.index');

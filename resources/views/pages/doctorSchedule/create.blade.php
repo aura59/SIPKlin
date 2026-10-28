@@ -26,7 +26,7 @@
 
                 <div class="card-body">
                     <div class="form-group mb-3">
-                        <label for="doctor_id" class="form-label">Akun Dokter</label>
+                        <label for="doctor_id" class="form-label">Dokter</label>
 
                         <select name="doctor_id" id="doctor_id" class="form-control @error('doctor_id') is-invalid @enderror">
                             <option value="">Pilih Dokter</option>

@@ -20,18 +20,19 @@
                     <h5 class="card-title mb-0">Form Pendaftaran</h5>
                 </div>
 
-                <div class="card-body">
+                <div class="card-body">     
                     <div class="form-row-costum">
                         <label for="patient_id">Pasien</label>
                         <select class="form-control" id="patient_id" name="patient_id" required>
                             <option value="">Pilih Pasien</option>
                             @foreach ($patients as $patient)
-                                <option value="{{ $patient->id }}">
-                                    {{ $patient->nama }}
+                                <option value="{{ $patient->id }}" {{ old('patient_id') == $patient->id ? 'selected' : '' }}>
+                                    {{ $patient->no_rm }} - {{ $patient->nama }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
+
 
                     <div class="form-row-costum">
                         <label for="department_id">Poli</label>
@@ -75,7 +76,7 @@
 
                     <div class="form-row-costum">
                         <label for="tanggal">Tanggal</label>
-                        <input type="date" class="form-control" id="tanggal" name="tanggal" required>
+                        <input type="date" class="form-control" id="tanggal" name="tanggal" min="{{ now()->format('Y-m-d') }}" value="{{ old('tanggal') }}" required>
                     </div>
 
                     <div class="form-row-costum textarea-row">

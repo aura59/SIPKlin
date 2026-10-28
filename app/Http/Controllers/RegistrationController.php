@@ -73,8 +73,10 @@ class RegistrationController extends Controller
             'patient_id' => 'required|exists:patients,id',
             'doctor_id' => 'required|exists:doctors,id',
             'doctor_schedule_id' => 'required|exists:doctor_schedules,id',
-            'tanggal' => 'required|date',
+            'tanggal' => 'required|date|after_or_equal:today',
             'catatan' => 'required|string|max:255',
+        ], [
+            'tanggal.after_or_equal' => 'Tanggal pendaftaran tidak boleh sebelum hari ini.',
         ]);
 
         $schedule = DoctorSchedule::with('doctor.department')->findOrFail($request->doctor_schedule_id);
@@ -93,7 +95,7 @@ class RegistrationController extends Controller
                 ])->withInput();
         }
 
-        DB::transaction(function () use ($request, $schedule) {
+       $registration = DB::transaction(function () use ($request, $schedule) {
             $department = Department::whereKey($schedule->doctor->department_id)
                 ->lockForUpdate()
                 ->firstOrFail();
@@ -129,8 +131,20 @@ class RegistrationController extends Controller
                 'nomor_antrean' => $lastQueue ? $lastQueue + 1 : 1,
                 'status' => 'menunggu',
             ]);
+            return $registration;
         });
 
-        return redirect()->route('queues.index')->with('success', 'Pendaftaran berhasil ditambahkan.');
+        return redirect()->route('registrations.ticket', $registration->id)->with('success', 'Pendaftaran berhasil ditambahkan.');
+    }
+
+        public function ticket($id)
+    {
+        $registration = Registration::with([
+            'patient',
+            'doctorSchedule.doctor.department',
+            'queue',
+        ])->findOrFail($id);
+
+        return view('pages.registration.ticket', compact('registration'));
     }
 }

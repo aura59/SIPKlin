@@ -31,6 +31,24 @@ class PaginationSearchTest extends TestCase
             });
     }
 
+    public function test_patient_list_orders_newest_records_first(): void
+    {
+        $this->actingAs(User::factory()->create(['role' => 'admin']));
+
+        $firstPatient = $this->createPatient('Patient 01');
+        $latestPatient = $this->createPatient('Patient 02');
+
+        $response = $this->get(route('patients.index'));
+
+        $response->assertOk()
+            ->assertViewHas('patients', function ($patients) use ($firstPatient, $latestPatient) {
+                $names = $patients->pluck('nama')->all();
+
+                return $names[0] === $latestPatient->nama
+                    && $names[1] === $firstPatient->nama;
+            });
+    }
+
     public function test_department_search_finds_records_beyond_the_current_page(): void
     {
         $this->actingAs(User::factory()->create(['role' => 'admin']));
@@ -98,27 +116,27 @@ class PaginationSearchTest extends TestCase
             $patient = $this->createPatient(sprintf('Patient %02d', $number));
         }
 
-        $response = $this->get(route('patients.index', ['page' => 2, 'search' => 'Patient']));
+        $response = $this->get(route('patients.index', ['page' => 1, 'search' => 'Patient']));
 
         $response->assertOk()
             ->assertSee(e(route('patients.show', [
                 'patient' => $patient->id,
-                'page' => 2,
+                'page' => 1,
                 'search' => 'Patient',
             ])), false);
 
         $detailResponse = $this->get(route('patients.show', [
             'patient' => $patient->id,
-            'page' => 2,
+            'page' => 1,
             'search' => 'Patient',
         ]));
 
         $detailResponse->assertOk()
-            ->assertSee(e(route('patients.index', ['page' => 2, 'search' => 'Patient'])), false);
+            ->assertSee(e(route('patients.index', ['page' => 1, 'search' => 'Patient'])), false);
 
         $updateResponse = $this->put(route('patients.update', [
             'patient' => $patient->id,
-            'page' => 2,
+            'page' => 1,
             'search' => 'Patient',
         ]), [
             'nik' => $patient->nik,
@@ -130,18 +148,18 @@ class PaginationSearchTest extends TestCase
         ]);
 
         $updateResponse->assertRedirect(route('patients.index', [
-            'page' => 2,
+            'page' => 1,
             'search' => 'Patient',
         ]));
 
         $deleteResponse = $this->delete(route('patients.destroy', [
             'patient' => $patient->id,
-            'page' => 2,
+            'page' => 1,
             'search' => 'Patient',
         ]));
 
         $deleteResponse->assertRedirect(route('patients.index', [
-            'page' => 2,
+            'page' => 1,
             'search' => 'Patient',
         ]));
     }

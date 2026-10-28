@@ -16,6 +16,55 @@ class ClinicWorkflowTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_registration_form_disables_dates_before_today(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+
+        $response = $this->actingAs($admin)->get(route('registrations.create'));
+
+        $response->assertOk()
+            ->assertSee('type="date"', false)
+            ->assertSee('min="' . today()->toDateString() . '"', false);
+    }
+
+    public function test_registration_rejects_a_date_before_today(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $department = $this->createDepartment('Poli Umum', 'A');
+        $doctor = $this->createDoctor(
+            User::factory()->create(['role' => 'dokter']),
+            $department
+        );
+        $pastDate = today()->subDay();
+        $schedule = DoctorSchedule::create([
+            'doctor_id' => $doctor->id,
+            'hari' => $pastDate->copy()->locale('id')->translatedFormat('l'),
+            'jam_mulai' => '08:00',
+            'jam_selesai' => '12:00',
+            'kuota' => 10,
+        ]);
+        $patient = Patient::create([
+            'nik' => fake()->unique()->numerify('################'),
+            'nama' => fake()->name(),
+            'tanggal_lahir' => '1990-01-01',
+            'jenis_kelamin' => 'perempuan',
+            'alamat' => 'Alamat pasien',
+            'no_telepon' => '081234567890',
+        ]);
+
+        $response = $this->actingAs($admin)->post(route('registrations.store'), [
+            'patient_id' => $patient->id,
+            'doctor_id' => $doctor->id,
+            'doctor_schedule_id' => $schedule->id,
+            'tanggal' => $pastDate->toDateString(),
+            'catatan' => 'Keluhan pasien',
+        ]);
+
+        $response->assertSessionHasErrors('tanggal');
+        $this->assertDatabaseCount('registrations', 0);
+        $this->assertDatabaseCount('queues', 0);
+    }
+
     public function test_admin_can_call_a_waiting_queue(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);

@@ -17,6 +17,10 @@ return new class extends Migration
         $table->text('keluhan');
         $table->text('diagnosis');
         $table->text('tindakan');
+        $table->text('resep_obat')->nullable();
+        $table->boolean('perlu_kontrol')->default(false);
+        $table->date('tanggal_kontrol')->nullable();
+        $table->text('catatan_kontrol')->nullable();
         $table->timestamps();
     });
 }

@@ -26,12 +26,12 @@
                         <label for="user_id" class="form-label">Akun Dokter</label>
 
                         <select name="user_id" id="user_id" class="form-control @error('user_id') is-invalid @enderror">
-                            <option value="">Pilih Dokter</option>
+                            <option value="">Pilih Akun Dokter</option>
 
                             @foreach($users as $user)
                                 <option value="{{ $user->id }}"
                                     {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                    {{ $user->name }}  
+                                    {{ $user->email }}  
                                 </option>
                             @endforeach
                         </select>

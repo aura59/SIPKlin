@@ -16,7 +16,8 @@ class PatientController extends Controller
         $patients = Patient::query()
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($query) use ($search) {
-                    $query->where('nik', 'like', "%{$search}%")
+                    $query->orWhere('no_rm', 'like', "%{$search}%")
+                        ->orWhere('nik', 'like', "%{$search}%")
                         ->orWhere('nama', 'like', "%{$search}%")
                         ->orWhere('tanggal_lahir', 'like', "%{$search}%")
                         ->orWhere('jenis_kelamin', 'like', "%{$search}%")
@@ -24,7 +25,7 @@ class PatientController extends Controller
                         ->orWhere('no_telepon', 'like', "%{$search}%");
                 });
             })
-            ->orderBy('id')
+            ->orderByDesc('id')
             ->paginate(10)
             ->withQueryString();
 
@@ -53,7 +54,8 @@ class PatientController extends Controller
             'no_telepon' => 'required',
         ]);
 
-        Patient::create([
+        $patient = Patient::create([
+            'no_rm' => 'TEMP-' . uniqid(),
             'nik' => $request->nik,
             'nama' => $request->nama,
             'tanggal_lahir' => $request->tanggal_lahir,
@@ -61,6 +63,11 @@ class PatientController extends Controller
             'alamat' => $request->alamat,
             'no_telepon' => $request->no_telepon,
         ]);
+
+        $patient->no_rm = 'RM-' . str_pad($patient->id, 6, '0', STR_PAD_LEFT);
+        $patient->save();
+
+
 
         return redirect()->route('patients.index', $request->only(['page', 'search']))
             ->with('success', 'Data pasien berhasil ditambahkan!');

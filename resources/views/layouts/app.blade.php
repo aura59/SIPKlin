@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -22,17 +23,79 @@
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
 
     <style>
+        
+        /* Sidebar desktop */
         #accordionSidebar {
             position: fixed !important;
             top: 0;
             left: 0;
             height: 100vh;
+            height: 100dvh;
             overflow-y: auto;
-            z-index: 1000;
+            z-index: 1050;
+            transition: transform 0.25s ease;
         }
 
+        /* Konten desktop */
         #content-wrapper {
             margin-left: 224px;
+            min-width: 0;
+        }
+
+        /* Tampilan HP dan tablet kecil */
+        @media (max-width: 767.98px) {
+
+            /* Sidebar menjadi menu geser */
+            #accordionSidebar {
+                width: 224px !important;
+                max-width: 85vw;
+                transform: translateX(0);
+            }
+
+            /* Sidebar disembunyikan saat menu tertutup */
+            #accordionSidebar.toggled {
+                width: 224px !important;
+                max-width: 85vw;
+                transform: translateX(-100%);
+                overflow-y: auto;
+            }
+
+            /* Konten menggunakan seluruh lebar layar */
+            #content-wrapper {
+                margin-left: 0 !important;
+                width: 100% !important;
+                min-width: 0;
+            }
+
+            #wrapper {
+                width: 100%;
+                overflow-x: hidden;
+            }
+
+            /* Kurangi jarak di sisi layar HP */
+            .container-fluid {
+                padding-left: 0.75rem;
+                padding-right: 0.75rem;
+            }
+
+            /* Lapisan gelap ketika menu dibuka */
+            body:not(.sidebar-toggled)::before {
+                content: "";
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.35);
+                z-index: 1040;
+            }
+
+            .card {
+                max-width: 100%;
+            }
+
+            .table-responsive {
+                max-width: 100%;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
         }
 
         :root {
@@ -77,6 +140,7 @@
 
     @stack('styles')
 
+    <link rel="stylesheet" href="{{ asset('css/sipklin-responsive.css') }}">
     <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
 
 </head>
@@ -148,7 +212,64 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <!-- TAMBAHAN: Library Chart.js harus dimuat sebelum script grafik -->
+    <script src="{{ asset('vendor/chart.js/Chart.min.js') }}"></script>
+
+    <!-- Script tambahan setiap halaman -->
     @stack('script')
+
+
+    <script>
+    (function () {
+        const sidebar = document.getElementById('accordionSidebar');
+        const toggle = document.getElementById('sidebarToggleTop');
+
+        if (!sidebar) return;
+
+        function tutupSidebarHP() {
+            document.body.classList.add('sidebar-toggled');
+            sidebar.classList.add('toggled');
+        }
+
+        function bukaSidebar() {
+            document.body.classList.remove('sidebar-toggled');
+            sidebar.classList.remove('toggled');
+        }
+
+        if (window.innerWidth < 768) {
+            tutupSidebarHP();
+        }
+
+        let sebelumnyaHP = window.innerWidth < 768;
+
+        window.addEventListener('resize', function () {
+            const sekarangHP = window.innerWidth < 768;
+
+            if (sekarangHP && !sebelumnyaHP) {
+                tutupSidebarHP();
+            } else if (!sekarangHP && sebelumnyaHP) {
+                bukaSidebar();
+            }
+
+            sebelumnyaHP = sekarangHP;
+        });
+
+        document.addEventListener('click', function (event) {
+            if (window.innerWidth >= 768) return;
+
+            if (document.body.classList.contains('sidebar-toggled')) {
+                return;
+            }
+
+            if (
+                !sidebar.contains(event.target) &&
+                !(toggle && toggle.contains(event.target))
+            ) {
+                tutupSidebarHP();
+            }
+        });
+    })();
+    </script>
 
 </body>
 
