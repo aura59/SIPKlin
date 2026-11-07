@@ -15,7 +15,6 @@
 
             <form action="{{ route('registrations.store') }}" method="POST">
                 @csrf
-
                 <div class="card-header">
                     <h5 class="card-title mb-0">Form Pendaftaran</h5>
                 </div>
@@ -26,13 +25,14 @@
                         <select class="form-control" id="patient_id" name="patient_id" required>
                             <option value="">Pilih Pasien</option>
                             @foreach ($patients as $patient)
-                                <option value="{{ $patient->id }}" {{ old('patient_id') == $patient->id ? 'selected' : '' }}>
+                                <option
+                                    value="{{ $patient->id }}"
+                                    {{ old('patient_id', $selectedPatientId ?? '') == $patient->id ? 'selected' : '' }} >
                                     {{ $patient->no_rm }} - {{ $patient->nama }}
                                 </option>
                             @endforeach
                         </select>
                     </div>
-
 
                     <div class="form-row-costum">
                         <label for="department_id">Poli</label>
@@ -50,7 +50,6 @@
                         <label for="doctor_id">Dokter</label>
                         <select class="form-control" id="doctor_id" name="doctor_id" disabled required>
                             <option value="">Pilih Dokter</option>
-
                             @foreach ($doctors as $doctor)
                                 <option value="{{ $doctor->id }}" data-department="{{ $doctor->department_id }}">
                                     {{ $doctor->nama }}
@@ -63,7 +62,6 @@
                         <label for="doctor_schedule_id">Jadwal</label>
                         <select class="form-control" id="doctor_schedule_id" name="doctor_schedule_id" disabled required>
                             <option value="">Pilih Jadwal</option>
-
                             @foreach ($doctorschedules as $schedule)
                                 <option value="{{ $schedule->id }}" data-doctor="{{ $schedule->doctor_id }}" data-day="{{ $schedule->hari }}" data-start="{{ $schedule->jam_mulai }}" data-end="{{ $schedule->jam_selesai }}" data-quota="{{ $schedule->kuota }}">
                                     {{ $schedule->hari }} -
@@ -97,7 +95,6 @@
                         Cancel
                     </a>
                 </div>
-
             </form>
 
         </div>
@@ -108,59 +105,48 @@
 
             <div class="card-body">
                 <div class="text-center mb-4">
-
                     <div class="registration-icon">
                         <i class="fas fa-list-ol"></i>
                     </div>
-
                     <h3 class="card-title mb-0">Informasi Antrean</h3>
-
                     <p class="card-text text-muted">Informasi singkat mengenai antrean pasien di klinik.</p>
                 </div>
 
                 <hr>
 
                 <div class="registration-info-list">
-
                     <div class="registration-info-item">
-                        <span>
-                            <i class="fas fa-hospital mr-2"></i>
+                        <span><i class="fas fa-hospital mr-2"></i>
                             Poli
                         </span>
                         <strong id="info-department">-</strong>
                     </div>
 
                     <div class="registration-info-item">
-                        <span>
-                            <i class="fas fa-user-md mr-2"></i>
+                        <span><i class="fas fa-user-md mr-2"></i>
                             Dokter
                         </span>
                         <strong id="info-doctor">-</strong>
                     </div>
 
                     <div class="registration-info-item">
-                        <span>
-                            <i class="fas fa-calendar-alt mr-2"></i>
+                        <span><i class="fas fa-calendar-alt mr-2"></i>
                             Jadwal
                         </span>
                         <strong id="info-schedule">-</strong>
                     </div>
 
                     <div class="registration-info-item">
-                        <span>
-                            <i class="fas fa-users mr-2"></i>
+                        <span><i class="fas fa-users mr-2"></i>
                             Kuota Tersedia
                         </span>
                         <strong id="info-quota">-</strong>
                     </div>
 
                     <div class="queue-box">
-                        <span>
-                            Nomor Antrean Berikutnya
-                        </span>
+                        <span>Nomor Antrean Berikutnya</span>
                         <strong id="info-queue">{{ $nextQueueNumber ?? '-' }}</strong>
                     </div>
-
                 </div>
             </div>
 

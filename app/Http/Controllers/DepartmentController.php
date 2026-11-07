@@ -13,8 +13,7 @@ class DepartmentController extends Controller
     public function index(Request $request)
     {
         $search = $request->string('search')->trim()->toString();
-        $departments = Department::query()
-            ->when($search !== '', function ($query) use ($search) {
+        $departments = Department::query()->when($search !== '', function ($query) use ($search) {
                 $query->where('name', 'like', "%{$search}%")
                     ->orWhere('description', 'like', "%{$search}%");
             })

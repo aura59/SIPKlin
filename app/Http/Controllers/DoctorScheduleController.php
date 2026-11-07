@@ -17,17 +17,14 @@ class DoctorScheduleController extends Controller
     public function index(Request $request)
     {
         $search = $request->string('search')->trim()->toString();
-        $doctorschedules = DoctorSchedule::with('doctor.department')
-            ->withCount([
-                'registration as registration_today_count' => function ($query) {
+        $doctorschedules = DoctorSchedule::with('doctor.department') ->withCount(['registration as registration_today_count' => function ($query) {
                     $query->whereDate('tanggal', today());
                 },
             ])
             ->when($search !== '', function ($query) use ($search) {
                 $query->where(function ($query) use ($search) {
                     $query->whereHas('doctor', function ($query) use ($search) {
-                        $query->where('nama', 'like', "%{$search}%")
-                            ->orWhereHas('department', function ($query) use ($search) {
+                        $query->where('nama', 'like', "%{$search}%")->orWhereHas('department', function ($query) use ($search) {
                                 $query->where('name', 'like', "%{$search}%");
                             });
                     })
@@ -45,8 +42,7 @@ class DoctorScheduleController extends Controller
                 WHEN 'Jumat' THEN 5
                 WHEN 'Sabtu' THEN 6
                 WHEN 'Minggu' THEN 7
-                ELSE 8
-            END")
+                ELSE 8 END")
             ->orderBy('jam_mulai')
             ->orderBy('id')
             ->paginate(10)
@@ -58,12 +54,8 @@ class DoctorScheduleController extends Controller
     public function doctorSchedule(Request $request)
     {
         $user = Auth::user();
-
         $doctor = Doctor::where('user_id', $user->id)->firstOrFail();
-
-        $doctorschedules = DoctorSchedule::with('doctor.department')
-            ->withCount([
-                'registration as registration_today_count' => function ($query) {
+        $doctorschedules = DoctorSchedule::with('doctor.department')->withCount(['registration as registration_today_count' => function ($query) {
                     $query->whereDate('tanggal', today());
                 }
             ])
@@ -87,8 +79,7 @@ class DoctorScheduleController extends Controller
                 WHEN 'Jumat' THEN 5
                 WHEN 'Sabtu' THEN 6
                 WHEN 'Minggu' THEN 7
-                ELSE 8
-            END")
+                ELSE 8 END")
             ->orderBy('jam_mulai')
             ->orderBy('id')
             ->paginate(10)

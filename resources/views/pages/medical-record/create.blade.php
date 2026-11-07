@@ -23,7 +23,6 @@
 
                 <div class="card-body">
 
-                    {{-- DATA PASIEN --}}
                     <div class="patient-data-box">
 
                         <div class="patient-data-title">
@@ -33,14 +32,8 @@
 
                         <div class="form-row-costum">
                             <label for="registration_id">Pasien</label>
-
-                            <select class="form-control"
-                                    id="registration_id"
-                                    name="registration_id"
-                                    required>
-
+                            <select class="form-control" id="registration_id" name="registration_id" required>
                                 <option value="">Pilih Pasien</option>
-
                                 @foreach ($registrations as $registration)
                                     <option
                                         value="{{ $registration->id }}"
@@ -53,11 +46,9 @@
                                         data-dokter="{{ $registration->doctorSchedule?->doctor?->nama ?? '-' }}"
                                         {{ old('registration_id') == $registration->id ? 'selected' : '' }}>
 
-                                        {{ $registration->patient->no_rm ?? '-' }}
-                                        - {{ $registration->patient->nama ?? '-' }}
+                                        {{ $registration->patient->no_rm ?? '-' }} - {{ $registration->patient->nama ?? '-' }}
                                     </option>
                                 @endforeach
-
                             </select>
 
                             @error('registration_id')
@@ -68,7 +59,6 @@
                         <div id="patient-information" style="display: none;">
 
                             <div class="row">
-
                                 <div class="col-md-6">
                                     <div class="patient-info">
                                         <span>No. RM</span>
@@ -107,12 +97,10 @@
                                         <strong id="patient-dokter">-</strong>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
 
-                    {{-- PEMERIKSAAN DAN RESEP OBAT --}}
                     <div class="section-title">
                         <i class="fas fa-stethoscope mr-2"></i>
                         Pemeriksaan dan Resep Obat
@@ -120,20 +108,11 @@
 
                     <div class="row">
 
-                        {{-- KOLOM KIRI: PEMERIKSAAN --}}
                         <div class="col-lg-7">
 
                             <div class="form-group">
                                 <label for="keluhan">Keluhan</label>
-
-                                <textarea
-                                    class="form-control"
-                                    id="keluhan"
-                                    name="keluhan"
-                                    rows="4"
-                                    maxlength="500"
-                                    required>{{ old('keluhan') }}</textarea>
-
+                                <textarea class="form-control" id="keluhan" name="keluhan" rows="4" maxlength="500" required>{{ old('keluhan') }}</textarea>
                                 @error('keluhan')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -141,15 +120,7 @@
 
                             <div class="form-group">
                                 <label for="diagnosis">Diagnosis</label>
-
-                                <textarea
-                                    class="form-control"
-                                    id="diagnosis"
-                                    name="diagnosis"
-                                    rows="4"
-                                    maxlength="500"
-                                    required>{{ old('diagnosis') }}</textarea>
-
+                                <textarea class="form-control" id="diagnosis" name="diagnosis" rows="4" maxlength="500" required>{{ old('diagnosis') }}</textarea>
                                 @error('diagnosis')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -157,15 +128,7 @@
 
                             <div class="form-group">
                                 <label for="tindakan">Tindakan</label>
-
-                                <textarea
-                                    class="form-control"
-                                    id="tindakan"
-                                    name="tindakan"
-                                    rows="4"
-                                    maxlength="500"
-                                    required>{{ old('tindakan') }}</textarea>
-
+                                <textarea class="form-control" id="tindakan" name="tindakan" rows="4" maxlength="500" required>{{ old('tindakan') }}</textarea>
                                 @error('tindakan')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -173,7 +136,6 @@
 
                         </div>
 
-                        {{-- KOLOM KANAN: RESEP OBAT --}}
                         <div class="col-lg-5">
 
                             <div class="prescription-box">
@@ -184,21 +146,13 @@
                                 </div>
 
                                 <p class="text-muted small">
-                                    Tuliskan nama obat, dosis, frekuensi,
-                                    dan aturan pakai sesuai resep dokter.
+                                    Tuliskan nama obat, dosis, frekuensi,dan aturan pakai sesuai resep dokter.
                                 </p>
 
                                 <div class="form-group">
                                     <label for="resep_obat">Detail Resep Obat</label>
-
-                                    <textarea
-                                        class="form-control"
-                                        id="resep_obat"
-                                        name="resep_obat"
-                                        rows="10"
-                                        maxlength="2000"
+                                    <textarea class="form-control" id="resep_obat" name="resep_obat" rows="10" maxlength="2000"
                                         placeholder="Contoh format penulisan:&#10;Nama obat: ...&#10;Dosis: ...&#10;Aturan pakai: ...">{{ old('resep_obat') }}</textarea>
-
                                     @error('resep_obat')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -214,7 +168,6 @@
                         </div>
                     </div>
 
-                    {{-- JADWAL KONTROL --}}
                     <div class="control-section mt-4">
 
                         <div class="section-title">
@@ -227,25 +180,15 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="perlu_kontrol">Pasien Perlu Kontrol?</label>
-
-                                    <select
-                                        class="form-control"
-                                        id="perlu_kontrol"
-                                        name="perlu_kontrol"
-                                        required>
-
-                                        <option value="0"
-                                            {{ old('perlu_kontrol', '0') == '0' ? 'selected' : '' }}>
+                                    <select class="form-control" id="perlu_kontrol" name="perlu_kontrol" required>
+                                        <option value="0" {{ old('perlu_kontrol', '0') == '0' ? 'selected' : '' }}>
                                             Tidak
                                         </option>
 
-                                        <option value="1"
-                                            {{ old('perlu_kontrol') == '1' ? 'selected' : '' }}>
+                                        <option value="1" {{ old('perlu_kontrol') == '1' ? 'selected' : '' }}>
                                             Ya
                                         </option>
-
                                     </select>
-
                                     @error('perlu_kontrol')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -255,16 +198,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="tanggal_kontrol">Tanggal Kontrol</label>
-
-                                    <input
-                                        type="date"
-                                        class="form-control"
-                                        id="tanggal_kontrol"
-                                        name="tanggal_kontrol"
-                                        value="{{ old('tanggal_kontrol') }}"
-                                        min="{{ now()->toDateString() }}"
-                                        disabled>
-
+                                    <input type="date" class="form-control" id="tanggal_kontrol" name="tanggal_kontrol" value="{{ old('tanggal_kontrol') }}" min="{{ now()->toDateString() }}" disabled>
                                     @error('tanggal_kontrol')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -274,16 +208,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="catatan_kontrol">Catatan Kontrol</label>
-
-                                    <textarea
-                                        class="form-control"
-                                        id="catatan_kontrol"
-                                        name="catatan_kontrol"
-                                        rows="3"
-                                        maxlength="500"
-                                        placeholder="Catatan atau arahan kontrol..."
-                                        disabled>{{ old('catatan_kontrol') }}</textarea>
-
+                                    <textarea class="form-control" id="catatan_kontrol" name="catatan_kontrol" rows="3" maxlength="500" placeholder="Catatan atau arahan kontrol..." disabled>{{ old('catatan_kontrol') }}</textarea>
                                     @error('catatan_kontrol')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -300,7 +225,6 @@
 
                 </div>
 
-                {{-- TOMBOL --}}
                 <div class="card-footer">
                     <button type="submit" class="btn btn-sipklin">
                         <span class="fa fa-save"></span>

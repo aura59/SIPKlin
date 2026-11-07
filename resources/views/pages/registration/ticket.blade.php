@@ -13,8 +13,7 @@
         </div>
 
         <div>
-            <a href="{{ route('registrations.create') }}"
-               class="btn btn-secondary">
+            <a href="{{ route('registrations.create') }}" class="btn btn-secondary">
                 <i class="fas fa-plus mr-1"></i> Pendaftaran Baru
             </a>
 

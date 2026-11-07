@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Registration;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -126,22 +127,50 @@ class QueueController extends Controller
 
     public function finish($id)
     {
-        $registration = Registration::with('queue')->findOrFail($id);
+        $registration = Registration::with([
+            'doctorSchedule',
+            'queue',
+        ])->findOrFail($id);
 
-        if (!$registration->medicalRecord()->exists()) {
-                return back()->withErrors(['registration' => 'Pasien harus memiliki rekam medis sebelum antrean diselesaikan.'
+        if ($registration->status !== 'dipanggil') {
+            return back()->withErrors([
+                'registration' => 'Hanya antrean yang sedang dipanggil yang bisa diselesaikan.',
             ]);
         }
-        $registration->update([
-            'status' => 'selesai'
-        ]);
+
+        $user = auth()->user();
+
+        if ($user->role === 'dokter') {
+
+            $doctor = $user->dokter;
+
+            if (!$doctor) {
+                abort(403, 'Data dokter tidak ditemukan.');
+            }
+
+            if (
+                !$registration->doctorSchedule ||
+                $registration->doctorSchedule->doctor_id != $doctor->id
+            ) {
+                abort(403, 'Kamu tidak memiliki akses untuk menyelesaikan antrean ini.');
+            }
+        }
+
+        if (!$registration->medicalRecord()->exists()) {
+            return back()->withErrors([
+                'registration' => 'Pasien harus memiliki rekam medis sebelum antrean diselesaikan.',
+            ]);
+        }
+
+        $registration->update([ 'status' => 'selesai',]);
 
         if ($registration->queue) {
             $registration->queue->update([
-                'status' => 'selesai'
+                'status' => 'selesai',
             ]);
         }
 
-        return back()->with('success', 'Antrean berhasil diselesaikan.');
+        return back()->with('success', 'Antrean berhasil diselesaikan.' );
     }
+
 }

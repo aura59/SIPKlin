@@ -13,8 +13,14 @@
 <div class="card">
     <div class="card-header d-flex justify-content-end align-items-center">
         <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input type="text" id="searchRiwayatKunjungan" placeholder="Cari Riwayat ...">
+            <form action="{{ route('visit-history.index') }}" method="GET">
+                <div class="search-box">
+                    <input type="text" id="searchRiwayatKunjungan" name="search" value="{{ $search ?? '' }}" placeholder="Cari No. RM, nama, dokter..." >
+                    <button type="submit" class="btn-search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -23,6 +29,7 @@
             <thead>
                 <tr>
                     <th>No</th>
+                    <th>No. RM</th>
                     <th>Nama Pasien</th>
                     <th>Tanggal Kunjungan</th>
                     <th>Dokter</th>
@@ -35,6 +42,7 @@
                 @forelse($registrations as $registration)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
+                    <td>{{ $registration->patient->no_rm ?? '-' }}</td>
                     <td>{{ $registration->patient->nama ?? '-' }}</td>
                     <td>{{ $registration->tanggal }}</td>
                     <td> {{ $registration->doctorSchedule->doctor->nama ?? '-' }}</td>
@@ -48,7 +56,7 @@
 
                 @empty
                 <tr>
-                    <td colspan="6" class="text-center">Belum ada riwayat kunjungan</td>
+                    <td colspan="7" class="text-center">Belum ada riwayat kunjungan</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -63,27 +71,36 @@
 @push('styles')
 
 <style>
-
     .search-box {
         position: relative;
-        width: 220px;
-    }
-
-    .search-box i {
-        position: absolute;
-        right: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #06285c;
+        width: 280px;
     }
 
     .search-box input {
-        width: 220px;
+        width: 100%;
         height: 38px;
         border: 1px solid #06285c;
         border-radius: 5px;
         color: #06285c;
-        padding-right: 35px;
+        padding: 0 40px 0 12px;
+        outline: none;
+    }
+
+    .search-box input:focus {
+        border-color: #315fa3;
+        box-shadow: 0 0 0 2px rgba(6, 40, 92, 0.1);
+    }
+
+    .btn-search {
+        position: absolute;
+        right: 0;
+        top: 0;
+        height: 38px;
+        width: 40px;
+        border: none;
+        background: transparent;
+        color: #06285c;
+        cursor: pointer;
     }
 
     .btn-sipklin {

@@ -14,8 +14,10 @@ use Illuminate\Validation\ValidationException;
 
 class RegistrationController extends Controller
 {
-    public function create()
+    public function create(Request $request)
     {
+        $selectedPatientId = $request->query('patient_id');
+
         $patients = Patient::all();
         $departments = Department::all();
         $doctors = Doctor::with('department')->get();
@@ -29,8 +31,7 @@ class RegistrationController extends Controller
                 WHEN 'Jumat' THEN 5
                 WHEN 'Sabtu' THEN 6
                 WHEN 'Minggu' THEN 7
-                ELSE 8
-            END")
+                ELSE 8 END")
             ->orderBy('jam_mulai')
             ->orderBy('id')
             ->get();
@@ -63,7 +64,8 @@ class RegistrationController extends Controller
             'doctors',
             'doctorschedules',
             'registrationCounts',
-            'queueNumbers'
+            'queueNumbers',
+            'selectedPatientId'
         ));
     }
 
@@ -80,7 +82,6 @@ class RegistrationController extends Controller
         ]);
 
         $schedule = DoctorSchedule::with('doctor.department')->findOrFail($request->doctor_schedule_id);
-
         $hariTanggal = \Carbon\Carbon::parse($request->tanggal)->locale('id')->translatedFormat('l');
 
         if ($hariTanggal !== $schedule->hari) {

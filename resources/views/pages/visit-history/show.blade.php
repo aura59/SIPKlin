@@ -11,17 +11,14 @@
 <h1 class="h6 text-gray-800 mb-4">Data Klinik / Riwayat Kunjungan / Detail</h1>
 
 <div class="row rekam-medis-row">
-
     <div class="col-md-7">
 
         <div class="card">
-
             <div class="card-header">
                 <h5 class="card-title mb-0">Informasi Rekam Medis</h5>
             </div>
 
             <div class="card-body">
-
                 <div class="detail-item">
                     <label>Pasien</label>
                     <p>{{ $registration->patient->nama }}</p>
@@ -85,6 +82,43 @@
                     </p>
                 </div>
 
+                <div class="detail-item">
+                    <label> Resep Obat </label>
+                    <p style="white-space: pre-line;">
+                        {{ $registration->medicalRecord->resep_obat ?? '-' }}
+                    </p>
+                </div>
+
+                <div class="detail-item">
+                    <label> Informasi Kontrol Ulang </label>
+                    @if ($registration->medicalRecord && $registration->medicalRecord->perlu_kontrol)
+                        <p>
+                            <span class="badge badge-warning">
+                                Perlu Kontrol
+                            </span>
+                        </p>
+
+                        <p>
+                            <p>Tanggal Kontrol:</p>
+                            @if ($registration->medicalRecord->tanggal_kontrol)
+                                {{ \Carbon\Carbon::parse($registration->medicalRecord->tanggal_kontrol)->format('d-m-Y') }}
+                            @else
+                                Belum ditentukan
+                            @endif
+                        </p>
+
+                        <p>
+                            <p>Catatan Kontrol:</p>
+                            {{ $registration->medicalRecord->catatan_kontrol ?: '-' }}
+                        </p>
+                    @else
+                        <p>
+                            <span class="badge badge-secondary">
+                                Tidak Perlu Kontrol
+                            </span>
+                        </p>
+                    @endif
+                </div>
             </div>
 
             <div class="card-footer bg-white">
@@ -95,7 +129,6 @@
                 </a>
 
             </div>
-
         </div>
 
     </div>
@@ -103,21 +136,17 @@
     <div class="col-md-5">
 
         <div class="card info-patient-card">
-
             <div class="card-body text-center d-flex flex-column justify-content-center">
 
                 <div class="info-icon mb-4">
                     <i class="fas fa-user-injured"></i>
                 </div>
-
                 <h3 class="info-title">{{ $registration->patient->nama ?? '-' }}</h3>
-
                 <p class="info-description">Informasi lengkap data pasien SIPKlin.</p>
 
                 <hr>
 
                 <div class="patient-summary">
-
                     <div class="summary-item">
                         <span>NIK</span>
                         <strong>{{ $registration->patient->nik ?? '-' }}</strong>
@@ -132,15 +161,12 @@
                         <span>No. Telepon</span>
                         <strong>{{ $registration->patient->no_telepon ?? '-' }}</strong>
                     </div>
-
                 </div>
 
             </div>
-
         </div>
 
     </div>
-
 </div>
 
 

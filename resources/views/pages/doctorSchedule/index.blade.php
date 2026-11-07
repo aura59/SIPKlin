@@ -210,15 +210,16 @@
 
 
 @push('script')
+
 <script>
 function actionDestroy(url) {
     Swal.fire({
-        title: 'Apakah Anda yakin ingin menghapus data ini?',
+        title: 'Apakah Anda yakin ingin menghapus data pasien ini?',
         text: 'Data yang dihapus tidak dapat dikembalikan.',
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
+        confirmButtonColor: '#06285c',
+        cancelButtonColor: '#858796',
         confirmButtonText: 'Ya, hapus!',
         cancelButtonText: 'Batal'
     }).then((result) => {
@@ -227,26 +228,24 @@ function actionDestroy(url) {
             $('#form-destroy').submit();
         }
     });
-
 }
-
 </script>
 
+@if (session('success'))
 
-@if (Session::has('success'))
-
-<script>
-
-Swal.fire({
-    title: "Berhasil!",
-    text: "{{ Session::get('success') }}",
-    icon: "success",
-    timer: 2000,
-    showConfirmButton: false
-});
-
-</script>
-
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: "{{ Session::get('success') }}",
+                confirmButtonText: 'Oke',
+                confirmButtonColor: '#06285c',
+                timer: 3000,
+                timerProgressBar: true
+            });
+        });
+    </script>
+    
 @endif
-
 @endpush

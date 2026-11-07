@@ -7,6 +7,7 @@ use App\Models\Patient;
 use App\Models\Doctor;
 use App\Models\Registration;
 use App\Models\MedicalRecord;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
@@ -19,31 +20,61 @@ class AdminController extends Controller
         $totalPendaftaranHariIni = $pendaftaranHariIni->count();
         $totalAntreanMenunggu = Registration::where('status', 'menunggu')->whereDate('tanggal', today())->count();
         
-        // Data grafik kunjungan pasien per bulan pada tahun berjalan
+        // Data grafik kunjungan pasien
         $kunjunganPerBulan = Registration::selectRaw('MONTH(tanggal) as bulan, COUNT(*) as total')
             ->whereYear('tanggal', now()->year)
             ->groupByRaw('MONTH(tanggal)')
             ->pluck('total', 'bulan');
 
         $grafikKunjungan = [];
-
         for ($bulan = 1; $bulan <= 12; $bulan++) {
             $grafikKunjungan[] = (int) ($kunjunganPerBulan[$bulan] ?? 0);
         }
 
-        // Jadwal kontrol pasien hari ini
+        // Pengingat jadwal kontrol pasien
+        $hariIni = Carbon::today();
+        $jadwalKontrolTerlewat = MedicalRecord::with([
+            'registration.patient',
+            'registration.doctorSchedule.doctor.department',
+        ])
+            ->where('perlu_kontrol', true)
+            ->whereNotNull('tanggal_kontrol')
+            ->whereDate('tanggal_kontrol', '<', $hariIni)
+            ->orderBy('tanggal_kontrol', 'desc')
+            ->get();
+
+        $totalKontrolTerlewat = $jadwalKontrolTerlewat->count();
+
+        // Jadwal kontrol hari ini
         $jadwalKontrolHariIni = MedicalRecord::with([
             'registration.patient',
             'registration.doctorSchedule.doctor.department',
         ])
             ->where('perlu_kontrol', true)
             ->whereNotNull('tanggal_kontrol')
-            ->whereDate('tanggal_kontrol', today())
+            ->whereDate('tanggal_kontrol', $hariIni)
             ->orderBy('tanggal_kontrol', 'asc')
             ->get();
 
         $totalKontrolHariIni = $jadwalKontrolHariIni->count();
 
+        // Jadwal kontrol yang mendekati
+        $jadwalKontrolMendatang = MedicalRecord::with([
+            'registration.patient',
+            'registration.doctorSchedule.doctor.department',
+        ])
+            ->where('perlu_kontrol', true)
+            ->whereNotNull('tanggal_kontrol')
+            ->whereDate('tanggal_kontrol', '>', $hariIni)
+            ->whereDate('tanggal_kontrol', '<=', $hariIni->copy()->addDays(3))
+            ->orderBy('tanggal_kontrol', 'asc')
+            ->get();
+
+        $totalKontrolMendatang = $jadwalKontrolMendatang->count();
+        $totalPengingatKontrol =
+            $totalKontrolTerlewat
+            + $totalKontrolHariIni
+            + $totalKontrolMendatang;
         $antreanMenunggu = Registration::with('doctorSchedule.doctor.department')
             ->where('status', 'menunggu')
             ->whereDate('tanggal', today())
@@ -62,8 +93,11 @@ class AdminController extends Controller
             'totalAntreanMenunggu',
             'pendaftaranHariIni',
             'antreanMenunggu',
-            'jadwalKontrolHariIni',
-            'totalKontrolHariIni',
+            'jadwalKontrolTerlewat',
+            'totalKontrolTerlewat',
+            'jadwalKontrolMendatang',
+            'totalKontrolMendatang',
+            'totalPengingatKontrol',
             'grafikKunjungan'
         ));
     }
@@ -71,25 +105,67 @@ class AdminController extends Controller
     // Dashboard Dokter
     public function doctorDashboard()
     {
-       $totalPasien = Patient::count();
+        $totalPasien = Patient::count();
         $totalDokter = Doctor::count();
         $pendaftaranHariIni = Registration::with('patient', 'doctorSchedule.doctor.department')->whereDate('tanggal', today())->orderBy('created_at', 'asc')->get();
         $totalPendaftaranHariIni = $pendaftaranHariIni->count();
         $totalAntreanMenunggu = Registration::where('status', 'menunggu')->whereDate('tanggal', today())->count();
+        
+        // Data grafik kunjungan pasien
+        $kunjunganPerBulan = Registration::selectRaw('MONTH(tanggal) as bulan, COUNT(*) as total')
+            ->whereYear('tanggal', now()->year)
+            ->groupByRaw('MONTH(tanggal)')
+            ->pluck('total', 'bulan');
 
-        // Jadwal kontrol pasien hari ini
+        $grafikKunjungan = [];
+        for ($bulan = 1; $bulan <= 12; $bulan++) {
+            $grafikKunjungan[] = (int) ($kunjunganPerBulan[$bulan] ?? 0);
+        }
+
+        // Pengingat jadwal kontrol pasien
+        $hariIni = Carbon::today();
+        $jadwalKontrolTerlewat = MedicalRecord::with([
+            'registration.patient',
+            'registration.doctorSchedule.doctor.department',
+        ])
+            ->where('perlu_kontrol', true)
+            ->whereNotNull('tanggal_kontrol')
+            ->whereDate('tanggal_kontrol', '<', $hariIni)
+            ->orderBy('tanggal_kontrol', 'desc')
+            ->get();
+
+        $totalKontrolTerlewat = $jadwalKontrolTerlewat->count();
+
+        // Jadwal kontrol hari ini
         $jadwalKontrolHariIni = MedicalRecord::with([
             'registration.patient',
             'registration.doctorSchedule.doctor.department',
         ])
             ->where('perlu_kontrol', true)
             ->whereNotNull('tanggal_kontrol')
-            ->whereDate('tanggal_kontrol', today())
+            ->whereDate('tanggal_kontrol', $hariIni)
             ->orderBy('tanggal_kontrol', 'asc')
             ->get();
 
         $totalKontrolHariIni = $jadwalKontrolHariIni->count();
 
+        // Jadwal kontrol yang mendekati
+        $jadwalKontrolMendatang = MedicalRecord::with([
+            'registration.patient',
+            'registration.doctorSchedule.doctor.department',
+        ])
+            ->where('perlu_kontrol', true)
+            ->whereNotNull('tanggal_kontrol')
+            ->whereDate('tanggal_kontrol', '>', $hariIni)
+            ->whereDate('tanggal_kontrol', '<=', $hariIni->copy()->addDays(3))
+            ->orderBy('tanggal_kontrol', 'asc')
+            ->get();
+
+        $totalKontrolMendatang = $jadwalKontrolMendatang->count();
+        $totalPengingatKontrol =
+            $totalKontrolTerlewat
+            + $totalKontrolHariIni
+            + $totalKontrolMendatang;
         $antreanMenunggu = Registration::with('doctorSchedule.doctor.department')
             ->where('status', 'menunggu')
             ->whereDate('tanggal', today())
@@ -108,8 +184,12 @@ class AdminController extends Controller
             'totalAntreanMenunggu',
             'pendaftaranHariIni',
             'antreanMenunggu',
-            'jadwalKontrolHariIni',
-            'totalKontrolHariIni'
+            'jadwalKontrolTerlewat',
+            'totalKontrolTerlewat',
+            'jadwalKontrolMendatang',
+            'totalKontrolMendatang',
+            'totalPengingatKontrol',
+            'grafikKunjungan'
         ));
     }
 }

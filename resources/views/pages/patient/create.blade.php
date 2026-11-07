@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('title', 'Create New - Patient Page')
@@ -14,7 +15,7 @@
     <!-- kiri -->
     <div class="col-md-7">
         <div class="card">
-            <form action="{{ route('patients.store') }}" method="POST">
+            <form action="{{ route('patients.store') }}" method="POST" class="form-tambah-pasien">
                 @csrf
                 @foreach(request()->only(['page', 'search']) as $key => $value)
                     <input type="hidden" name="{{ $key }}" value="{{ $value }}">
@@ -49,7 +50,7 @@
 
                     <div class="form-group mb-3">
                         <label for="tanggal_lahir" class="form-label">Tanggal Lahir</label>
-                        <input type="date" name="tanggal_lahir" id="tanggal_lahir" class="form-control @error('tanggal_lahir') is-invalid @enderror">
+                        <input type="date" name="tanggal_lahir" id="tanggal_lahir" value="{{ old('tanggal_lahir') }}" class="form-control @error('tanggal_lahir') is-invalid @enderror">
 
                         @error('tanggal_lahir')
                             <div class="invalid-feedback d-block">
@@ -63,8 +64,8 @@
                         <select name="jenis_kelamin" id="jenis_kelamin" class="form-control @error('jenis_kelamin') is-invalid @enderror">
 
                             <option value="">Pilih Jenis Kelamin</option>
-                            <option value="laki-laki">Laki-laki</option>
-                            <option value="perempuan">Perempuan</option>
+                            <option value="laki-laki" {{ old('jenis_kelamin') == 'laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                            <option value="perempuan" {{ old('jenis_kelamin') == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
 
                         </select>
 
@@ -75,7 +76,7 @@
                         @enderror
                     </div>
 
-                     <div class="form-group mb-3">
+                    <div class="form-group mb-3">
                         <label for="alamat" class="form-label">Alamat</label>
                         <input type="text" name="alamat" id="alamat" value="{{ old('alamat') }}" class="form-control @error('alamat') is-invalid @enderror">
 
@@ -86,7 +87,7 @@
                         @enderror
                     </div>
 
-                     <div class="form-group mb-3">
+                    <div class="form-group mb-3">
                         <label for="no_telepon" class="form-label">No. Telp</label>
                         <input type="text" name="no_telepon" id="no_telepon" value="{{ old('no_telepon') }}" class="form-control @error('no_telepon') is-invalid @enderror">
 
@@ -98,7 +99,7 @@
                     </div>
                 </div>
 
-                 <div class="card-footer">
+                <div class="card-footer">
                     <button type="submit" class="btn btn-sipklin">
                         <span class="fa fa-save"></span>
                         Save
@@ -113,7 +114,6 @@
             </form>
         </div>
     </div>
-
 
     <!-- kanan -->
     <div class="col-md-5">
@@ -154,11 +154,57 @@
 
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const form = document.querySelector('.form-tambah-pasien');
+        const tombolSave = form.querySelector('button[type="submit"]');
+
+        form.addEventListener('submit', function (e) {
+
+            e.preventDefault();
+
+            if (typeof Swal === 'undefined') {
+                alert('Konfirmasi penyimpanan data pasien?');
+                form.submit();
+                return;
+            }
+
+            Swal.fire({
+                title: 'Konfirmasi Data Pasien',
+                text: 'Yakin ingin menyimpan data pasien baru ini?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#06285c',
+                cancelButtonColor: '#858796',
+                confirmButtonText: 'Ya, Simpan',
+                cancelButtonText: 'Batal',
+                timer: 3000,
+                timerProgressBar: true,
+                reverseButtons: true
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+                    tombolSave.disabled = true;
+                    form.submit();
+                }
+
+            });
+
+        });
+
+    });
+</script>
+
 @push ('styles')
 <style>
     .card-header {
-    background-color: #06285c !important;
-    color: white !important;
+        background-color: #06285c !important;
+        color: white !important;
     }
 
     .card-header .card-title {
@@ -227,9 +273,9 @@
     }
 
     .btn-sipklin {
-    background-color: #06285c !important;
-    border-color: #06285c !important;
-    color: white !important;
+        background-color: #06285c !important;
+        border-color: #06285c !important;
+        color: white !important;
     }
 
     .btn-sipklin:hover {

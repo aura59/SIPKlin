@@ -20,7 +20,6 @@
             <label for="department_id">Poli</label>
             <select name="department_id" id="department_id" class="form-control">
                 <option value="">Semua Poli</option>
-
                 @foreach ($departments as $department)
                     <option value="{{ $department->id }}"
                         {{ request('department_id') == $department->id ? 'selected' : '' }}>
