@@ -112,42 +112,44 @@
 
                             <td class="text-center">
 
-                                @if ($terlewat)
+                                @if (Auth::user()->role === 'admin')
+                                    @if ($terlewat)
 
-                                    <button type="button" class="btn btn-sm btn-warning" data-toggle="collapse" data-target="#jadwalUlang{{ $item->id }}">
-                                        <i class="fas fa-calendar-alt mr-1"></i>
-                                        Jadwalkan Ulang
-                                    </button>
+                                        <button type="button" class="btn btn-sm btn-warning" data-toggle="collapse" data-target="#jadwalUlang{{ $item->id }}">
+                                            <i class="fas fa-calendar-alt mr-1"></i>
+                                            Jadwalkan Ulang
+                                        </button>
 
-                                    <div class="collapse mt-2" id="jadwalUlang{{ $item->id }}">
+                                        <div class="collapse mt-2" id="jadwalUlang{{ $item->id }}">
 
-                                        <form action="{{ route('control-schedules.reschedule', $item->id) }}" method="POST" class="form-jadwal-ulang">
-                                            @csrf
-                                            @method('PATCH')
-                                            <input type="date" name="tanggal_kontrol_baru" class="form-control form-control-sm mb-2" min="{{ today()->addDay()->format('Y-m-d') }}" required>
-                                            <textarea name="catatan_kontrol_baru" class="form-control form-control-sm mb-2" rows="2" placeholder="Catatan kontrol baru (opsional)">{{ $item->catatan_kontrol }}</textarea>
-                                            <button type="submit"  class="btn btn-sm btn-sipklin btn-block">
-                                                <i class="fas fa-save mr-1"></i>
-                                                Simpan Jadwal Baru
-                                            </button>
-                                        </form>
+                                            <form action="{{ route('control-schedules.reschedule', $item->id) }}" method="POST" class="form-jadwal-ulang">
+                                                @csrf
+                                                @method('PATCH')
+                                                <input type="date" name="tanggal_kontrol_baru" class="form-control form-control-sm mb-2" min="{{ today()->addDay()->format('Y-m-d') }}" required>
+                                                <textarea name="catatan_kontrol_baru" class="form-control form-control-sm mb-2" rows="2" placeholder="Catatan kontrol baru (opsional)">{{ $item->catatan_kontrol }}</textarea>
+                                                <button type="submit"  class="btn btn-sm btn-sipklin btn-block">
+                                                    <i class="fas fa-save mr-1"></i>
+                                                    Simpan Jadwal Baru
+                                                </button>
+                                            </form>
 
-                                    </div>
+                                        </div>
 
-                                @elseif ($hariIni)
+                                    @elseif ($hariIni)
 
-                                    <a href="{{ route('registrations.create', ['patient_id' => $item->registration->patient_id]) }}" class="btn btn-sm btn-sipklin">
-                                        <i class="fas fa-user-plus mr-1"></i>
-                                        Daftarkan Pasien
-                                    </a>
+                                        <a href="{{ route('registrations.create', ['patient_id' => $item->registration->patient_id]) }}" class="btn btn-sm btn-sipklin">
+                                            <i class="fas fa-user-plus mr-1"></i>
+                                            Daftarkan Pasien
+                                        </a>
 
-                                @else
+                                    @else
 
-                                    <button type="button" class="btn btn-sm btn-secondary" disabled title="Pendaftaran baru bisa dilakukan pada tanggal kontrol">
-                                        <i class="fas fa-clock mr-1"></i>
-                                        Belum Waktunya
-                                    </button>
+                                        <button type="button" class="btn btn-sm btn-secondary" disabled title="Pendaftaran baru bisa dilakukan pada tanggal kontrol">
+                                            <i class="fas fa-clock mr-1"></i>
+                                            Belum Waktunya
+                                        </button>
 
+                                    @endif
                                 @endif
 
                             </td>
@@ -231,6 +233,21 @@
 
 @push('styles')
 <style>
+    #content {
+        background-color: #eaf1fb !important;
+        background-image:
+            radial-gradient(
+                circle at 95% 5%,
+                rgba(6, 40, 92, 0.16),
+                transparent 35%
+            ),
+            radial-gradient(
+                circle at 5% 95%,
+                rgba(32, 201, 151, 0.13),
+                transparent 30%
+            ) !important;
+    }
+    
     .btn-sipklin {
         background-color: #06285c;
         border-color: #06285c;

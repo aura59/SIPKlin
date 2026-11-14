@@ -15,9 +15,9 @@
 
                 <!-- Foto Profil -->
                 @if(Auth::user()->avatar)
-                    <img class="img-profile rounded-circle" src="{{ asset(Auth::user()->avatar) }}" alt="Foto Profil">
+                    <img class="img-profile rounded-circle navbar-profile-avatar" src="{{ asset(Auth::user()->avatar) }}" alt="Foto Profil">
                 @else
-                    <img class="img-profile rounded-circle" src="{{ asset('public/img/profile/undraw_profile.svg') }}" alt="Foto Profil">
+                    <img class="img-profile rounded-circle navbar-profile-avatar" src="{{ asset('public/img/profile/undraw_profile.svg') }}" alt="Foto Profil">
                 @endif
 
                 <!-- Nama User -->
@@ -47,3 +47,14 @@
     </ul>
 
 </nav>
+
+@push('styles')
+<style>
+    .topbar .nav-item .nav-link .navbar-profile-avatar {
+        width: 44px;
+        height: 44px;
+        object-fit: cover;
+        flex-shrink: 0;
+    }
+</style>
+@endpush

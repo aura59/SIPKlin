@@ -83,4 +83,4 @@ Route::get('/visit-history/{id}', [VisitHistoryController::class, 'show'])->midd
 
  // jadwal kontrol pasien
 Route::get('/jadwal-kontrol', [\App\Http\Controllers\ControlScheduleController::class, 'index'])->middleware(['auth', 'role:admin,dokter'])->name('control-schedules.index');
-Route::patch('/jadwal-kontrol/{id}/jadwalkan-ulang', [\App\Http\Controllers\ControlScheduleController::class, 'reschedule'])->middleware(['auth', 'role:admin,dokter'])->name('control-schedules.reschedule');
+Route::patch('/jadwal-kontrol/{id}/jadwalkan-ulang', [\App\Http\Controllers\ControlScheduleController::class, 'reschedule'])->middleware(['auth', 'role:admin'])->name('control-schedules.reschedule');

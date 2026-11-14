@@ -22,21 +22,83 @@
                 </div>
 
                 <div class="card-body">
+                    @php
+                        $accountType = old('account_type', $users->isNotEmpty() ? 'existing' : 'new');
+                    @endphp
+
                     <div class="form-group mb-3">
-                        <label for="user_id" class="form-label">Akun Dokter</label>
+                        <label class="form-label">Akun Dokter</label>
 
-                        <select name="user_id" id="user_id" class="form-control @error('user_id') is-invalid @enderror">
-                            <option value="">Pilih Akun Dokter</option>
+                        <div class="form-check">
+                            <input type="radio" name="account_type" id="account_type_existing" value="existing"
+                                class="form-check-input" {{ $accountType === 'existing' ? 'checked' : '' }}>
+                            <label for="account_type_existing" class="form-check-label">
+                                Pilih Akun yang Sudah Terdaftar
+                            </label>
+                        </div>
 
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}"
-                                    {{ old('user_id') == $user->id ? 'selected' : '' }}>
-                                    {{ $user->email }}  
-                                </option>
-                            @endforeach
-                        </select>
+                        <div id="existing-account-fields" class="mt-2" {{ $accountType !== 'existing' ? 'hidden' : '' }}>
+                            <select name="user_id" id="user_id" class="form-control @error('user_id') is-invalid @enderror"
+                                {{ $accountType !== 'existing' ? 'disabled' : '' }}>
+                                <option value="">Pilih akun dokter</option>
 
-                        @error('user_id')
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}"
+                                        {{ $user->dokter ? 'disabled' : '' }}
+                                        {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                                        {{ $user->email }}{{ $user->dokter ? ' (sudah terhubung)' : '' }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            <small class="form-text text-muted">
+                                Akun yang sudah terhubung ditampilkan tetapi tidak dapat dipilih kembali.
+                            </small>
+
+                            @error('user_id')
+                                <div class="invalid-feedback d-block">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        <div class="form-check mt-3">
+                            <input type="radio" name="account_type" id="account_type_new" value="new"
+                                class="form-check-input" {{ $accountType === 'new' ? 'checked' : '' }}>
+                            <label for="account_type_new" class="form-check-label">
+                                Buat Akun Dokter Baru
+                            </label>
+                        </div>
+
+                        <div id="new-account-fields" class="mt-2" {{ $accountType !== 'new' ? 'hidden' : '' }}>
+                            <div class="form-group mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" name="email" id="email" value="{{ old('email') }}"
+                                    class="form-control @error('email') is-invalid @enderror"
+                                    {{ $accountType !== 'new' ? 'disabled' : '' }}>
+
+                                @error('email')
+                                    <div class="invalid-feedback d-block">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <input type="password" name="password" id="password"
+                                    class="form-control @error('password') is-invalid @enderror"
+                                    {{ $accountType !== 'new' ? 'disabled' : '' }}>
+
+                                @error('password')
+                                    <div class="invalid-feedback d-block">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                        </div>
+
+                        @error('account_type')
                             <div class="invalid-feedback d-block">
                                 {{ $message }}
                             </div>
@@ -159,6 +221,21 @@
 
 @push('styles')
 <style>
+    #content {
+        background-color: #eaf1fb !important;
+        background-image:
+            radial-gradient(
+                circle at 95% 5%,
+                rgba(6, 40, 92, 0.16),
+                transparent 35%
+            ),
+            radial-gradient(
+                circle at 5% 95%,
+                rgba(32, 201, 151, 0.13),
+                transparent 30%
+            ) !important;
+    }
+    
     .card-header {
     background-color: #06285c !important;
     color: white !important;
@@ -242,6 +319,38 @@
     }
 
 </style>
+@endpush
+
+@push('script')
+<script>
+    (function () {
+        const accountOptions = document.querySelectorAll('input[name="account_type"]');
+        const existingFields = document.getElementById('existing-account-fields');
+        const newFields = document.getElementById('new-account-fields');
+
+        function updateAccountFields() {
+            const selectedOption = document.querySelector('input[name="account_type"]:checked');
+
+            if (!selectedOption) {
+                return;
+            }
+
+            const accountType = selectedOption.value;
+
+            [[existingFields, accountType === 'existing'], [newFields, accountType === 'new']]
+                .forEach(([container, isActive]) => {
+                    container.hidden = !isActive;
+                    container.querySelectorAll('input, select').forEach((field) => {
+                        field.disabled = !isActive;
+                        field.required = isActive;
+                    });
+                });
+        }
+
+        accountOptions.forEach((option) => option.addEventListener('change', updateAccountFields));
+        updateAccountFields();
+    })();
+</script>
 @endpush
 
 @endsection

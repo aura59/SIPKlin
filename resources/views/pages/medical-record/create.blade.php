@@ -34,10 +34,12 @@
                             <label for="registration_id">Pasien</label>
                             <select class="form-control" id="registration_id" name="registration_id" required>
                                 <option value="">Pilih Pasien</option>
+
                                 @foreach ($registrations as $registration)
                                     <option
                                         value="{{ $registration->id }}"
                                         data-nama="{{ $registration->patient->nama ?? '-' }}"
+                                        data-keluhan="{{ $registration->catatan ?? '-' }}"
                                         data-nik="{{ $registration->patient->nik ?? '-' }}"
                                         data-no-rm="{{ $registration->patient->no_rm ?? '-' }}"
                                         data-jenis-kelamin="{{ $registration->patient->jenis_kelamin ?? '-' }}"
@@ -60,6 +62,7 @@
 
                             <div class="row">
                                 <div class="col-md-6">
+
                                     <div class="patient-info">
                                         <span>No. RM</span>
                                         <strong id="patient-no-rm">-</strong>
@@ -79,9 +82,11 @@
                                         <span>Jenis Kelamin</span>
                                         <strong id="patient-jenis-kelamin">-</strong>
                                     </div>
+
                                 </div>
 
                                 <div class="col-md-6">
+
                                     <div class="patient-info">
                                         <span>Tanggal Lahir</span>
                                         <strong id="patient-tanggal-lahir">-</strong>
@@ -96,6 +101,7 @@
                                         <span>Dokter</span>
                                         <strong id="patient-dokter">-</strong>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -110,17 +116,29 @@
 
                         <div class="col-lg-7">
 
+                            {{-- Keluhan Pasien --}}
                             <div class="form-group">
-                                <label for="keluhan">Keluhan</label>
-                                <textarea class="form-control" id="keluhan" name="keluhan" rows="4" maxlength="500" required>{{ old('keluhan') }}</textarea>
-                                @error('keluhan')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
+                                <label for="keluhan">Keluhan Pasien (Diisi Admin)</label>
+
+                                <textarea
+                                    class="form-control"
+                                    id="keluhan"
+                                    rows="4"
+                                    readonly
+                                    placeholder="Pilih pasien untuk melihat keluhan..."
+                                    style="background-color: #eaf1fb; cursor: not-allowed; resize: none;"
+                                ></textarea>
+
+                                <small class="text-muted">
+                                    <i class="fas fa-info-circle mr-1"></i>
+                                    Keluhan otomatis diambil dari data pendaftaran pasien.
+                                </small>
                             </div>
 
                             <div class="form-group">
                                 <label for="diagnosis">Diagnosis</label>
                                 <textarea class="form-control" id="diagnosis" name="diagnosis" rows="4" maxlength="500" required>{{ old('diagnosis') }}</textarea>
+
                                 @error('diagnosis')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -129,6 +147,7 @@
                             <div class="form-group">
                                 <label for="tindakan">Tindakan</label>
                                 <textarea class="form-control" id="tindakan" name="tindakan" rows="4" maxlength="500" required>{{ old('tindakan') }}</textarea>
+
                                 @error('tindakan')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -151,8 +170,16 @@
 
                                 <div class="form-group">
                                     <label for="resep_obat">Detail Resep Obat</label>
-                                    <textarea class="form-control" id="resep_obat" name="resep_obat" rows="10" maxlength="2000"
-                                        placeholder="Contoh format penulisan:&#10;Nama obat: ...&#10;Dosis: ...&#10;Aturan pakai: ...">{{ old('resep_obat') }}</textarea>
+
+                                    <textarea
+                                        class="form-control"
+                                        id="resep_obat"
+                                        name="resep_obat"
+                                        rows="10"
+                                        maxlength="2000"
+                                        placeholder="Contoh format penulisan:&#10;Nama obat: ...&#10;Dosis: ...&#10;Aturan pakai: ..."
+                                    >{{ old('resep_obat') }}</textarea>
+
                                     @error('resep_obat')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -180,6 +207,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="perlu_kontrol">Pasien Perlu Kontrol?</label>
+
                                     <select class="form-control" id="perlu_kontrol" name="perlu_kontrol" required>
                                         <option value="0" {{ old('perlu_kontrol', '0') == '0' ? 'selected' : '' }}>
                                             Tidak
@@ -189,6 +217,7 @@
                                             Ya
                                         </option>
                                     </select>
+
                                     @error('perlu_kontrol')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -198,7 +227,17 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="tanggal_kontrol">Tanggal Kontrol</label>
-                                    <input type="date" class="form-control" id="tanggal_kontrol" name="tanggal_kontrol" value="{{ old('tanggal_kontrol') }}" min="{{ now()->toDateString() }}" disabled>
+
+                                    <input
+                                        type="date"
+                                        class="form-control"
+                                        id="tanggal_kontrol"
+                                        name="tanggal_kontrol"
+                                        value="{{ old('tanggal_kontrol') }}"
+                                        min="{{ now()->toDateString() }}"
+                                        disabled
+                                    >
+
                                     @error('tanggal_kontrol')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -208,7 +247,17 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="catatan_kontrol">Catatan Kontrol</label>
-                                    <textarea class="form-control" id="catatan_kontrol" name="catatan_kontrol" rows="3" maxlength="500" placeholder="Catatan atau arahan kontrol..." disabled>{{ old('catatan_kontrol') }}</textarea>
+
+                                    <textarea
+                                        class="form-control"
+                                        id="catatan_kontrol"
+                                        name="catatan_kontrol"
+                                        rows="3"
+                                        maxlength="500"
+                                        placeholder="Catatan atau arahan kontrol..."
+                                        disabled
+                                    >{{ old('catatan_kontrol') }}</textarea>
+
                                     @error('catatan_kontrol')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -244,6 +293,21 @@
 
 @push('styles')
 <style>
+    #content {
+        background-color: #eaf1fb !important;
+        background-image:
+            radial-gradient(
+                circle at 95% 5%,
+                rgba(6, 40, 92, 0.16),
+                transparent 35%
+            ),
+            radial-gradient(
+                circle at 5% 95%,
+                rgba(32, 201, 151, 0.13),
+                transparent 30%
+            ) !important;
+    }
+
     .medical-record-card {
         border: none;
         border-radius: 8px;
@@ -392,6 +456,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const registrationSelect = document.getElementById('registration_id');
     const patientInformation = document.getElementById('patient-information');
 
+    const keluhan = document.getElementById('keluhan');
+
     const perluKontrol = document.getElementById('perlu_kontrol');
     const tanggalKontrol = document.getElementById('tanggal_kontrol');
     const catatanKontrol = document.getElementById('catatan_kontrol');
@@ -415,6 +481,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function resetPatientData() {
+        keluhan.value = '';
+
         document.getElementById('patient-no-rm').textContent = '-';
         document.getElementById('patient-nama').textContent = '-';
         document.getElementById('patient-nik').textContent = '-';
@@ -434,6 +502,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         patientInformation.style.display = 'block';
+
+        // Menampilkan keluhan dari catatan pendaftaran admin
+        keluhan.value = selectedOption.dataset.keluhan || '-';
 
         document.getElementById('patient-no-rm').textContent =
             selectedOption.dataset.noRm || '-';

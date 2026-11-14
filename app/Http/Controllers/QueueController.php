@@ -11,16 +11,42 @@ use Illuminate\Validation\ValidationException;
 
 class QueueController extends Controller
 {
+    
     public function index(Request $request)
     {
-        $departments = Department::all();
+        $user = auth()->user();
+        $doctorId = null;
+        $doctor = null;
+
+        // Batasi data dokter sesuai akun yang sedang login.
+        if ($user->role === 'dokter') {
+            $doctor = $user->dokter;
+
+            if (!$doctor) {
+                abort(403, 'Data dokter tidak ditemukan.');
+            }
+
+            $doctorId = $doctor->id;
+        }
+
+        $departments = $doctor
+            ? Department::whereKey($doctor->department_id)->get()
+            : Department::all();
+
         $tanggal = $request->tanggal ?? now('Asia/Jakarta')->format('Y-m-d');
+
+        // Daftar seluruh antrean pada tanggal yang dipilih.
         $registrations = Registration::with([
             'patient',
             'doctorSchedule.doctor.department',
             'queue'
         ])
         ->whereDate('tanggal', $tanggal)
+        ->when($doctorId !== null, function ($query) use ($doctorId) {
+            $query->whereHas('doctorSchedule', function ($scheduleQuery) use ($doctorId) {
+                $scheduleQuery->where('doctor_id', $doctorId);
+            });
+        })
         ->when($request->department_id, function ($query) use ($request) {
             $query->whereHas('doctorSchedule.doctor', function ($q) use ($request) {
                 $q->where('department_id', $request->department_id);
@@ -39,6 +65,7 @@ class QueueController extends Controller
             );
         }
 
+        // Pasien yang sedang dipanggil.
         $currentRegistration = Registration::with([
             'patient',
             'doctorSchedule.doctor.department',
@@ -46,6 +73,11 @@ class QueueController extends Controller
         ])
         ->whereDate('tanggal', $tanggal)
         ->where('status', 'dipanggil')
+        ->when($doctorId !== null, function ($query) use ($doctorId) {
+            $query->whereHas('doctorSchedule', function ($scheduleQuery) use ($doctorId) {
+                $scheduleQuery->where('doctor_id', $doctorId);
+            });
+        })
         ->when($request->department_id, function ($query) use ($request) {
             $query->whereHas('doctorSchedule.doctor', function ($q) use ($request) {
                 $q->where('department_id', $request->department_id);
@@ -54,6 +86,7 @@ class QueueController extends Controller
         ->orderBy('updated_at', 'desc')
         ->first();
 
+        // Pasien berikutnya yang masih menunggu.
         $nextRegistration = Registration::with([
             'patient',
             'doctorSchedule.doctor.department',
@@ -61,6 +94,11 @@ class QueueController extends Controller
         ])
         ->whereDate('tanggal', $tanggal)
         ->where('status', 'menunggu')
+        ->when($doctorId !== null, function ($query) use ($doctorId) {
+            $query->whereHas('doctorSchedule', function ($scheduleQuery) use ($doctorId) {
+                $scheduleQuery->where('doctor_id', $doctorId);
+            });
+        })
         ->when($request->department_id, function ($query) use ($request) {
             $query->whereHas('doctorSchedule.doctor', function ($q) use ($request) {
                 $q->where('department_id', $request->department_id);
@@ -127,50 +165,53 @@ class QueueController extends Controller
 
     public function finish($id)
     {
-        $registration = Registration::with([
-            'doctorSchedule',
-            'queue',
-        ])->findOrFail($id);
+        DB::transaction(function () use ($id) {
+            $registration = Registration::with([
+                'doctorSchedule',
+                'queue',
+            ])
+            ->lockForUpdate()
+            ->findOrFail($id);
 
-        if ($registration->status !== 'dipanggil') {
-            return back()->withErrors([
-                'registration' => 'Hanya antrean yang sedang dipanggil yang bisa diselesaikan.',
-            ]);
-        }
-
-        $user = auth()->user();
-
-        if ($user->role === 'dokter') {
-
-            $doctor = $user->dokter;
-
-            if (!$doctor) {
-                abort(403, 'Data dokter tidak ditemukan.');
+            if ($registration->status !== 'dipanggil') {
+                throw ValidationException::withMessages([
+                    'registration' => 'Hanya antrean yang sedang dipanggil yang bisa diselesaikan.',
+                ]);
             }
 
-            if (
-                !$registration->doctorSchedule ||
-                $registration->doctorSchedule->doctor_id != $doctor->id
-            ) {
-                abort(403, 'Kamu tidak memiliki akses untuk menyelesaikan antrean ini.');
+            $user = auth()->user();
+            if ($user->role === 'dokter') {
+                $doctor = $user->dokter;
+
+                if (!$doctor) {
+                    abort(403, 'Data dokter tidak ditemukan.');
+                }
+
+                if (
+                    !$registration->doctorSchedule ||
+                    $registration->doctorSchedule->doctor_id != $doctor->id
+                ) {
+                    abort(403, 'Kamu tidak memiliki akses untuk menyelesaikan antrean ini.');
+                }
             }
-        }
 
-        if (!$registration->medicalRecord()->exists()) {
-            return back()->withErrors([
-                'registration' => 'Pasien harus memiliki rekam medis sebelum antrean diselesaikan.',
-            ]);
-        }
+            if (!$registration->medicalRecord()->exists()) {
+                throw ValidationException::withMessages([
+                    'registration' => 'Pasien harus memiliki rekam medis sebelum antrean diselesaikan.',
+                ]);
+            }
 
-        $registration->update([ 'status' => 'selesai',]);
-
-        if ($registration->queue) {
-            $registration->queue->update([
+            $registration->update([
                 'status' => 'selesai',
             ]);
-        }
 
-        return back()->with('success', 'Antrean berhasil diselesaikan.' );
+            if ($registration->queue) {
+                $registration->queue->update([
+                    'status' => 'selesai',
+                ]);
+            }
+        });
+
+        return back()->with('success', 'Antrean berhasil diselesaikan.');
     }
-
 }

@@ -22,7 +22,18 @@
     <!-- Custom styles for this template-->
     <link href="{{ asset('css/sb-admin-2.min.css') }}" rel="stylesheet">
 
+     <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,600,700,800,900" rel="stylesheet">
+
     <style>
+
+        html,
+        body,
+        button,
+        input,
+        select,
+        textarea {
+            font-family: Arial, sans-serif !important;
+        }
         
         /* Sidebar desktop */
         #accordionSidebar {

@@ -10,6 +10,15 @@
 
 <h1 class="h6 text-gray-800 mb-4">Data Klinik / Jadwal Dokter</h1>
 
+@if (session('error'))
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ session('error') }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+@endif
+
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
 
@@ -88,6 +97,20 @@
 
 @push('styles')
 <style>
+    #content {
+        background-color: #eaf1fb !important;
+        background-image:
+            radial-gradient(
+                circle at 95% 5%,
+                rgba(6, 40, 92, 0.16),
+                transparent 35%
+            ),
+            radial-gradient(
+                circle at 5% 95%,
+                rgba(32, 201, 151, 0.13),
+                transparent 30%
+            ) !important;
+    }
 
     .btn-sipklin {
         background-color: #06285c !important;
@@ -247,5 +270,19 @@ function actionDestroy(url) {
         });
     </script>
     
+@endif
+
+@if (session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            Swal.fire({
+                icon: 'error',
+                title: 'Tidak dapat menghapus data',
+                text: @json(session('error')),
+                confirmButtonText: 'Oke',
+                confirmButtonColor: '#06285c'
+            });
+        });
+    </script>
 @endif
 @endpush

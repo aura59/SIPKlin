@@ -36,7 +36,6 @@ class MedicalRecordController extends Controller
     {
         $request->validate([
             'registration_id' => 'required|exists:registrations,id',
-            'keluhan' => 'required|string|max:500',
             'diagnosis' => 'required|string|max:500',
             'tindakan' => 'required|string|max:500',
             'resep_obat' => 'nullable|string',
@@ -78,7 +77,7 @@ class MedicalRecordController extends Controller
 
             MedicalRecord::create([
                 'registration_id' => $registration->id,
-                'keluhan' => $request->keluhan,
+                'keluhan' => $registration->catatan,
                 'diagnosis' => $request->diagnosis,
                 'tindakan' => $request->tindakan,
                 'resep_obat' => $request->resep_obat,

@@ -42,15 +42,24 @@ class DepartmentController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        $kode_poli = chr(65 + Department::count()); 
+        $kodeTersedia = collect(range('A', 'Z'))
+            ->diff(Department::pluck('kode_poli')->toArray())
+            ->first();
+
+        if (!$kodeTersedia) {
+            return redirect()
+                ->route('departments.index', $request->only(['page', 'search']))
+                ->with('error', 'Jumlah poli sudah mencapai batas maksimal 26 poli.');
+        }
 
         Department::create([
             'name' => $request->name,
             'description' => $request->description,
-            'kode_poli' => $kode_poli,
+            'kode_poli' => $kodeTersedia,
         ]);
 
-        return redirect()->route('departments.index', $request->only(['page', 'search']))
+        return redirect()
+            ->route('departments.index', $request->only(['page', 'search']))
             ->with('success', 'Data poli berhasil ditambahkan!');
     }
 
@@ -87,19 +96,26 @@ class DepartmentController extends Controller
         $department = Department::findOrFail($id);
         $department->update($request->all());
 
-        return redirect()->route('departments.index', $request->only(['page', 'search']))
-            ->with('success', 'Data poli berhasil diperbarui!');
+        return redirect()->route('departments.index', $request->only(['page', 'search']))->with('success', 'Data poli berhasil diperbarui!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
+    
     public function destroy(Request $request, string $id)
     {
         $department = Department::findOrFail($id);
+
+        if ($department->doctors()->exists()) {
+            return redirect()
+                ->route('departments.index', $request->only(['page', 'search']))
+                ->with('error', 'Data poli tidak dapat dihapus karena masih digunakan oleh dokter.');
+        }
+
         $department->delete();
 
-        return redirect()->route('departments.index', $request->only(['page', 'search']))
-            ->with('success', 'Data poli berhasil dihapus!');
+        return redirect()->route('departments.index', $request->only(['page', 'search']))->with('success', 'Data poli berhasil dihapus!');
     }
+
 }

@@ -119,8 +119,7 @@ class DoctorScheduleController extends Controller
             'kuota' => $request->kuota,
         ]);
 
-        return redirect()->route('doctorschedules.index', $request->only(['page', 'search']))
-            ->with('success', 'Data jadwal dokter berhasil ditambahkan!');
+        return redirect()->route('doctorschedules.index', $request->only(['page', 'search']))->with('success', 'Data jadwal dokter berhasil ditambahkan!');
     }
 
     /**
@@ -174,19 +173,25 @@ class DoctorScheduleController extends Controller
             'kuota' => $request->kuota,
         ]);
 
-        return redirect()->route('doctorschedules.index', $request->only(['page', 'search']))
-            ->with('success', 'Data jadwal dokter berhasil diperbarui!');
+        return redirect()->route('doctorschedules.index', $request->only(['page', 'search']))->with('success', 'Data jadwal dokter berhasil diperbarui!');
     }
 
     /**
      * Remove the specified resource from storage.
      */
+    
     public function destroy(Request $request, string $id)
     {
         $doctorschedule = DoctorSchedule::findOrFail($id);
+
+        // Cegah penghapusan jadwal yang sudah memiliki riwayat pendaftaran.
+        if ($doctorschedule->registration()->exists()) {
+            return redirect()->route('doctorschedules.index', $request->only(['page', 'search']))->with('error', 'Jadwal dokter tidak dapat dihapus karena sudah memiliki riwayat pendaftaran pasien.');
+        }
+
         $doctorschedule->delete();
 
-        return redirect()->route('doctorschedules.index', $request->only(['page', 'search']))
-            ->with('success', 'Data jadwal dokter berhasil dihapus!');
+        return redirect()->route('doctorschedules.index', $request->only(['page', 'search']))->with('success', 'Data jadwal dokter berhasil dihapus!');
     }
+
 }

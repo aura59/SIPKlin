@@ -169,6 +169,7 @@ class PaginationSearchTest extends TestCase
         $this->actingAs(User::factory()->create(['role' => 'admin']));
 
         $response = $this->post(route('patients.store', ['page' => 2, 'search' => 'Patient']), [
+            'no_rm' => 'RM-' . fake()->unique()->numerify('######'),
             'nik' => fake()->unique()->numerify('################'),
             'nama' => 'Patient Baru',
             'tanggal_lahir' => '1990-01-01',
@@ -219,6 +220,7 @@ class PaginationSearchTest extends TestCase
     private function createPatient(string $name): Patient
     {
         return Patient::create([
+            'no_rm' => 'RM-' . fake()->unique()->numerify('######'),
             'nik' => fake()->unique()->numerify('################'),
             'nama' => $name,
             'tanggal_lahir' => '1990-01-01',

@@ -27,7 +27,7 @@
     <li class="nav-item {{ request()->routeIs('doctor.schedules') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('doctor.schedules') }}">
             <i class="fas fa-fw fa-calendar-alt"></i>
-            <span>Jadwal Dokter</span>
+            <span>Jadwal Saya</span>
         </a>
     </li>
 

@@ -25,16 +25,30 @@ class ScheduleOrderingTest extends TestCase
         $response = $this->actingAs($admin)->get(route('registrations.create'));
 
         $response->assertOk();
-        $content = $response->getContent();
-        $mondayMorning = strpos($content, 'data-day="Senin" data-start="08:00"');
-        $mondayAfternoon = strpos($content, 'data-day="Senin" data-start="13:00"');
-        $tuesdayMorning = strpos($content, 'data-day="Selasa" data-start="08:00"');
 
-        $this->assertNotFalse($mondayMorning);
-        $this->assertNotFalse($mondayAfternoon);
-        $this->assertNotFalse($tuesdayMorning);
-        $this->assertLessThan($mondayAfternoon, $mondayMorning);
-        $this->assertLessThan($tuesdayMorning, $mondayAfternoon);
+        $content = $response->getContent();
+
+        preg_match_all('/<option\b([^>]*)>/s', $content, $matches);
+
+        $scheduleChoices = [];
+
+        foreach ($matches[1] as $attributes) {
+            preg_match('/data-day="([^"]+)"/', $attributes, $day);
+            preg_match('/data-start="([^"]+)"/', $attributes, $start);
+
+            if (isset($day[1], $start[1])) {
+                $scheduleChoices[] = $day[1] . ' ' . substr($start[1], 0, 5);
+            }
+        }
+
+        $this->assertSame(
+            [
+                'Senin 08:00',
+                'Senin 13:00',
+                'Selasa 08:00',
+            ],
+            $scheduleChoices
+        );
     }
 
     public function test_schedule_list_is_ordered_by_weekday_then_start_time(): void

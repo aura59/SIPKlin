@@ -116,6 +116,20 @@
 
 @push('styles')
 <style>
+    #content {
+        background-color: #eaf1fb !important;
+        background-image:
+            radial-gradient(
+                circle at 95% 5%,
+                rgba(6, 40, 92, 0.16),
+                transparent 35%
+            ),
+            radial-gradient(
+                circle at 5% 95%,
+                rgba(32, 201, 151, 0.13),
+                transparent 30%
+            ) !important;
+    }
 
     .card-header {
     background-color: #06285c !important;
